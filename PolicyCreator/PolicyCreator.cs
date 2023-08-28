@@ -113,8 +113,10 @@ namespace InsuranceSummaryMaker
                     string filePath = message.documentpath;
                     string templatePath = message.templatePath;
 
+                    
+
                     AgentInformation agent = getAgentInformation();
-                    BusinessInformation business = getBusinessInformation(); ;
+                    BusinessInformation business = getBusinessInformation();
 
                     ConvertToDocument.StartExport(templatePath, filePath, this.tableInformationList, agent, business, this.addons);
 
@@ -752,6 +754,52 @@ namespace InsuranceSummaryMaker
                     saveAsToolStripMenuItem_Click(sender, e);
                 }
             }
+        }
+
+
+
+
+
+
+
+        private void PolicyCreator_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Control && e.KeyCode == Keys.S)
+            {
+                saveToolStripMenuItem_Click(sender, e);
+                e.SuppressKeyPress = true;
+            }
+        }
+
+        private void AppendiciesUpButton_Click(object sender, EventArgs e)
+        {
+            int selectedIndex = this.appendiciesLabelBox.SelectedIndex;
+            int toIndex = selectedIndex - 1;
+            swapAppendicies(selectedIndex, toIndex);
+        }
+
+        private void AppendiciesDownButton_Click(object sender, EventArgs e)
+        {
+            int selectedIndex = this.appendiciesLabelBox.SelectedIndex;
+            int toIndex = selectedIndex + 1;
+            swapAppendicies(selectedIndex, toIndex);
+        }
+
+        private void swapAppendicies(int fromAppendiciesIndex, int toAppendiciesIndex)
+        {
+            if (fromAppendiciesIndex < 0 || fromAppendiciesIndex >= this.addons.Count) { return; }
+            if (toAppendiciesIndex < 0 || toAppendiciesIndex >= this.addons.Count) { return; }
+
+            //swap the addons in the list
+
+            AppendFile tempTable = this.addons[fromAppendiciesIndex];
+            this.addons[fromAppendiciesIndex] = this.addons[toAppendiciesIndex];
+            this.addons[toAppendiciesIndex] = tempTable;
+
+            //swap in the list View
+            var item = this.appendiciesLabelBox.Items[toAppendiciesIndex];
+            this.appendiciesLabelBox.Items.RemoveAt(toAppendiciesIndex);
+            this.appendiciesLabelBox.Items.Insert(fromAppendiciesIndex, item);
         }
     }
 

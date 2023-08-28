@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Windows.Forms;
 
 namespace InsuranceSummaryMaker.CustomControls.CustomMessageBox
@@ -6,12 +7,12 @@ namespace InsuranceSummaryMaker.CustomControls.CustomMessageBox
     public partial class ExportMessageBox : Form
     {
 
-        private string tempPath { get; set; }
         public string templatePath { get; set; }
         public string documentpath { get; set; }
         public ExportMessageBox()
         {
             InitializeComponent();
+
             this.templatePath = "";
             this.documentpath = "";
         }
@@ -25,21 +26,33 @@ namespace InsuranceSummaryMaker.CustomControls.CustomMessageBox
         private void ExportButton_Click(object sender, EventArgs e)
         {
 
-            if (this.tempPath == null)
+            if (this.templatePath == null || this.templatePath.Equals(""))
             {
-                MessageBox.Show("Please Select a File Template");
+                MessageBox.Show("Please Select a File Template.");
+                return;
             }
-            else
+
+            if(this.documentpath == null || this.documentpath.Equals(""))
             {
-                if (this.SaveWordDocumentDIalog.ShowDialog() == DialogResult.OK)
-                {
-                    this.templatePath = this.tempPath;
-                    this.documentpath = this.SaveWordDocumentDIalog.FileName;
-                    this.DialogResult = DialogResult.OK;
-                }
+                MessageBox.Show("Please select a save location.");
+                return;
+            }
+
+            if (string.Equals(templatePath, documentpath, StringComparison.OrdinalIgnoreCase))
+            {
+                MessageBox.Show("The Template and the save location cannot be the same.");
+                return;
+            }
+
+            if (!File.Exists(templatePath))
+            {
+                MessageBox.Show("Cannot open the template path please choose another.");
+            }
 
 
-            }
+            this.DialogResult = DialogResult.OK;
+
+
         }
 
 
@@ -47,8 +60,17 @@ namespace InsuranceSummaryMaker.CustomControls.CustomMessageBox
         {
             if (this.BrowseTemplateDialog.ShowDialog() == DialogResult.OK)
             {
-                this.tempPath = this.BrowseTemplateDialog.FileName;
-                this.textTextBox.Text = this.BrowseTemplateDialog.SafeFileName;
+                this.templatePath = this.BrowseTemplateDialog.FileName;
+                this.textTextBox.Text = this.templatePath;
+            }
+        }
+
+        private void BrowseSaveLocation_Click(object sender, EventArgs e)
+        {
+            if (this.SaveWordDocumentDIalog.ShowDialog() == DialogResult.OK)
+            {
+                this.documentpath = this.SaveWordDocumentDIalog.FileName;
+                this.saveProposalToTextBox.Text = this.documentpath;
             }
         }
     }

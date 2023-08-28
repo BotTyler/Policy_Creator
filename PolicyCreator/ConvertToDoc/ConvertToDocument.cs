@@ -65,11 +65,7 @@ namespace InsuranceSummaryMaker.ConvertToDoc
                 MessageBox.Show("Cannot find the template.");
                 return;
             }
-            if (string.Equals(templatePath, exportPath, StringComparison.OrdinalIgnoreCase))
-            {
-                MessageBox.Show("File already exist.");
-                return;
-            }
+
             using (WordprocessingDocument template = WordprocessingDocument.Open(templatePath, true))
             {
                 using (WordprocessingDocument document = (WordprocessingDocument)template.Clone(exportPath))
