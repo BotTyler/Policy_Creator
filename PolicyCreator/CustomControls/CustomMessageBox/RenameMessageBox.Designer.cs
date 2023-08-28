@@ -87,6 +87,7 @@ namespace InsuranceSummaryMaker.CustomControls.CustomMessageBox
             this.textTextBox.Name = "textTextBox";
             this.textTextBox.Size = new System.Drawing.Size(362, 34);
             this.textTextBox.TabIndex = 0;
+            this.textTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textTextBox_KeyPress);
             // 
             // flowLayoutPanel1
             // 

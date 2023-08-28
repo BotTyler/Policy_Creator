@@ -74,7 +74,7 @@ namespace InsuranceSummaryMaker
 
         public void setFilters()
         {
-            this.TableDataGridView.RowTemplate.MinimumHeight = 100;
+            this.TableDataGridView.RowTemplate.MinimumHeight = 75;
             string filter = "JJInsurance Policy Creator (*" + PolicyInformationSerializer.fileExtension + ")|*" + PolicyInformationSerializer.fileExtension;
             this.openMyFileDialog.Filter = filter;
             this.saveMyFileDialog.Filter = filter;
@@ -117,7 +117,6 @@ namespace InsuranceSummaryMaker
                     BusinessInformation business = getBusinessInformation(); ;
 
                     ConvertToDocument.StartExport(templatePath, filePath, this.tableInformationList, agent, business, this.addons);
-                    System.Diagnostics.Process.Start(filePath);
 
 
                 }
@@ -297,6 +296,8 @@ namespace InsuranceSummaryMaker
         {
             endTableEditMode();
             this.Text = fileName;
+            this.openedPath = path;
+            this.openedPathFileName = fileName;
             AgentInformation agent = getAgentInformation();
             BusinessInformation business = getBusinessInformation();
 
@@ -362,7 +363,7 @@ namespace InsuranceSummaryMaker
             if (currentIndex >= 0)
             {
                 // there is a selected index
-                if (!yesNoMessageBoxConfirmation("Are you suure you want to delete table: " + this.tableInformationList[currentIndex]._tableName)) { return; }
+                if (!yesNoMessageBoxConfirmation("Are you sure you want to delete table: " + this.tableInformationList[currentIndex]._tableName)) { return; }
                 removeTable(currentIndex);
                 clearCarrierInformation();
                 clearColumnsListBox();

@@ -87,6 +87,8 @@ namespace InsuranceSummaryMaker.PolicyInformation
                     cell.Value = value ?? "";
                     createdRow.Cells.Add(cell);
                 }
+
+                createdRow.MinimumHeight = 75;
                 this._rows.Add(createdRow);
             }
         }
@@ -111,7 +113,7 @@ namespace InsuranceSummaryMaker.PolicyInformation
             DataGridViewColumn column = new DataGridViewTextBoxColumn();
             column.Name = columnHeader;
             column.HeaderText = columnHeader;
-            column.MinimumWidth = 300;
+            column.MinimumWidth = 200;
             this._columns.Add(column);
         }
 

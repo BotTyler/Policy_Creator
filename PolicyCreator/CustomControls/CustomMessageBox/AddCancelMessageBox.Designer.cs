@@ -34,9 +34,9 @@ namespace InsuranceSummaryMaker.CustomControls.CustomMessageBox
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.messageLabel = new System.Windows.Forms.Label();
             this.textTextBox = new System.Windows.Forms.TextBox();
+            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.AddButton = new System.Windows.Forms.Button();
             this.CancelButton = new System.Windows.Forms.Button();
-            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -49,7 +49,7 @@ namespace InsuranceSummaryMaker.CustomControls.CustomMessageBox
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel2;
             this.splitContainer1.Location = new System.Drawing.Point(8, 6);
-            this.splitContainer1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.splitContainer1.Margin = new System.Windows.Forms.Padding(4);
             this.splitContainer1.Name = "splitContainer1";
             this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
@@ -62,7 +62,7 @@ namespace InsuranceSummaryMaker.CustomControls.CustomMessageBox
             // 
             this.splitContainer1.Panel2.Controls.Add(this.flowLayoutPanel1);
             this.splitContainer1.Size = new System.Drawing.Size(379, 150);
-            this.splitContainer1.SplitterDistance = 100;
+            this.splitContainer1.SplitterDistance = 99;
             this.splitContainer1.SplitterWidth = 5;
             this.splitContainer1.TabIndex = 0;
             // 
@@ -84,10 +84,22 @@ namespace InsuranceSummaryMaker.CustomControls.CustomMessageBox
             | System.Windows.Forms.AnchorStyles.Right)));
             this.textTextBox.Font = new System.Drawing.Font("Segoe UI", 15F);
             this.textTextBox.Location = new System.Drawing.Point(4, 49);
-            this.textTextBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.textTextBox.Margin = new System.Windows.Forms.Padding(4);
             this.textTextBox.Name = "textTextBox";
             this.textTextBox.Size = new System.Drawing.Size(372, 34);
             this.textTextBox.TabIndex = 0;
+            this.textTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textTextBox_KeyPress);
+            // 
+            // flowLayoutPanel1
+            // 
+            this.flowLayoutPanel1.Controls.Add(this.AddButton);
+            this.flowLayoutPanel1.Controls.Add(this.CancelButton);
+            this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 0);
+            this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(2);
+            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(379, 46);
+            this.flowLayoutPanel1.TabIndex = 0;
             // 
             // AddButton
             // 
@@ -106,7 +118,7 @@ namespace InsuranceSummaryMaker.CustomControls.CustomMessageBox
             // 
             this.CancelButton.AutoSize = true;
             this.CancelButton.Location = new System.Drawing.Point(241, 4);
-            this.CancelButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.CancelButton.Margin = new System.Windows.Forms.Padding(4);
             this.CancelButton.Name = "CancelButton";
             this.CancelButton.Padding = new System.Windows.Forms.Padding(5);
             this.CancelButton.Size = new System.Drawing.Size(130, 40);
@@ -114,17 +126,6 @@ namespace InsuranceSummaryMaker.CustomControls.CustomMessageBox
             this.CancelButton.Text = "Cancel";
             this.CancelButton.UseVisualStyleBackColor = true;
             this.CancelButton.Click += new System.EventHandler(this.CancelButton_Click);
-            // 
-            // flowLayoutPanel1
-            // 
-            this.flowLayoutPanel1.Controls.Add(this.AddButton);
-            this.flowLayoutPanel1.Controls.Add(this.CancelButton);
-            this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 0);
-            this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(379, 45);
-            this.flowLayoutPanel1.TabIndex = 0;
             // 
             // AddCancelMessageBox
             // 
@@ -134,7 +135,7 @@ namespace InsuranceSummaryMaker.CustomControls.CustomMessageBox
             this.Controls.Add(this.splitContainer1);
             this.Font = new System.Drawing.Font("Arial", 12F);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "AddCancelMessageBox";
             this.Padding = new System.Windows.Forms.Padding(8, 6, 8, 6);
             this.Text = "Add";

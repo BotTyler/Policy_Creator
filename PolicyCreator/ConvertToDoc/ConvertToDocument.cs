@@ -95,6 +95,8 @@ namespace InsuranceSummaryMaker.ConvertToDoc
 
             }
             MessageBox.Show("File saved at: " + exportPath);
+            System.Diagnostics.Process.Start(exportPath);
+
 
 
 
