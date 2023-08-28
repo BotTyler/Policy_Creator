@@ -1,0 +1,137 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{AEDE6CBE-0EB0-46B4-98D5-B37AF1F74184}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>PolicyCreator</RootNamespace>
+    <AssemblyName>PolicyCreator</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="DocumentFormat.OpenXml, Version=2.20.0.0, Culture=neutral, PublicKeyToken=8fb06cb64d019a17, processorArchitecture=MSIL">
+      <HintPath>..\packages\DocumentFormat.OpenXml.2.20.0\lib\net40\DocumentFormat.OpenXml.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.3\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ConvertToDoc\ConvertToDocument.cs" />
+    <Compile Include="CustomControls\CustomMessageBox\AddCancelMessageBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CustomControls\CustomMessageBox\AddCancelMessageBox.Designer.cs">
+      <DependentUpon>AddCancelMessageBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CustomControls\CustomMessageBox\ExportMessageBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CustomControls\CustomMessageBox\ExportMessageBox.Designer.cs">
+      <DependentUpon>ExportMessageBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CustomControls\CustomMessageBox\NewOpenMessageBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CustomControls\CustomMessageBox\NewOpenMessageBox.Designer.cs">
+      <DependentUpon>NewOpenMessageBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CustomControls\CustomMessageBox\RenameMessageBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CustomControls\CustomMessageBox\RenameMessageBox.Designer.cs">
+      <DependentUpon>RenameMessageBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CustomControls\CustomPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="CustomControls\CustomPanel.Designer.cs">
+      <DependentUpon>CustomPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PolicyCreator.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PolicyCreator.Designer.cs">
+      <DependentUpon>PolicyCreator.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PolicyInformation\AgentInformation.cs" />
+    <Compile Include="PolicyInformation\AppendFile.cs" />
+    <Compile Include="PolicyInformation\BusinessInformation.cs" />
+    <Compile Include="PolicyInformation\CoverageInformation.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Serialization\PolicyInformationSerializer.cs" />
+    <EmbeddedResource Include="CustomControls\CustomMessageBox\AddCancelMessageBox.resx">
+      <DependentUpon>AddCancelMessageBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CustomControls\CustomMessageBox\ExportMessageBox.resx">
+      <DependentUpon>ExportMessageBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CustomControls\CustomMessageBox\NewOpenMessageBox.resx">
+      <DependentUpon>NewOpenMessageBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CustomControls\CustomMessageBox\RenameMessageBox.resx">
+      <DependentUpon>RenameMessageBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CustomControls\CustomPanel.resx">
+      <DependentUpon>CustomPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PolicyCreator.resx">
+      <DependentUpon>PolicyCreator.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
