@@ -5,6 +5,7 @@ using InsuranceSummaryMaker.Serialization;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Threading;
 using System.Windows.Forms;
@@ -187,7 +188,7 @@ namespace InsuranceSummaryMaker
         {
 
             int currentIndex = this.appendiciesLabelBox.SelectedIndex;
-            if (currentIndex >= 0)
+            if (currentIndex >= 0 && currentIndex < this.addons.Count)
             {
                 if (!yesNoMessageBoxConfirmation("Are you sure you want to delete Appendicy: " + this.addons[currentIndex].fileName))
                 {
@@ -241,8 +242,11 @@ namespace InsuranceSummaryMaker
             string businessLegalName = this.BusinessLegalNameTextBox.Text;
             DateTime businessStart = this.BusinessStartDate.Value;
             DateTime businessEnd = this.BusinessEndDate.Value;
+            Image image = this.businessPictureBox.Image;
+            string imagePath = this.imageLocationTextBox.Text;
+            
 
-            return new BusinessInformation(businessName, businessLegalName, businessStart, businessEnd);
+            return new BusinessInformation(businessName, businessLegalName, businessStart, businessEnd, image, imagePath);
         }
         #endregion
 
@@ -362,7 +366,7 @@ namespace InsuranceSummaryMaker
         private void DeleteTableButton_Click(object sender, EventArgs e)
         {
             int currentIndex = this.TableCreatePanelListBox.SelectedIndex;
-            if (currentIndex >= 0)
+            if (currentIndex >= 0 && currentIndex < this.tableInformationList.Count)
             {
                 // there is a selected index
                 if (!yesNoMessageBoxConfirmation("Are you sure you want to delete table: " + this.tableInformationList[currentIndex]._tableName)) { return; }
@@ -379,7 +383,7 @@ namespace InsuranceSummaryMaker
         private void AddColumnButton_Click(object sender, EventArgs e)
         {
             int currentIndex = this.TableCreatePanelListBox.SelectedIndex;
-            if (currentIndex >= 0)
+            if (currentIndex >= 0 && currentIndex < this.tableInformationList.Count)
             {
 
                 using (AddCancelMessageBox messageBox = new AddCancelMessageBox("Enter Name of the Column: "))
@@ -407,10 +411,13 @@ namespace InsuranceSummaryMaker
         {
             int tableIndex = this.TableCreatePanelListBox.SelectedIndex;
             int columnIndex = this.ColumnsCreatePanelListView.SelectedIndex;
-            if (columnIndex >= 0)
+
+
+            if (tableIndex >= 0 && tableIndex < this.tableInformationList.Count && columnIndex >= 0 && columnIndex < this.tableInformationList[tableIndex]._columns.Count)
             {
+
+
                 if (!yesNoMessageBoxConfirmation("Are you sure you want to delete column: " + this.tableInformationList[tableIndex].getColumnNameAtIndex(columnIndex))) { return; }
-                // the next 3 lines are to remove the Lists from the datagridview
 
 
                 removeColumn(tableIndex, columnIndex);
@@ -429,7 +436,7 @@ namespace InsuranceSummaryMaker
 
 
             int changeIndex = this.TableCreatePanelListBox.SelectedIndex;
-            if (changeIndex >= 0)
+            if (changeIndex >= 0 && changeIndex < this.tableInformationList.Count)
             {
                 populateColumnsListBox(this.tableInformationList[changeIndex]._columns);
                 refreshCarrierInformation(this.tableInformationList[changeIndex]._carrierInformation);
@@ -439,7 +446,7 @@ namespace InsuranceSummaryMaker
         private void CarrierRichTextBox_Validated(object sender, EventArgs e)
         {
             int tableIndex = this.TableCreatePanelListBox.SelectedIndex;
-            if (tableIndex >= 0)
+            if (tableIndex >= 0 && tableIndex < this.tableInformationList.Count)
             {
                 this.tableInformationList[tableIndex]._carrierInformation = this.CarrierRichTextBox.Text;
             }
@@ -449,7 +456,7 @@ namespace InsuranceSummaryMaker
         {
             // add all the columns and rowws to the data view
             int currentIndex = this.TableDataViewSelectorBox.SelectedIndex;
-            if (currentIndex >= 0)
+            if (currentIndex >= 0 && currentIndex < this.tableInformationList.Count)
             {
                 CoverageInformation currentTable = this.tableInformationList[currentIndex];
                 setDataGridColumns(currentTable._columns);
@@ -533,7 +540,7 @@ namespace InsuranceSummaryMaker
             //MessageBox.Show("Validated");
             int currentIndex = this.TableDataViewSelectorBox.SelectedIndex;
 
-            if (currentIndex >= 0)
+            if (currentIndex >= 0 && currentIndex < this.tableInformationList.Count)
             {
                 this.tableInformationList[currentIndex].setNewTable(this.TableDataGridView);
             }
@@ -560,7 +567,7 @@ namespace InsuranceSummaryMaker
             int currentIndex = this.TableCreatePanelListBox.SelectedIndex;
 
 
-            if (currentIndex < 0)
+            if (currentIndex < 0 || currentIndex >= this.tableInformationList.Count)
             {
                 MessageBox.Show("Please select a table.");
                 return;
@@ -583,13 +590,13 @@ namespace InsuranceSummaryMaker
             int tableIndex = this.TableCreatePanelListBox.SelectedIndex;
             int columnIndex = this.ColumnsCreatePanelListView.SelectedIndex;
 
-            if (tableIndex < 0)
+            if (tableIndex < 0 || tableIndex >= this.tableInformationList.Count)
             {
                 MessageBox.Show("Please select a table.");
                 return;
             }
 
-            if (columnIndex < 0)
+            if (columnIndex < 0 || columnIndex >= this.tableInformationList[tableIndex]._columns.Count)
             {
                 MessageBox.Show("Please select a column");
                 return;
@@ -633,7 +640,7 @@ namespace InsuranceSummaryMaker
         private void refreshTable()
         {
             int currentIndex = this.TableDataViewSelectorBox.SelectedIndex;
-            if (currentIndex >= 0)
+            if (currentIndex >= 0 && currentIndex < this.tableInformationList.Count)
             {
                 setDataGridColumns(this.tableInformationList[currentIndex]._columns);
                 setDataGridRows(this.tableInformationList[currentIndex]._rows);
@@ -800,6 +807,18 @@ namespace InsuranceSummaryMaker
             var item = this.appendiciesLabelBox.Items[toAppendiciesIndex];
             this.appendiciesLabelBox.Items.RemoveAt(toAppendiciesIndex);
             this.appendiciesLabelBox.Items.Insert(fromAppendiciesIndex, item);
+        }
+
+        private void BrowseImageLocation_Click(object sender, EventArgs e)
+        {
+            if(this.openImageDialog.ShowDialog() == DialogResult.OK)
+            {
+                string imagePath = this.openImageDialog.FileName;
+                this.imageLocationTextBox.Text = imagePath;
+
+                this.businessPictureBox.Image = new Bitmap(imagePath);
+                
+            }
         }
     }
 

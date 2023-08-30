@@ -1,4 +1,5 @@
-﻿using DocumentFormat.OpenXml.Packaging;
+﻿using DocumentFormat.OpenXml;
+using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using InsuranceSummaryMaker.PolicyInformation;
 using System;
@@ -14,6 +15,18 @@ using TableProperties = DocumentFormat.OpenXml.Wordprocessing.TableProperties;
 using TableRow = DocumentFormat.OpenXml.Wordprocessing.TableRow;
 using TableStyle = DocumentFormat.OpenXml.Wordprocessing.TableStyle;
 using Text = DocumentFormat.OpenXml.Wordprocessing.Text;
+
+
+using A = DocumentFormat.OpenXml.Drawing;
+using DW = DocumentFormat.OpenXml.Drawing.Wordprocessing;
+using PIC = DocumentFormat.OpenXml.Drawing.Pictures;
+using System.Drawing;
+using DocumentFormat.OpenXml.Drawing.Wordprocessing;
+using System.Linq;
+using System.Deployment.Application;
+using DocumentFormat.OpenXml.Drawing;
+using ParagraphProperties = DocumentFormat.OpenXml.Wordprocessing.ParagraphProperties;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace InsuranceSummaryMaker.ConvertToDoc
 {
@@ -45,6 +58,7 @@ namespace InsuranceSummaryMaker.ConvertToDoc
         private readonly static string businessLegalNameTag = "<<businesslegalname>>";
         private readonly static string businessStartDateTag = "<<businessstart>>";
         private readonly static string businessEndDateTag = "<<businessend>>";
+        private readonly static string businessPictureTag = "<<businesspicture>>";
 
         #endregion
 
@@ -119,7 +133,8 @@ namespace InsuranceSummaryMaker.ConvertToDoc
             ReplaceTag(businessNameTag, business._name, document);
             ReplaceTag(businessLegalNameTag, business._legalName, document);
             ReplaceTag(businessStartDateTag, business.getFormattedStartDate(), document);
-            ReplaceTag(businessEndDateTag, business.getFormattedStartDate().ToString(), document);
+            ReplaceTag(businessEndDateTag, business.getFormattedEndDate().ToString(), document);
+            InsertPicture(businessPictureTag, business._image, business._imageAspectRatio, business._imageTypes, document);
         }
 
 
@@ -174,7 +189,8 @@ namespace InsuranceSummaryMaker.ConvertToDoc
                 //Paragraph x = new Paragraph(new Run(table));
 
                 para.InsertAfterSelf(table);
-                para.InsertAfterSelf(carriers);
+                if (currentTable._carrierInformation != null && !currentTable._carrierInformation.Equals(""))
+                    para.InsertAfterSelf(carriers);
                 para.InsertAfterSelf(title);
 
                 if (index > 0)
@@ -193,7 +209,7 @@ namespace InsuranceSummaryMaker.ConvertToDoc
         {
             TableProperties prop = new TableProperties();
             prop.TableStyle = new TableStyle() { Val = "TableGrid" };
-            prop.TableWidth = new TableWidth() { Width = "70%", Type = TableWidthUnitValues.Pct };
+            prop.TableWidth = new TableWidth() { Width = "100%", Type = TableWidthUnitValues.Pct };
             prop.TableJustification = new TableJustification { Val = TableRowAlignmentValues.Center };
             prop.TableLayout = new TableLayout { Type = TableLayoutValues.Fixed };
 
@@ -287,6 +303,150 @@ namespace InsuranceSummaryMaker.ConvertToDoc
         }
         #endregion
 
+        #region image creation
+
+        public static void InsertPicture(string tag, byte[] image, float aspectRatio, imageTypes type, WordprocessingDocument document)
+        {
+
+
+            Drawing picture = createImageObject(document, image, type, aspectRatio);
+
+
+            ReplaceTagWithImage(tag, picture, document);
+
+        }
+        private static Drawing createImageObject(WordprocessingDocument document, byte[] image, imageTypes type, float aspectRatio)
+        {
+            ImagePart imagePart;
+            MainDocumentPart mainPart = document.MainDocumentPart;
+
+            if (type == imageTypes.PNG)
+            {
+                imagePart = mainPart.AddImagePart(ImagePartType.Png);
+            }
+            else
+            {
+                imagePart = mainPart.AddImagePart(ImagePartType.Jpeg);
+            }
+
+
+
+            using (MemoryStream stream = new MemoryStream(image))
+            {
+                imagePart.FeedData(stream);
+            }
+
+
+            uint max = GetMaxDocPropertyId(document); // gets the max id
+            int maxWidth = 300;
+            int maxHeight = 150;
+
+            int height;
+            int width;
+
+
+
+            // given the aspect ratio of the image calculate the size of the image that fits within the max sizes
+            if ((int)(maxWidth * (1/aspectRatio)) < maxHeight)//assume we are going to  use the width by default
+            {
+                width = maxWidth;
+                height = (int)(maxWidth * (1/aspectRatio));
+            }
+            else
+            {
+                height = maxHeight;
+                width = (int)(maxHeight * aspectRatio);
+            }
+
+            MessageBox.Show(width + " x " + height);
+            Drawing picture = createImageElement(mainPart.GetIdOfPart(imagePart), max + 1, max + 2, width, height);
+            return picture;
+        }
+        private static Drawing createImageElement(string relationshipId, uint guid1, uint guid2, int widthPx, int heightPx)
+        {
+
+            int conversionFactor = 9525;
+            // Define the reference of the image.
+            Drawing element =
+                 new Drawing(
+                     new DW.Inline(
+                         new DW.Extent() { Cx = widthPx * conversionFactor, Cy = heightPx * conversionFactor },
+                         new DW.EffectExtent()
+                         {
+                             LeftEdge = 0L,
+                             TopEdge = 0L,
+                             RightEdge = 0L,
+                             BottomEdge = 0L
+                         },
+                         new DW.DocProperties()
+                         {
+                             Id = guid1,
+                             Name = "Picture 1"
+                         },
+                         new DW.NonVisualGraphicFrameDrawingProperties(
+                             new A.GraphicFrameLocks() { NoChangeAspect = true }),
+                         new A.Graphic(
+                             new A.GraphicData(
+                                 new PIC.Picture(
+                                     new PIC.NonVisualPictureProperties(
+                                         new PIC.NonVisualDrawingProperties()
+                                         {
+                                             Id = guid2,
+                                             Name = "New Bitmap Image.jpg"
+                                         },
+                                         new PIC.NonVisualPictureDrawingProperties()),
+                                     new PIC.BlipFill(
+                                         new A.Blip(
+                                             new A.BlipExtensionList(
+                                                 new A.BlipExtension()
+                                                 {
+                                                     Uri =
+                                                        "{28A0092B-C50C-407E-A947-70E740481C1C}"
+                                                 })
+                                         )
+                                         {
+                                             Embed = relationshipId,
+                                             CompressionState =
+                                             A.BlipCompressionValues.Print
+                                         },
+                                         new A.Stretch(
+                                             new A.FillRectangle())),
+                                     new PIC.ShapeProperties(
+                                         new A.Transform2D(
+                                             new A.Offset() { X = 0L, Y = 0L },
+                                             new A.Extents() { Cx = widthPx * conversionFactor, Cy = heightPx * conversionFactor }),
+                                         new A.PresetGeometry(
+                                             new A.AdjustValueList()
+                                         )
+                                         { Preset = A.ShapeTypeValues.Rectangle }))
+                             )
+                             { Uri = "http://schemas.openxmlformats.org/drawingml/2006/picture" })
+                     )
+                     {
+                         DistanceFromTop = (UInt32Value)0U,
+                         DistanceFromBottom = (UInt32Value)0U,
+                         DistanceFromLeft = (UInt32Value)0U,
+                         DistanceFromRight = (UInt32Value)0U,
+                         EditId = "50D07946"
+                     });
+
+            // Append the reference to body, the element should be in a Run.
+            //wordDoc.MainDocumentPart.Document.Body.AppendChild(new Paragraph(new Run(element)));
+            return element;
+        }
+
+
+        private static uint GetMaxDocPropertyId(WordprocessingDocument doc)
+        {
+            return doc
+               .MainDocumentPart
+               .RootElement
+               .Descendants<DocProperties>()
+               .Max(x => (uint?)x.Id) ?? 0;
+        }
+
+        #endregion
+
         #region tag replacement
         // metthod to find a tag present in a document
         // method will return the paragraph or null if it could not find it.
@@ -305,6 +465,24 @@ namespace InsuranceSummaryMaker.ConvertToDoc
             }
 
             return null;
+        }
+
+        private static void ReplaceTagWithImage(string tag, Drawing picture, WordprocessingDocument document)
+        {
+            MainDocumentPart mainPart = document.MainDocumentPart;
+
+            foreach (Paragraph paragraph in mainPart.Document.Body.Descendants<Paragraph>())
+            {
+                Run runToReplace = FindRunWithTag(tag, paragraph);
+
+
+                if (runToReplace != null)
+                {
+                    // found the run that we need
+                    ReplaceRunWithImage(tag, picture, runToReplace);
+                }
+
+            }
         }
 
         // finds and replaces a tag within a word document
@@ -341,7 +519,7 @@ namespace InsuranceSummaryMaker.ConvertToDoc
             return null;
         }
 
-
+        
         // create and replace a tag with a run
         private static void ReplaceRunWithText(string tag, string replacementText, Run run)
         {
@@ -372,12 +550,31 @@ namespace InsuranceSummaryMaker.ConvertToDoc
             }
         }
 
+        private static void ReplaceRunWithImage(string tag, Drawing image, Run run)
+        {
+            /*           foreach (Paragraph paragraph in run.Descendants<Paragraph>())
+                       {
+                           if (paragraph.InnerText.Contains(tag))
+                           {
+
+
+
+                               paragraph.RemoveAllChildren<Run>();
+                               paragraph.Append(new Run(image));
+
+                           }
+
+
+                       }*/
+
+            run.RemoveAllChildren();
+            run.Append(image);
+        }
         // method to create a page break paragraph
         private static Paragraph CreatePageBreak()
         {
             return new Paragraph(new Run(new Break() { Type = BreakValues.Page }));
         }
-
 
         // creates a paragraph
         private static Paragraph CreateParagraph(string text)
