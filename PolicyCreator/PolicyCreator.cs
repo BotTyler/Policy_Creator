@@ -651,7 +651,7 @@ namespace InsuranceSummaryMaker
                 }
             }
         }
-
+        #region helper functions
         private void setDataGridColumns(List<DataGridViewColumn> columns)
         {
             this.TableDataGridView.Columns.Clear();
@@ -754,6 +754,136 @@ namespace InsuranceSummaryMaker
             deleteColumnFromTableListBox(columnIndex);
         }
 
+        private void swapRows(int tableIndex, int fromRow, int toRow, bool keyProvisions)
+        {
+            if (tableIndex < 0 || tableIndex >= this.tableInformationList.Count) { return; }
+            if (keyProvisions)
+            {
+                if (fromRow < 0 || fromRow >= this.tableInformationList[tableIndex]._keyProvisions.Count) { return; }
+                if (toRow < 0 || toRow >= this.tableInformationList[tableIndex]._keyProvisions.Count) { return; }
+            }
+            else
+            {
+                if (fromRow < 0 || fromRow >= this.tableInformationList[tableIndex]._rows.Count) { return; }
+                if (toRow < 0 || toRow >= this.tableInformationList[tableIndex]._rows.Count) { return; }
+            }
+
+            if (keyProvisions)
+            {
+                this.tableInformationList[tableIndex].swapKeyProvisionRow(fromRow, toRow);
+
+                int column = this.KeyProvisionsDataView.CurrentCell.ColumnIndex;
+                this.KeyProvisionsDataView.CurrentCell = this.KeyProvisionsDataView[column, toRow];
+            }
+            else
+            {
+                this.tableInformationList[tableIndex].swapRow(fromRow, toRow);
+
+                int column = this.TableDataGridView.CurrentCell.ColumnIndex;
+                this.TableDataGridView.CurrentCell = this.TableDataGridView[column, toRow];
+            }
+
+
+            // swap the columns in the object
+            /* this.tableInformationList[tableIndex].swapColumn(swapSelected, swapTo);
+
+
+             // swap in the panel list view
+             var item = this.ColumnsCreatePanelListView.Items[swapTo];
+             this.ColumnsCreatePanelListView.Items.RemoveAt(swapTo);
+             this.ColumnsCreatePanelListView.Items.Insert(swapSelected, item);*/
+
+
+        }
+        #endregion
+
+        #region keyProvisions
+        private void KeyProvisionsDataViewSelectorBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            // add all the columns and rowws to the data view
+            int currentIndex = this.KeyProvisionsDataViewSelectorBox.SelectedIndex;
+            if (currentIndex >= 0 && currentIndex < this.tableInformationList.Count)
+            {
+                CoverageInformation currentTable = this.tableInformationList[currentIndex];
+                setKeyProvisionsColumns(currentTable._keyProvisionColumns);
+                setKeyProvisionRows(currentTable._keyProvisions);
+            }
+        }
+
+        private void KeyProvisionsDataViewUp_Click(object sender, EventArgs e)
+        {
+            int currentIndex = this.KeyProvisionsDataViewSelectorBox.SelectedIndex;
+            if (currentIndex < 0 || currentIndex >= this.tableInformationList.Count)
+            {
+                MessageBox.Show("No table selected");
+                return;
+            }
+
+            int fromRow = this.KeyProvisionsDataView.SelectedCells[0].RowIndex;
+            int toRow = fromRow - 1;
+            swapRows(currentIndex, fromRow, toRow, true);
+        }
+
+        private void KeyProvisionsDataViewDown_Click(object sender, EventArgs e)
+        {
+            int currentIndex = this.KeyProvisionsDataViewSelectorBox.SelectedIndex;
+            if (currentIndex < 0 || currentIndex >= this.tableInformationList.Count)
+            {
+                MessageBox.Show("No table selected");
+            }
+
+            int fromRow = this.KeyProvisionsDataView.SelectedCells[0].RowIndex;
+            int toRow = fromRow + 1;
+            swapRows(currentIndex, fromRow, toRow, true);
+        }
+        #endregion
+
+        #region addons
+        private void AppendiciesUpButton_Click(object sender, EventArgs e)
+        {
+            int selectedIndex = this.appendiciesLabelBox.SelectedIndex;
+            int toIndex = selectedIndex - 1;
+            swapAppendicies(selectedIndex, toIndex);
+        }
+
+        private void AppendiciesDownButton_Click(object sender, EventArgs e)
+        {
+            int selectedIndex = this.appendiciesLabelBox.SelectedIndex;
+            int toIndex = selectedIndex + 1;
+            swapAppendicies(selectedIndex, toIndex);
+        }
+        #endregion
+
+        #region table Data
+
+        private void RowMoveUpButton_Click(object sender, EventArgs e)
+        {
+            int currentIndex = this.TableDataViewSelectorBox.SelectedIndex;
+            if (currentIndex < 0 || currentIndex >= this.tableInformationList.Count)
+            {
+                MessageBox.Show("No table selected");
+                return;
+            }
+
+            int fromRow = this.TableDataGridView.SelectedCells[0].RowIndex;
+            int toRow = fromRow - 1;
+            swapRows(currentIndex, fromRow, toRow, false);
+        }
+
+        private void RowMoveDownButton_Click(object sender, EventArgs e)
+        {
+
+            int currentIndex = this.TableDataViewSelectorBox.SelectedIndex;
+            if (currentIndex < 0 || currentIndex >= this.tableInformationList.Count)
+            {
+                MessageBox.Show("No table selected");
+            }
+
+            int fromRow = this.TableDataGridView.SelectedCells[0].RowIndex;
+            int toRow = fromRow + 1;
+            swapRows(currentIndex, fromRow, toRow, false);
+        }
+        #endregion
         #endregion
 
 
@@ -810,6 +940,23 @@ namespace InsuranceSummaryMaker
         {
             this.CarrierRichTextBox.Text = carrierInformation;
         }
+
+        private void swapAppendicies(int fromAppendiciesIndex, int toAppendiciesIndex)
+        {
+            if (fromAppendiciesIndex < 0 || fromAppendiciesIndex >= this.addons.Count) { return; }
+            if (toAppendiciesIndex < 0 || toAppendiciesIndex >= this.addons.Count) { return; }
+
+            //swap the addons in the list
+
+            AppendFile tempTable = this.addons[fromAppendiciesIndex];
+            this.addons[fromAppendiciesIndex] = this.addons[toAppendiciesIndex];
+            this.addons[toAppendiciesIndex] = tempTable;
+
+            //swap in the list View
+            var item = this.appendiciesLabelBox.Items[toAppendiciesIndex];
+            this.appendiciesLabelBox.Items.RemoveAt(toAppendiciesIndex);
+            this.appendiciesLabelBox.Items.Insert(fromAppendiciesIndex, item);
+        }
         #endregion
 
 
@@ -841,12 +988,6 @@ namespace InsuranceSummaryMaker
             }
         }
 
-
-
-
-
-
-
         private void PolicyCreator_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Control && e.KeyCode == Keys.S)
@@ -856,36 +997,9 @@ namespace InsuranceSummaryMaker
             }
         }
 
-        private void AppendiciesUpButton_Click(object sender, EventArgs e)
-        {
-            int selectedIndex = this.appendiciesLabelBox.SelectedIndex;
-            int toIndex = selectedIndex - 1;
-            swapAppendicies(selectedIndex, toIndex);
-        }
 
-        private void AppendiciesDownButton_Click(object sender, EventArgs e)
-        {
-            int selectedIndex = this.appendiciesLabelBox.SelectedIndex;
-            int toIndex = selectedIndex + 1;
-            swapAppendicies(selectedIndex, toIndex);
-        }
 
-        private void swapAppendicies(int fromAppendiciesIndex, int toAppendiciesIndex)
-        {
-            if (fromAppendiciesIndex < 0 || fromAppendiciesIndex >= this.addons.Count) { return; }
-            if (toAppendiciesIndex < 0 || toAppendiciesIndex >= this.addons.Count) { return; }
 
-            //swap the addons in the list
-
-            AppendFile tempTable = this.addons[fromAppendiciesIndex];
-            this.addons[fromAppendiciesIndex] = this.addons[toAppendiciesIndex];
-            this.addons[toAppendiciesIndex] = tempTable;
-
-            //swap in the list View
-            var item = this.appendiciesLabelBox.Items[toAppendiciesIndex];
-            this.appendiciesLabelBox.Items.RemoveAt(toAppendiciesIndex);
-            this.appendiciesLabelBox.Items.Insert(fromAppendiciesIndex, item);
-        }
 
         private void BrowseImageLocation_Click(object sender, EventArgs e)
         {
@@ -909,114 +1023,11 @@ namespace InsuranceSummaryMaker
             }
         }
 
-        private void RowMoveUpButton_Click(object sender, EventArgs e)
-        {
-            int currentIndex = this.TableDataViewSelectorBox.SelectedIndex;
-            if (currentIndex < 0 || currentIndex >= this.tableInformationList.Count)
-            {
-                MessageBox.Show("No table selected");
-                return;
-            }
+        
 
-            int fromRow = this.TableDataGridView.SelectedCells[0].RowIndex;
-            int toRow = fromRow - 1;
-            swapRows(currentIndex, fromRow, toRow, false);
-        }
-
-        private void RowMoveDownButton_Click(object sender, EventArgs e)
-        {
-
-            int currentIndex = this.TableDataViewSelectorBox.SelectedIndex;
-            if (currentIndex < 0 || currentIndex >= this.tableInformationList.Count)
-            {
-                MessageBox.Show("No table selected");
-            }
-
-            int fromRow = this.TableDataGridView.SelectedCells[0].RowIndex;
-            int toRow = fromRow + 1;
-            swapRows(currentIndex, fromRow, toRow, false);
-        }
-
-        private void swapRows(int tableIndex, int fromRow, int toRow, bool keyProvisions)
-        {
-            if (tableIndex < 0 || tableIndex >= this.tableInformationList.Count) { return; }
-            if (keyProvisions)
-            {
-                if (fromRow < 0 || fromRow >= this.tableInformationList[tableIndex]._keyProvisions.Count) { return; }
-                if (toRow < 0 || toRow >= this.tableInformationList[tableIndex]._keyProvisions.Count) { return; }
-            }
-            else
-            {
-                if (fromRow < 0 || fromRow >= this.tableInformationList[tableIndex]._rows.Count) { return; }
-                if (toRow < 0 || toRow >= this.tableInformationList[tableIndex]._rows.Count) { return; }
-            }
-
-            if (keyProvisions)
-            {
-                this.tableInformationList[tableIndex].swapKeyProvisionRow(fromRow, toRow);
-
-                int column = this.KeyProvisionsDataView.CurrentCell.ColumnIndex;
-                this.KeyProvisionsDataView.CurrentCell = this.KeyProvisionsDataView[column, toRow];
-            }
-            else
-            {
-                this.tableInformationList[tableIndex].swapRow(fromRow, toRow);
-
-                int column = this.TableDataGridView.CurrentCell.ColumnIndex;
-                this.TableDataGridView.CurrentCell = this.TableDataGridView[column, toRow];
-            }
+        
 
 
-            // swap the columns in the object
-            /* this.tableInformationList[tableIndex].swapColumn(swapSelected, swapTo);
-
-
-             // swap in the panel list view
-             var item = this.ColumnsCreatePanelListView.Items[swapTo];
-             this.ColumnsCreatePanelListView.Items.RemoveAt(swapTo);
-             this.ColumnsCreatePanelListView.Items.Insert(swapSelected, item);*/
-
-
-        }
-
-        private void KeyProvisionsDataViewSelectorBox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            // add all the columns and rowws to the data view
-            int currentIndex = this.KeyProvisionsDataViewSelectorBox.SelectedIndex;
-            if (currentIndex >= 0 && currentIndex < this.tableInformationList.Count)
-            {
-                CoverageInformation currentTable = this.tableInformationList[currentIndex];
-                setKeyProvisionsColumns(currentTable._keyProvisionColumns);
-                setKeyProvisionRows(currentTable._keyProvisions);
-            }
-        }
-
-        private void KeyProvisionsDataViewUp_Click(object sender, EventArgs e)
-        {
-            int currentIndex = this.KeyProvisionsDataViewSelectorBox.SelectedIndex;
-            if (currentIndex < 0 || currentIndex >= this.tableInformationList.Count)
-            {
-                MessageBox.Show("No table selected");
-                return;
-            }
-
-            int fromRow = this.KeyProvisionsDataView.SelectedCells[0].RowIndex;
-            int toRow = fromRow - 1;
-            swapRows(currentIndex, fromRow, toRow, true);
-        }
-
-        private void KeyProvisionsDataViewDown_Click(object sender, EventArgs e)
-        {
-            int currentIndex = this.KeyProvisionsDataViewSelectorBox.SelectedIndex;
-            if (currentIndex < 0 || currentIndex >= this.tableInformationList.Count)
-            {
-                MessageBox.Show("No table selected");
-            }
-
-            int fromRow = this.KeyProvisionsDataView.SelectedCells[0].RowIndex;
-            int toRow = fromRow + 1;
-            swapRows(currentIndex, fromRow, toRow, true);
-        }
 
 
     }
