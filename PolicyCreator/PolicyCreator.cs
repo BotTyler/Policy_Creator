@@ -513,6 +513,11 @@ namespace InsuranceSummaryMaker
             var comboItem = this.TableDataViewSelectorBox.Items[toTableIndex];
             this.TableDataViewSelectorBox.Items.RemoveAt(toTableIndex);
             this.TableDataViewSelectorBox.Items.Insert(fromTableIndex, item);
+
+            // swap on the data grid view combo box
+            comboItem = this.KeyProvisionsDataViewSelectorBox.Items[toTableIndex];
+            this.KeyProvisionsDataViewSelectorBox.Items.RemoveAt(toTableIndex);
+            this.KeyProvisionsDataViewSelectorBox.Items.Insert(fromTableIndex, item);
         }
 
         private void upTableCreateButton_Click(object sender, EventArgs e)
@@ -817,7 +822,8 @@ namespace InsuranceSummaryMaker
 
         private void PolicyCreator_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (MessageBox.Show("Do you want to save?", "Save?", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            DialogResult mb = MessageBox.Show("Do you want to save?", "Save?", MessageBoxButtons.YesNoCancel);
+            if (mb == DialogResult.Yes)
             {
                 // we know the file we are saving to and do not need to ask for a file
                 if (checkIfFileCanBeSavedTo(this.openedPath))
@@ -829,6 +835,9 @@ namespace InsuranceSummaryMaker
                     // We can't find a file to save to run the saveAs();
                     saveAsToolStripMenuItem_Click(sender, e);
                 }
+            }else if(mb == DialogResult.Cancel)
+            {
+                e.Cancel = true;
             }
         }
 
@@ -911,11 +920,12 @@ namespace InsuranceSummaryMaker
 
             int fromRow = this.TableDataGridView.SelectedCells[0].RowIndex;
             int toRow = fromRow - 1;
-            swapRows(currentIndex, fromRow, toRow);
+            swapRows(currentIndex, fromRow, toRow, false);
         }
 
         private void RowMoveDownButton_Click(object sender, EventArgs e)
         {
+
             int currentIndex = this.TableDataViewSelectorBox.SelectedIndex;
             if (currentIndex < 0 || currentIndex >= this.tableInformationList.Count)
             {
@@ -924,19 +934,38 @@ namespace InsuranceSummaryMaker
 
             int fromRow = this.TableDataGridView.SelectedCells[0].RowIndex;
             int toRow = fromRow + 1;
-            swapRows(currentIndex, fromRow, toRow);
+            swapRows(currentIndex, fromRow, toRow, false);
         }
 
-        private void swapRows(int tableIndex, int fromRow, int toRow)
+        private void swapRows(int tableIndex, int fromRow, int toRow, bool keyProvisions)
         {
             if (tableIndex < 0 || tableIndex >= this.tableInformationList.Count) { return; }
-            if (fromRow < 0 || fromRow >= this.tableInformationList[tableIndex]._rows.Count) { return; }
-            if (toRow < 0 || toRow >= this.tableInformationList[tableIndex]._rows.Count) { return; }
+            if (keyProvisions)
+            {
+                if (fromRow < 0 || fromRow >= this.tableInformationList[tableIndex]._keyProvisions.Count) { return; }
+                if (toRow < 0 || toRow >= this.tableInformationList[tableIndex]._keyProvisions.Count) { return; }
+            }
+            else
+            {
+                if (fromRow < 0 || fromRow >= this.tableInformationList[tableIndex]._rows.Count) { return; }
+                if (toRow < 0 || toRow >= this.tableInformationList[tableIndex]._rows.Count) { return; }
+            }
 
-            this.tableInformationList[tableIndex].swapRow(fromRow, toRow);
+            if (keyProvisions)
+            {
+                this.tableInformationList[tableIndex].swapKeyProvisionRow(fromRow, toRow);
 
-            int column = this.TableDataGridView.CurrentCell.ColumnIndex;
-            this.TableDataGridView.CurrentCell = this.TableDataGridView[column, toRow];
+                int column = this.KeyProvisionsDataView.CurrentCell.ColumnIndex;
+                this.KeyProvisionsDataView.CurrentCell = this.KeyProvisionsDataView[column, toRow];
+            }
+            else
+            {
+                this.tableInformationList[tableIndex].swapRow(fromRow, toRow);
+
+                int column = this.TableDataGridView.CurrentCell.ColumnIndex;
+                this.TableDataGridView.CurrentCell = this.TableDataGridView[column, toRow];
+            }
+
 
             // swap the columns in the object
             /* this.tableInformationList[tableIndex].swapColumn(swapSelected, swapTo);
@@ -964,12 +993,29 @@ namespace InsuranceSummaryMaker
 
         private void KeyProvisionsDataViewUp_Click(object sender, EventArgs e)
         {
+            int currentIndex = this.KeyProvisionsDataViewSelectorBox.SelectedIndex;
+            if (currentIndex < 0 || currentIndex >= this.tableInformationList.Count)
+            {
+                MessageBox.Show("No table selected");
+                return;
+            }
 
+            int fromRow = this.KeyProvisionsDataView.SelectedCells[0].RowIndex;
+            int toRow = fromRow - 1;
+            swapRows(currentIndex, fromRow, toRow, true);
         }
 
         private void KeyProvisionsDataViewDown_Click(object sender, EventArgs e)
         {
+            int currentIndex = this.KeyProvisionsDataViewSelectorBox.SelectedIndex;
+            if (currentIndex < 0 || currentIndex >= this.tableInformationList.Count)
+            {
+                MessageBox.Show("No table selected");
+            }
 
+            int fromRow = this.KeyProvisionsDataView.SelectedCells[0].RowIndex;
+            int toRow = fromRow + 1;
+            swapRows(currentIndex, fromRow, toRow, true);
         }
 
 

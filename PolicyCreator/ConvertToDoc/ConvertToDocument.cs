@@ -171,6 +171,9 @@ namespace InsuranceSummaryMaker.ConvertToDoc
             {
                 CreateAllTables(tableList, paragraph);
             }
+            replaceTagWithElement(startTables, new Text(""), mainPart);
+
+
 
         }
 
@@ -184,7 +187,7 @@ namespace InsuranceSummaryMaker.ConvertToDoc
             }
 
             List<Paragraph> paragraphs = findLowestParagraphsWithTag(startAdds, mainPart);
-
+            
 
             foreach (Paragraph paragraph in paragraphs)
             {
@@ -213,6 +216,9 @@ namespace InsuranceSummaryMaker.ConvertToDoc
 
                 }
             }
+
+            replaceTagWithElement(startAdds, new Text(""), mainPart);
+
 
         }
 
@@ -450,7 +456,7 @@ namespace InsuranceSummaryMaker.ConvertToDoc
 
 
             TableRow row = new TableRow();
-            row.Append(CreateCell(text, 1, true, false));
+            row.Append(CreateCell(text, 1, true, false, false));
 
             table.Append(row);
 
@@ -604,7 +610,7 @@ namespace InsuranceSummaryMaker.ConvertToDoc
         #region tables
         private static void CreateAllTables(List<CoverageInformation> tableList, Paragraph para)
         {
-
+            Paragraph lastPageBreak = null;
 
             for (int index = tableList.Count - 1; index >= 0; index--)
             {
@@ -614,8 +620,16 @@ namespace InsuranceSummaryMaker.ConvertToDoc
                 List<DataGridViewRow> rows = currentTable._rows;
                 List<DataGridViewRow> keyProvisions = currentTable._keyProvisions;
 
-                if ((columns == null || rows == null) || columns.Count <= 0 || rows.Count <= 0)
+                if (columns == null || rows == null || keyProvisions == null || (columns.Count <= 0 && rows.Count <= 0 && keyProvisions.Count <= 0))
                 {
+                    if(index == 0)
+                    {
+                        //we are at the last index
+                        if(lastPageBreak != null)
+                        {
+                            lastPageBreak.Remove();
+                        }
+                    }
                     continue;
                 }
                 Paragraph title = CreateParagraph(currentTable._tableName);
@@ -632,6 +646,7 @@ namespace InsuranceSummaryMaker.ConvertToDoc
                 if (index > 0)
                 {
                     Paragraph pageBreak = CreatePageBreak();
+                    lastPageBreak = pageBreak;
                     para.InsertAfterSelf(pageBreak);
                 }
 
@@ -689,7 +704,7 @@ namespace InsuranceSummaryMaker.ConvertToDoc
             foreach (DataGridViewColumn column in input)
             {
                 string columnName = column.Name;
-                row.Append(CreateCell(columnName, 1, true, true));
+                row.Append(CreateCell(columnName, 1, true, true, false));
             }
 
             return row;
@@ -713,7 +728,7 @@ namespace InsuranceSummaryMaker.ConvertToDoc
 
 
 
-                row.Append(CreateCell(cellValue, 1, false, false));
+                row.Append(CreateCell(cellValue, 1, false, false, false));
             }
 
             return row;
@@ -721,7 +736,7 @@ namespace InsuranceSummaryMaker.ConvertToDoc
         private static TableRow CreateMergeRow(string text, int columnWidth)
         {
             TableRow row = new TableRow();
-            row.Append(CreateCell(text ?? "", columnWidth, true, true));
+            row.Append(CreateCell(text ?? "", columnWidth, true, true, true));
 
 
             return row;
@@ -729,12 +744,41 @@ namespace InsuranceSummaryMaker.ConvertToDoc
 
 
         // method to create a cell in a table
-        private static TableCell CreateCell(string text, int columnWidth, bool wantSpacing, bool bold)
+        private static TableCell CreateCell(string text, int columnWidth, bool wantCenter, bool bold, bool isKeyProvision)
         {
             TableCell cell = new TableCell();
+            TableCellProperties tcprop = new TableCellProperties();
+
+            TableCellWidth cellWidth = new TableCellWidth() { Type = TableWidthUnitValues.Auto };
+            tcprop.Append(cellWidth);
+            if (isKeyProvision)
+            {
+                //TableCellProperties tcprop = new TableCellProperties();
+
+                Shading shading = new Shading()
+                {
+                    Val = ShadingPatternValues.Clear,
+                    Color = "auto", // You can specify a color here, e.g., "auto", "FF0000" (hex color code), etc.
+                    Fill = "lightBlue", // Use the color name or a known color value
+                };
+
+                TableCellMargin cellMargin = new TableCellMargin()
+                {
+                    TopMargin = new TopMargin() { Width = "100", Type = TableWidthUnitValues.Dxa },
+                    BottomMargin = new BottomMargin() { Width = "100", Type = TableWidthUnitValues.Dxa },
+                };
+
+                tcprop.Shading = shading;
+                tcprop.TableCellMargin = cellMargin;
+
+                //tcprop.tablec
+                //cell.Append(tcprop);
+            }
+            cell.Append(tcprop);
+
             Paragraph p = new Paragraph();
             ParagraphProperties pProps = new ParagraphProperties();
-            if (wantSpacing)
+            if (wantCenter)
             {
                 pProps.Append(new Justification { Val = JustificationValues.Center });
             }
@@ -747,17 +791,18 @@ namespace InsuranceSummaryMaker.ConvertToDoc
             for (int index = 0; index < split.Length; index++)
             {
                 string current = split[index];
+                Run run = new Run();
 
-                Run run = new Run(new Text(current));
+
                 if (bold)
                 {
-                    MessageBox.Show("BOLD");
                     RunProperties runProp = new RunProperties();
-                    runProp.Append(new Bold());
+                    runProp.AppendChild(new Bold());
                     run.RunProperties = runProp;
                 }
 
-
+                Text insertText = new Text(current);
+                run.AppendChild(insertText);
 
 
                 if (index < split.Length - 1)

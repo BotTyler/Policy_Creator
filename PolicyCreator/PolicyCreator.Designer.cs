@@ -33,8 +33,8 @@ namespace InsuranceSummaryMaker
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PolicyCreator));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.BuisnessInformationTab = new System.Windows.Forms.TabPage();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
@@ -427,8 +427,8 @@ namespace InsuranceSummaryMaker
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.BrowseImageLocation);
-            this.splitContainer1.Size = new System.Drawing.Size(472, 40);
-            this.splitContainer1.SplitterDistance = 420;
+            this.splitContainer1.Size = new System.Drawing.Size(465, 40);
+            this.splitContainer1.SplitterDistance = 421;
             this.splitContainer1.TabIndex = 13;
             // 
             // label1
@@ -436,7 +436,7 @@ namespace InsuranceSummaryMaker
             this.label1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label1.Location = new System.Drawing.Point(0, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(420, 40);
+            this.label1.Size = new System.Drawing.Size(421, 40);
             this.label1.TabIndex = 0;
             this.label1.Text = "Image:";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -446,11 +446,12 @@ namespace InsuranceSummaryMaker
             this.BrowseImageLocation.AutoSize = true;
             this.BrowseImageLocation.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("BrowseImageLocation.BackgroundImage")));
             this.BrowseImageLocation.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.BrowseImageLocation.Location = new System.Drawing.Point(2, 4);
+            this.BrowseImageLocation.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.BrowseImageLocation.Location = new System.Drawing.Point(0, 0);
             this.BrowseImageLocation.Margin = new System.Windows.Forms.Padding(2);
             this.BrowseImageLocation.Name = "BrowseImageLocation";
             this.BrowseImageLocation.Padding = new System.Windows.Forms.Padding(5);
-            this.BrowseImageLocation.Size = new System.Drawing.Size(44, 34);
+            this.BrowseImageLocation.Size = new System.Drawing.Size(40, 40);
             this.BrowseImageLocation.TabIndex = 13;
             this.BrowseImageLocation.UseVisualStyleBackColor = true;
             this.BrowseImageLocation.Click += new System.EventHandler(this.BrowseImageLocation_Click);
@@ -463,7 +464,7 @@ namespace InsuranceSummaryMaker
             this.businessPictureBox.BackColor = System.Drawing.Color.DimGray;
             this.businessPictureBox.Location = new System.Drawing.Point(3, 240);
             this.businessPictureBox.Name = "businessPictureBox";
-            this.businessPictureBox.Size = new System.Drawing.Size(476, 142);
+            this.businessPictureBox.Size = new System.Drawing.Size(478, 142);
             this.businessPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.businessPictureBox.TabIndex = 14;
             this.businessPictureBox.TabStop = false;
@@ -476,7 +477,7 @@ namespace InsuranceSummaryMaker
             this.BusinessEndDate.Location = new System.Drawing.Point(130, 143);
             this.BusinessEndDate.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.BusinessEndDate.Name = "BusinessEndDate";
-            this.BusinessEndDate.Size = new System.Drawing.Size(336, 26);
+            this.BusinessEndDate.Size = new System.Drawing.Size(338, 26);
             this.BusinessEndDate.TabIndex = 11;
             // 
             // BusinessStartDate
@@ -487,7 +488,7 @@ namespace InsuranceSummaryMaker
             this.BusinessStartDate.Location = new System.Drawing.Point(130, 106);
             this.BusinessStartDate.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.BusinessStartDate.Name = "BusinessStartDate";
-            this.BusinessStartDate.Size = new System.Drawing.Size(336, 26);
+            this.BusinessStartDate.Size = new System.Drawing.Size(338, 26);
             this.BusinessStartDate.TabIndex = 10;
             // 
             // label14
@@ -523,7 +524,7 @@ namespace InsuranceSummaryMaker
             this.BusinessLegalNameTextBox.Location = new System.Drawing.Point(130, 69);
             this.BusinessLegalNameTextBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.BusinessLegalNameTextBox.Name = "BusinessLegalNameTextBox";
-            this.BusinessLegalNameTextBox.Size = new System.Drawing.Size(336, 26);
+            this.BusinessLegalNameTextBox.Size = new System.Drawing.Size(338, 26);
             this.BusinessLegalNameTextBox.TabIndex = 6;
             // 
             // label12
@@ -546,7 +547,7 @@ namespace InsuranceSummaryMaker
             this.BuisnessNameTextBox.Location = new System.Drawing.Point(130, 35);
             this.BuisnessNameTextBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.BuisnessNameTextBox.Name = "BuisnessNameTextBox";
-            this.BuisnessNameTextBox.Size = new System.Drawing.Size(336, 26);
+            this.BuisnessNameTextBox.Size = new System.Drawing.Size(338, 26);
             this.BuisnessNameTextBox.TabIndex = 4;
             // 
             // label11
@@ -704,7 +705,7 @@ namespace InsuranceSummaryMaker
             this.TableCreatePanelListBox.ItemHeight = 18;
             this.TableCreatePanelListBox.Location = new System.Drawing.Point(3, 21);
             this.TableCreatePanelListBox.Name = "TableCreatePanelListBox";
-            this.TableCreatePanelListBox.Size = new System.Drawing.Size(300, 220);
+            this.TableCreatePanelListBox.Size = new System.Drawing.Size(300, 310);
             this.TableCreatePanelListBox.TabIndex = 1;
             this.TableCreatePanelListBox.SelectedIndexChanged += new System.EventHandler(this.TableCreatePanelListBox_SelectedValueChanged);
             // 
@@ -748,7 +749,7 @@ namespace InsuranceSummaryMaker
             this.ColumnsCreatePanelListView.ItemHeight = 18;
             this.ColumnsCreatePanelListView.Location = new System.Drawing.Point(1, 21);
             this.ColumnsCreatePanelListView.Name = "ColumnsCreatePanelListView";
-            this.ColumnsCreatePanelListView.Size = new System.Drawing.Size(301, 220);
+            this.ColumnsCreatePanelListView.Size = new System.Drawing.Size(301, 310);
             this.ColumnsCreatePanelListView.TabIndex = 1;
             // 
             // flowLayoutPanel2
@@ -837,7 +838,7 @@ namespace InsuranceSummaryMaker
             this.groupBox6.Controls.Add(this.CarrierRichTextBox);
             this.groupBox6.Location = new System.Drawing.Point(0, 0);
             this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(298, 348);
+            this.groupBox6.Size = new System.Drawing.Size(278, 381);
             this.groupBox6.TabIndex = 0;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "Carrier Information";
@@ -847,7 +848,7 @@ namespace InsuranceSummaryMaker
             this.CarrierRichTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.CarrierRichTextBox.Location = new System.Drawing.Point(3, 22);
             this.CarrierRichTextBox.Name = "CarrierRichTextBox";
-            this.CarrierRichTextBox.Size = new System.Drawing.Size(292, 323);
+            this.CarrierRichTextBox.Size = new System.Drawing.Size(272, 356);
             this.CarrierRichTextBox.TabIndex = 0;
             this.CarrierRichTextBox.Text = "";
             this.CarrierRichTextBox.Validated += new System.EventHandler(this.CarrierRichTextBox_Validated);
@@ -969,7 +970,7 @@ namespace InsuranceSummaryMaker
             this.TableDataViewSelectorBox.FormattingEnabled = true;
             this.TableDataViewSelectorBox.Location = new System.Drawing.Point(2, 11);
             this.TableDataViewSelectorBox.Name = "TableDataViewSelectorBox";
-            this.TableDataViewSelectorBox.Size = new System.Drawing.Size(300, 26);
+            this.TableDataViewSelectorBox.Size = new System.Drawing.Size(296, 26);
             this.TableDataViewSelectorBox.TabIndex = 0;
             this.TableDataViewSelectorBox.SelectedIndexChanged += new System.EventHandler(this.TableDataViewSelectorBox_SelectedIndexChanged);
             // 
@@ -979,14 +980,14 @@ namespace InsuranceSummaryMaker
             this.TableDataGridView.AllowUserToOrderColumns = true;
             this.TableDataGridView.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.TableDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Arial", 12F);
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.TableDataGridView.DefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Arial", 12F);
+            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.TableDataGridView.DefaultCellStyle = dataGridViewCellStyle5;
             this.TableDataGridView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.TableDataGridView.Location = new System.Drawing.Point(0, 0);
             this.TableDataGridView.MultiSelect = false;
@@ -1003,7 +1004,6 @@ namespace InsuranceSummaryMaker
             this.keyprovisions.Controls.Add(this.splitContainer3);
             this.keyprovisions.Location = new System.Drawing.Point(4, 39);
             this.keyprovisions.Name = "keyprovisions";
-            this.keyprovisions.Padding = new System.Windows.Forms.Padding(3);
             this.keyprovisions.Size = new System.Drawing.Size(906, 390);
             this.keyprovisions.TabIndex = 6;
             this.keyprovisions.Tag = "keyProvisions";
@@ -1015,7 +1015,7 @@ namespace InsuranceSummaryMaker
             this.splitContainer3.BackColor = System.Drawing.Color.LightGray;
             this.splitContainer3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainer3.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
-            this.splitContainer3.Location = new System.Drawing.Point(3, 3);
+            this.splitContainer3.Location = new System.Drawing.Point(0, 0);
             this.splitContainer3.Name = "splitContainer3";
             this.splitContainer3.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
@@ -1027,7 +1027,7 @@ namespace InsuranceSummaryMaker
             // splitContainer3.Panel2
             // 
             this.splitContainer3.Panel2.Controls.Add(this.KeyProvisionsDataView);
-            this.splitContainer3.Size = new System.Drawing.Size(900, 384);
+            this.splitContainer3.Size = new System.Drawing.Size(906, 390);
             this.splitContainer3.SplitterDistance = 58;
             this.splitContainer3.SplitterWidth = 3;
             this.splitContainer3.TabIndex = 1;
@@ -1038,7 +1038,7 @@ namespace InsuranceSummaryMaker
             this.flowLayoutPanel8.AutoSize = true;
             this.flowLayoutPanel8.Controls.Add(this.KeyProvisionsDataViewUp);
             this.flowLayoutPanel8.Controls.Add(this.KeyProvisionsDataViewDown);
-            this.flowLayoutPanel8.Location = new System.Drawing.Point(783, 5);
+            this.flowLayoutPanel8.Location = new System.Drawing.Point(789, 5);
             this.flowLayoutPanel8.Name = "flowLayoutPanel8";
             this.flowLayoutPanel8.Size = new System.Drawing.Size(109, 50);
             this.flowLayoutPanel8.TabIndex = 2;
@@ -1073,9 +1073,9 @@ namespace InsuranceSummaryMaker
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panel2.Controls.Add(this.splitContainer4);
-            this.panel2.Location = new System.Drawing.Point(234, 0);
+            this.panel2.Location = new System.Drawing.Point(158, 0);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(392, 57);
+            this.panel2.Size = new System.Drawing.Size(474, 57);
             this.panel2.TabIndex = 0;
             // 
             // splitContainer4
@@ -1092,8 +1092,8 @@ namespace InsuranceSummaryMaker
             // splitContainer4.Panel2
             // 
             this.splitContainer4.Panel2.Controls.Add(this.KeyProvisionsDataViewSelectorBox);
-            this.splitContainer4.Size = new System.Drawing.Size(392, 57);
-            this.splitContainer4.SplitterDistance = 95;
+            this.splitContainer4.Size = new System.Drawing.Size(474, 57);
+            this.splitContainer4.SplitterDistance = 171;
             this.splitContainer4.SplitterWidth = 3;
             this.splitContainer4.TabIndex = 0;
             // 
@@ -1102,9 +1102,9 @@ namespace InsuranceSummaryMaker
             this.label3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label3.Location = new System.Drawing.Point(0, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(95, 57);
+            this.label3.Size = new System.Drawing.Size(171, 57);
             this.label3.TabIndex = 0;
-            this.label3.Text = "Table: ";
+            this.label3.Text = "Key Provision Table:";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // KeyProvisionsDataViewSelectorBox
@@ -1116,7 +1116,7 @@ namespace InsuranceSummaryMaker
             this.KeyProvisionsDataViewSelectorBox.FormattingEnabled = true;
             this.KeyProvisionsDataViewSelectorBox.Location = new System.Drawing.Point(2, 11);
             this.KeyProvisionsDataViewSelectorBox.Name = "KeyProvisionsDataViewSelectorBox";
-            this.KeyProvisionsDataViewSelectorBox.Size = new System.Drawing.Size(295, 26);
+            this.KeyProvisionsDataViewSelectorBox.Size = new System.Drawing.Size(296, 26);
             this.KeyProvisionsDataViewSelectorBox.TabIndex = 0;
             this.KeyProvisionsDataViewSelectorBox.SelectedIndexChanged += new System.EventHandler(this.KeyProvisionsDataViewSelectorBox_SelectedIndexChanged);
             // 
@@ -1126,14 +1126,14 @@ namespace InsuranceSummaryMaker
             this.KeyProvisionsDataView.AllowUserToOrderColumns = true;
             this.KeyProvisionsDataView.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.KeyProvisionsDataView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Arial", 12F);
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.KeyProvisionsDataView.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("Arial", 12F);
+            dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.KeyProvisionsDataView.DefaultCellStyle = dataGridViewCellStyle6;
             this.KeyProvisionsDataView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.KeyProvisionsDataView.Location = new System.Drawing.Point(0, 0);
             this.KeyProvisionsDataView.MultiSelect = false;
@@ -1141,7 +1141,7 @@ namespace InsuranceSummaryMaker
             this.KeyProvisionsDataView.RowHeadersWidth = 51;
             this.KeyProvisionsDataView.RowTemplate.Height = 50;
             this.KeyProvisionsDataView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.KeyProvisionsDataView.Size = new System.Drawing.Size(900, 323);
+            this.KeyProvisionsDataView.Size = new System.Drawing.Size(906, 329);
             this.KeyProvisionsDataView.TabIndex = 1;
             this.KeyProvisionsDataView.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.KeyProvisionsDataView_CellEndEdit);
             // 
@@ -1267,12 +1267,7 @@ namespace InsuranceSummaryMaker
             // 
             // openWordDocumentFileDialog
             // 
-            this.openWordDocumentFileDialog.FileName = "document.docx";
             this.openWordDocumentFileDialog.Filter = "Word Documents|*.doc;*.docx";
-            // 
-            // openMyFileDialog
-            // 
-            this.openMyFileDialog.FileName = "openFileDialog2";
             // 
             // menuStrip1
             // 
@@ -1335,7 +1330,6 @@ namespace InsuranceSummaryMaker
             // 
             // openImageDialog
             // 
-            this.openImageDialog.FileName = "openFileDialog2";
             this.openImageDialog.Filter = "Image Files(*.jpg; *.jpeg; *.png)|*.jpg; *.jpeg; *.png;";
             // 
             // PolicyCreator

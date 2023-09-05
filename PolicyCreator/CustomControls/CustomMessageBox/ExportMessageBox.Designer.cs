@@ -34,6 +34,9 @@ namespace InsuranceSummaryMaker.CustomControls.CustomMessageBox
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ExportMessageBox));
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.BrowseSaveLocation = new System.Windows.Forms.Button();
+            this.label2 = new System.Windows.Forms.Label();
+            this.saveProposalToTextBox = new System.Windows.Forms.TextBox();
             this.BroseFileTemplateButton = new System.Windows.Forms.Button();
             this.messageLabel = new System.Windows.Forms.Label();
             this.textTextBox = new System.Windows.Forms.TextBox();
@@ -42,9 +45,6 @@ namespace InsuranceSummaryMaker.CustomControls.CustomMessageBox
             this.CancelButton = new System.Windows.Forms.Button();
             this.BrowseTemplateDialog = new System.Windows.Forms.OpenFileDialog();
             this.SaveWordDocumentDIalog = new System.Windows.Forms.SaveFileDialog();
-            this.BrowseSaveLocation = new System.Windows.Forms.Button();
-            this.label2 = new System.Windows.Forms.Label();
-            this.saveProposalToTextBox = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -77,6 +77,44 @@ namespace InsuranceSummaryMaker.CustomControls.CustomMessageBox
             this.splitContainer1.Size = new System.Drawing.Size(445, 211);
             this.splitContainer1.SplitterDistance = 157;
             this.splitContainer1.TabIndex = 0;
+            // 
+            // BrowseSaveLocation
+            // 
+            this.BrowseSaveLocation.AutoSize = true;
+            this.BrowseSaveLocation.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("BrowseSaveLocation.BackgroundImage")));
+            this.BrowseSaveLocation.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.BrowseSaveLocation.Location = new System.Drawing.Point(400, 105);
+            this.BrowseSaveLocation.Margin = new System.Windows.Forms.Padding(2);
+            this.BrowseSaveLocation.Name = "BrowseSaveLocation";
+            this.BrowseSaveLocation.Padding = new System.Windows.Forms.Padding(5);
+            this.BrowseSaveLocation.Size = new System.Drawing.Size(34, 34);
+            this.BrowseSaveLocation.TabIndex = 5;
+            this.BrowseSaveLocation.UseVisualStyleBackColor = true;
+            this.BrowseSaveLocation.Click += new System.EventHandler(this.BrowseSaveLocation_Click);
+            // 
+            // label2
+            // 
+            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.label2.Location = new System.Drawing.Point(5, 82);
+            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(437, 24);
+            this.label2.TabIndex = 4;
+            this.label2.Text = "Save Proposal To:";
+            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // saveProposalToTextBox
+            // 
+            this.saveProposalToTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.saveProposalToTextBox.Location = new System.Drawing.Point(5, 110);
+            this.saveProposalToTextBox.Margin = new System.Windows.Forms.Padding(4);
+            this.saveProposalToTextBox.Name = "saveProposalToTextBox";
+            this.saveProposalToTextBox.ReadOnly = true;
+            this.saveProposalToTextBox.Size = new System.Drawing.Size(390, 26);
+            this.saveProposalToTextBox.TabIndex = 3;
             // 
             // BroseFileTemplateButton
             // 
@@ -155,50 +193,11 @@ namespace InsuranceSummaryMaker.CustomControls.CustomMessageBox
             // 
             // BrowseTemplateDialog
             // 
-            this.BrowseTemplateDialog.FileName = "openFileDialog1";
             this.BrowseTemplateDialog.Filter = "Word Documents|*.doc;*.docx";
             // 
             // SaveWordDocumentDIalog
             // 
             this.SaveWordDocumentDIalog.Filter = "Word Documents|*.docx";
-            // 
-            // BrowseSaveLocation
-            // 
-            this.BrowseSaveLocation.AutoSize = true;
-            this.BrowseSaveLocation.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("BrowseSaveLocation.BackgroundImage")));
-            this.BrowseSaveLocation.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.BrowseSaveLocation.Location = new System.Drawing.Point(400, 105);
-            this.BrowseSaveLocation.Margin = new System.Windows.Forms.Padding(2);
-            this.BrowseSaveLocation.Name = "BrowseSaveLocation";
-            this.BrowseSaveLocation.Padding = new System.Windows.Forms.Padding(5);
-            this.BrowseSaveLocation.Size = new System.Drawing.Size(34, 34);
-            this.BrowseSaveLocation.TabIndex = 5;
-            this.BrowseSaveLocation.UseVisualStyleBackColor = true;
-            this.BrowseSaveLocation.Click += new System.EventHandler(this.BrowseSaveLocation_Click);
-            // 
-            // label2
-            // 
-            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label2.Location = new System.Drawing.Point(5, 82);
-            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(437, 24);
-            this.label2.TabIndex = 4;
-            this.label2.Text = "Save Proposal To:";
-            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // saveProposalToTextBox
-            // 
-            this.saveProposalToTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.saveProposalToTextBox.Location = new System.Drawing.Point(5, 110);
-            this.saveProposalToTextBox.Margin = new System.Windows.Forms.Padding(4);
-            this.saveProposalToTextBox.Name = "saveProposalToTextBox";
-            this.saveProposalToTextBox.ReadOnly = true;
-            this.saveProposalToTextBox.Size = new System.Drawing.Size(390, 26);
-            this.saveProposalToTextBox.TabIndex = 3;
             // 
             // ExportMessageBox
             // 

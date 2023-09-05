@@ -112,10 +112,6 @@ namespace InsuranceSummaryMaker.CustomControls.CustomMessageBox
             this.NewButton.UseVisualStyleBackColor = true;
             this.NewButton.Click += new System.EventHandler(this.NewButton_Click);
             // 
-            // openFileDialog1
-            // 
-            this.openFileDialog1.FileName = "openFileDialog1";
-            // 
             // NewOpenMessageBox
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
