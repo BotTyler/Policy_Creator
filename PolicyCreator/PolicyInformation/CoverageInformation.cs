@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using DocumentFormat.OpenXml.Office2016.Excel;
+using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
@@ -13,10 +14,17 @@ namespace InsuranceSummaryMaker.PolicyInformation
         public List<DataGridViewColumn> _columns { get; }
         public List<DataGridViewRow> _rows { get; }
 
+        public List<DataGridViewColumn> _keyProvisionColumns { get; }
+        public List<DataGridViewRow> _keyProvisions { get; }
+
         public CoverageInformation(string tableName)
         {
             this._columns = new List<DataGridViewColumn>();
             this._rows = new List<DataGridViewRow>();
+
+            this._keyProvisionColumns = new List<DataGridViewColumn>();
+            this._keyProvisions = new List<DataGridViewRow>();
+
             this._tableName = tableName;
             this._carrierInformation = "";
         }
@@ -27,13 +35,20 @@ namespace InsuranceSummaryMaker.PolicyInformation
             this._tableName = json["_tableName"] + "";
             this._carrierInformation = json["_carrierInformation"] + "";
             this._columns = new List<DataGridViewColumn>();
+
+
             this._rows = new List<DataGridViewRow>();
+            this._columns = new List<DataGridViewColumn>();
+
+
+            this._keyProvisionColumns = new List<DataGridViewColumn>();
+            this._keyProvisions = new List<DataGridViewRow>();
 
             // sort out the jarray column names
             extractColumnNamesFromJson((JArray)json["_columns"]);
 
             // sort out the jarray rows
-            extractRowNamesFromJson((JArray)json["_rows"]);
+            extractRowNamesFromJson((JArray)json["_rows"], (JArray)json["_keyProvisions"]);
 
         }
 
@@ -56,17 +71,68 @@ namespace InsuranceSummaryMaker.PolicyInformation
             this._columns[index2].HeaderText = column1;
 
 
+            // put column2 in the index1 place
+            this._keyProvisionColumns[index1].Name = column2;
+            this._keyProvisionColumns[index1].HeaderText = column2;
+
+            // put column1 in the index2 place
+            this._keyProvisionColumns[index2].Name = column1;
+            this._keyProvisionColumns[index2].HeaderText = column1;
+
+
             foreach (DataGridViewRow row in this._rows)
             {
                 //swap the rows data
-                string temp = row.Cells[index1].Value + "";
-                row.Cells[index1].Value = row.Cells[index2].Value;
-                row.Cells[index2].Value = temp;
+                string cell1 = row.Cells[index1].Value + "";
+                string cell2 = row.Cells[index2].Value + "";
 
+
+                row.Cells[index1].Value = cell2;
+                row.Cells[index2].Value = cell1;
+
+            }
+            foreach(DataGridViewRow row in this._keyProvisions)
+            {
+                //swap the rows data
+                string cell1 = row.Cells[index1].Value + "";
+                string cell2 = row.Cells[index2].Value + "";
+
+
+                row.Cells[index1].Value = cell2;
+                row.Cells[index2].Value = cell1;
+            }
+        }
+
+
+        public void swapRow(int from, int to)
+        {
+            if (from < 0 || from >= _rows.Count) return;
+            if (to < 0 || to >= _rows.Count) return;
+
+            for (int fromCounter = 0; fromCounter < _rows[from].Cells.Count; fromCounter++)
+            {
+                string temp = (_rows[from].Cells[fromCounter].Value ?? "") + "";
+
+                _rows[from].Cells[fromCounter].Value = (_rows[to].Cells[fromCounter].Value ?? "") + "";
+                _rows[to].Cells[fromCounter].Value = temp;
             }
 
         }
 
+        public void swapKeyProvisionRow(int from, int to)
+        {
+            if (from < 0 || from >= _keyProvisions.Count) return;
+            if (to < 0 || to >= _keyProvisions.Count) return;
+
+            for (int fromCounter = 0; fromCounter < _keyProvisions[from].Cells.Count; fromCounter++)
+            {
+                string temp = (_keyProvisions[from].Cells[fromCounter].Value ?? "") + "";
+
+                _keyProvisions[from].Cells[fromCounter].Value = (_keyProvisions[to].Cells[fromCounter].Value ?? "") + "";
+                _keyProvisions[to].Cells[fromCounter].Value = temp;
+            }
+
+        }
 
         private void extractColumnNamesFromJson(JArray columns)
         {
@@ -76,7 +142,7 @@ namespace InsuranceSummaryMaker.PolicyInformation
             }
         }
 
-        private void extractRowNamesFromJson(JArray rows)
+        private void extractRowNamesFromJson(JArray rows, JArray keyProvisions)
         {
             foreach (JArray row in rows)
             {
@@ -90,6 +156,20 @@ namespace InsuranceSummaryMaker.PolicyInformation
 
                 createdRow.MinimumHeight = 75;
                 this._rows.Add(createdRow);
+            }
+
+            foreach (JArray row in keyProvisions)
+            {
+                DataGridViewRow createdRow = new DataGridViewRow();
+                foreach (string value in row)
+                {
+                    DataGridViewTextBoxCell cell = new DataGridViewTextBoxCell();
+                    cell.Value = value ?? "";
+                    createdRow.Cells.Add(cell);
+                }
+
+                createdRow.MinimumHeight = 75;
+                this._keyProvisions.Add(createdRow);
             }
         }
 
@@ -106,6 +186,18 @@ namespace InsuranceSummaryMaker.PolicyInformation
 
 
 
+
+        }
+
+        public void setNewProvisions(DataGridView provisions)
+        {
+
+            this._keyProvisions.Clear();
+            for (int counter = 0; counter < provisions.Rows.Count - 1; counter++)
+            {
+                this._keyProvisions.Add(provisions.Rows[counter]);
+
+            }
         }
 
         public void addColumn(string columnHeader)
@@ -114,16 +206,24 @@ namespace InsuranceSummaryMaker.PolicyInformation
             column.Name = columnHeader;
             column.HeaderText = columnHeader;
             column.MinimumWidth = 200;
-            this._columns.Add(column);
+            this._columns.Add((DataGridViewColumn)column.Clone());
+            this._keyProvisionColumns.Add((DataGridViewColumn)column.Clone());
         }
 
         public void removeColumn(int index)
         {
             this._columns.RemoveAt(index);
+            this._keyProvisionColumns.RemoveAt(index);
             //remove all the column data from the rows
             for (int counter = 0; counter < this._rows.Count; counter++)
             {
                 this._rows[counter].Cells.RemoveAt(index);
+            }
+
+            // remove cells in key provisions
+            for(int counter = 0; counter < this._keyProvisions.Count; counter++)
+            {
+                this._keyProvisions[counter].Cells.RemoveAt(index);
             }
         }
 
@@ -131,6 +231,9 @@ namespace InsuranceSummaryMaker.PolicyInformation
         {
             this._columns[index].Name = name;
             this._columns[index].HeaderText = name;
+
+            this._keyProvisionColumns[index].Name = name;
+            this._keyProvisionColumns[index].HeaderText = name;
         }
 
         public string getColumnNameAtIndex(int index)
@@ -152,6 +255,7 @@ namespace InsuranceSummaryMaker.PolicyInformation
             dict.Add("_carrierInformation", _carrierInformation);
             dict.Add("_columns", getColumnArray());
             dict.Add("_rows", getRowArray());
+            dict.Add("_keyProvisions", getKeyProvisionsArray());
             return dict;
         }
 
@@ -174,6 +278,31 @@ namespace InsuranceSummaryMaker.PolicyInformation
             List<List<string>> rows = new List<List<string>>();
 
             foreach (DataGridViewRow row in this._rows)
+            {
+                List<string> currentRow = new List<string>();
+                foreach (DataGridViewCell cell in row.Cells)
+                {
+                    string val = "";
+                    if (cell.Value != null)
+                    {
+                        val = cell.Value.ToString() ?? "";
+                    }
+
+                    currentRow.Add(val);
+
+                }
+                rows.Add(currentRow);
+            }
+
+
+            return rows;
+        }
+
+        private List<List<string>> getKeyProvisionsArray()
+        {
+            List<List<string>> rows = new List<List<string>>();
+
+            foreach (DataGridViewRow row in this._keyProvisions)
             {
                 List<string> currentRow = new List<string>();
                 foreach (DataGridViewCell cell in row.Cells)

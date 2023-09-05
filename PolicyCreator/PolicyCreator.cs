@@ -1,4 +1,5 @@
-﻿using InsuranceSummaryMaker.ConvertToDoc;
+﻿using DocumentFormat.OpenXml.Packaging;
+using InsuranceSummaryMaker.ConvertToDoc;
 using InsuranceSummaryMaker.CustomControls.CustomMessageBox;
 using InsuranceSummaryMaker.PolicyInformation;
 using InsuranceSummaryMaker.Serialization;
@@ -21,7 +22,7 @@ namespace InsuranceSummaryMaker
 
         private string openedPath = null;
         private string openedPathFileName = null;
-
+        private businessImage img = null;
 
         public PolicyCreator()
         {
@@ -76,6 +77,8 @@ namespace InsuranceSummaryMaker
         public void setFilters()
         {
             this.TableDataGridView.RowTemplate.MinimumHeight = 75;
+            this.KeyProvisionsDataView.RowTemplate.MinimumHeight = 75;
+
             string filter = "JJInsurance Policy Creator (*" + PolicyInformationSerializer.fileExtension + ")|*" + PolicyInformationSerializer.fileExtension;
             this.openMyFileDialog.Filter = filter;
             this.saveMyFileDialog.Filter = filter;
@@ -95,6 +98,10 @@ namespace InsuranceSummaryMaker
                     refreshTable();
 
                 }
+                else if (this.tabControl1.SelectedTab.Tag.Equals("keyProvisions"))
+                {
+                    refreshKeyProvisions();
+                }
 
             }
             else
@@ -104,6 +111,8 @@ namespace InsuranceSummaryMaker
             }
         }
 
+
+        // FIX THIS TO ADD KEY PROVISIONS
         private void StartExportButton_Click(object sender, EventArgs e)
         {
             endTableEditMode();
@@ -114,7 +123,7 @@ namespace InsuranceSummaryMaker
                     string filePath = message.documentpath;
                     string templatePath = message.templatePath;
 
-                    
+
 
                     AgentInformation agent = getAgentInformation();
                     BusinessInformation business = getBusinessInformation();
@@ -242,11 +251,11 @@ namespace InsuranceSummaryMaker
             string businessLegalName = this.BusinessLegalNameTextBox.Text;
             DateTime businessStart = this.BusinessStartDate.Value;
             DateTime businessEnd = this.BusinessEndDate.Value;
-            Image image = this.businessPictureBox.Image;
-            string imagePath = this.imageLocationTextBox.Text;
-            
+            // conver to business image
+            businessImage image = this.img;
 
-            return new BusinessInformation(businessName, businessLegalName, businessStart, businessEnd, image, imagePath);
+
+            return new BusinessInformation(businessName, businessLegalName, businessStart, businessEnd, img);
         }
         #endregion
 
@@ -277,6 +286,9 @@ namespace InsuranceSummaryMaker
             this.BusinessLegalNameTextBox.Text = business._legalName;
             this.BusinessStartDate.Value = business._start;
             this.BusinessEndDate.Value = business._end;
+            this.businessPictureBox.Image = business._image.getImageFromBytes();
+            this.img = business._image;
+
         }
 
         private void populateCoveragePage(List<CoverageInformation> coverages)
@@ -546,6 +558,16 @@ namespace InsuranceSummaryMaker
             }
         }
 
+        private void startProvisionSave()
+        {
+            int currentIndex = this.KeyProvisionsDataViewSelectorBox.SelectedIndex;
+
+            if (currentIndex >= 0 && currentIndex < this.tableInformationList.Count)
+            {
+                this.tableInformationList[currentIndex].setNewProvisions(this.KeyProvisionsDataView);
+            }
+        }
+
         private void endTableEditMode()
         {
 
@@ -555,11 +577,20 @@ namespace InsuranceSummaryMaker
                 this.TableDataGridView.EndEdit();
 
             }
+
+            if (this.KeyProvisionsDataView.IsCurrentCellInEditMode)
+            {
+                this.KeyProvisionsDataView.EndEdit();
+            }
         }
 
         private void TableDataGridView_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
             startSave();
+        }
+        private void KeyProvisionsDataView_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        {
+            startProvisionSave();
         }
 
         private void renameTableButton_Click(object sender, EventArgs e)
@@ -635,6 +666,25 @@ namespace InsuranceSummaryMaker
         }
 
 
+        private void setKeyProvisionsColumns(List<DataGridViewColumn> columns)
+        {
+            this.KeyProvisionsDataView.Columns.Clear();
+            foreach (DataGridViewColumn column in columns)
+            {
+                this.KeyProvisionsDataView.Columns.Add(column);
+            }
+        }
+
+        private void setKeyProvisionRows(List<DataGridViewRow> rows)
+        {
+            this.KeyProvisionsDataView.Rows.Clear();
+            foreach (DataGridViewRow row in rows)
+            {
+                this.KeyProvisionsDataView.Rows.Add(row);
+            }
+        }
+
+
 
 
         private void refreshTable()
@@ -649,6 +699,21 @@ namespace InsuranceSummaryMaker
             {
                 this.TableDataGridView.Rows.Clear();
                 this.TableDataGridView.Columns.Clear();
+            }
+        }
+
+        private void refreshKeyProvisions()
+        {
+            int currentIndex = this.KeyProvisionsDataViewSelectorBox.SelectedIndex;
+            if (currentIndex >= 0 && currentIndex < this.tableInformationList.Count)
+            {
+                setKeyProvisionsColumns(this.tableInformationList[currentIndex]._keyProvisionColumns);
+                setKeyProvisionRows(this.tableInformationList[currentIndex]._keyProvisions);
+            }
+            else
+            {
+                this.KeyProvisionsDataView.Rows.Clear();
+                this.KeyProvisionsDataView.Columns.Clear();
             }
         }
 
@@ -693,11 +758,15 @@ namespace InsuranceSummaryMaker
         {
             this.TableCreatePanelListBox.Items.Add(coverageToAdd);
             this.TableDataViewSelectorBox.Items.Add(coverageToAdd);
+            this.KeyProvisionsDataViewSelectorBox.Items.Add(coverageToAdd);
+
         }
         private void deleteTableFromTableListBox(int index)
         {
             this.TableCreatePanelListBox.Items.RemoveAt(index);
             this.TableDataViewSelectorBox.Items.RemoveAt(index);
+            this.KeyProvisionsDataViewSelectorBox.Items.RemoveAt(index);
+
         }
 
 
@@ -811,15 +880,99 @@ namespace InsuranceSummaryMaker
 
         private void BrowseImageLocation_Click(object sender, EventArgs e)
         {
-            if(this.openImageDialog.ShowDialog() == DialogResult.OK)
+            if (this.openImageDialog.ShowDialog() == DialogResult.OK)
             {
                 string imagePath = this.openImageDialog.FileName;
-                this.imageLocationTextBox.Text = imagePath;
+                ImagePartType type = businessImage.getPathImageType(imagePath);
 
-                this.businessPictureBox.Image = new Bitmap(imagePath);
-                
+                Image importImage = Image.FromFile(imagePath);
+                this.businessPictureBox.Image = importImage;
+
+                // convert to byte array
+                byte[] imageBytes;
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    importImage.Save(ms, importImage.RawFormat);
+                    imageBytes = ms.ToArray();
+                }
+                this.img = new businessImage(imageBytes, importImage.Width, importImage.Height, type);
+
             }
         }
+
+        private void RowMoveUpButton_Click(object sender, EventArgs e)
+        {
+            int currentIndex = this.TableDataViewSelectorBox.SelectedIndex;
+            if (currentIndex < 0 || currentIndex >= this.tableInformationList.Count)
+            {
+                MessageBox.Show("No table selected");
+                return;
+            }
+
+            int fromRow = this.TableDataGridView.SelectedCells[0].RowIndex;
+            int toRow = fromRow - 1;
+            swapRows(currentIndex, fromRow, toRow);
+        }
+
+        private void RowMoveDownButton_Click(object sender, EventArgs e)
+        {
+            int currentIndex = this.TableDataViewSelectorBox.SelectedIndex;
+            if (currentIndex < 0 || currentIndex >= this.tableInformationList.Count)
+            {
+                MessageBox.Show("No table selected");
+            }
+
+            int fromRow = this.TableDataGridView.SelectedCells[0].RowIndex;
+            int toRow = fromRow + 1;
+            swapRows(currentIndex, fromRow, toRow);
+        }
+
+        private void swapRows(int tableIndex, int fromRow, int toRow)
+        {
+            if (tableIndex < 0 || tableIndex >= this.tableInformationList.Count) { return; }
+            if (fromRow < 0 || fromRow >= this.tableInformationList[tableIndex]._rows.Count) { return; }
+            if (toRow < 0 || toRow >= this.tableInformationList[tableIndex]._rows.Count) { return; }
+
+            this.tableInformationList[tableIndex].swapRow(fromRow, toRow);
+
+            int column = this.TableDataGridView.CurrentCell.ColumnIndex;
+            this.TableDataGridView.CurrentCell = this.TableDataGridView[column, toRow];
+
+            // swap the columns in the object
+            /* this.tableInformationList[tableIndex].swapColumn(swapSelected, swapTo);
+
+
+             // swap in the panel list view
+             var item = this.ColumnsCreatePanelListView.Items[swapTo];
+             this.ColumnsCreatePanelListView.Items.RemoveAt(swapTo);
+             this.ColumnsCreatePanelListView.Items.Insert(swapSelected, item);*/
+
+
+        }
+
+        private void KeyProvisionsDataViewSelectorBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            // add all the columns and rowws to the data view
+            int currentIndex = this.KeyProvisionsDataViewSelectorBox.SelectedIndex;
+            if (currentIndex >= 0 && currentIndex < this.tableInformationList.Count)
+            {
+                CoverageInformation currentTable = this.tableInformationList[currentIndex];
+                setKeyProvisionsColumns(currentTable._keyProvisionColumns);
+                setKeyProvisionRows(currentTable._keyProvisions);
+            }
+        }
+
+        private void KeyProvisionsDataViewUp_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void KeyProvisionsDataViewDown_Click(object sender, EventArgs e)
+        {
+
+        }
+
+
     }
 
 

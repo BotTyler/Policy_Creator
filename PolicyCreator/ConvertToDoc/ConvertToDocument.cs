@@ -27,6 +27,12 @@ using System.Deployment.Application;
 using DocumentFormat.OpenXml.Drawing;
 using ParagraphProperties = DocumentFormat.OpenXml.Wordprocessing.ParagraphProperties;
 using static System.Net.Mime.MediaTypeNames;
+using System.Runtime.InteropServices;
+using RunProperties = DocumentFormat.OpenXml.Wordprocessing.RunProperties;
+using TableCellProperties = DocumentFormat.OpenXml.Wordprocessing.TableCellProperties;
+using DocumentFormat.OpenXml.Math;
+using Justification = DocumentFormat.OpenXml.Wordprocessing.Justification;
+using JustificationValues = DocumentFormat.OpenXml.Wordprocessing.JustificationValues;
 
 namespace InsuranceSummaryMaker.ConvertToDoc
 {
@@ -84,6 +90,8 @@ namespace InsuranceSummaryMaker.ConvertToDoc
             {
                 using (WordprocessingDocument document = (WordprocessingDocument)template.Clone(exportPath))
                 {
+
+
                     if (!CheckDocumentReady(document) && !CheckDocumentReady(template)) { return; }
 
                     // Insert Agent Info
@@ -93,10 +101,10 @@ namespace InsuranceSummaryMaker.ConvertToDoc
                     InsertBusinessInformation(business, document);
 
                     // insert the tables
-                    InsertTables(tablesToInsert, document);
+                    InsertTables(tablesToInsert, document.MainDocumentPart);
 
                     // insert any Appendacies
-                    InsertAddons(addons, document);
+                    InsertAddons(addons, document.MainDocumentPart);
 
 
                     //Export
@@ -112,31 +120,122 @@ namespace InsuranceSummaryMaker.ConvertToDoc
 
         }
 
+
+
         // Find and rplaces all tags with the given agent information
         private static void InsertAgentInformation(AgentInformation agent, WordprocessingDocument document)
         {
-            ReplaceTag(agentNameTag, agent._agentName, document);
-            ReplaceTag(agentPositionTag, agent._agentPosition, document);
-            ReplaceTag(agentEmailTag, agent._agentEmail, document);
-            ReplaceTag(agentNumberTag, agent._agentNumber, document);
-            ReplaceTag(agentWebsiteTag, agent._agentWebsite, document);
-            ReplaceTag(agentBusinessTag, agent._agentBusiness, document);
+            replaceTagWithElement(agentNameTag, new Text(agent._agentName), document.MainDocumentPart);
+            replaceTagWithElement(agentPositionTag, new Text(agent._agentPosition), document.MainDocumentPart);
+            replaceTagWithElement(agentEmailTag, new Text(agent._agentEmail), document.MainDocumentPart);
+            replaceTagWithElement(agentNumberTag, new Text(agent._agentNumber), document.MainDocumentPart);
+            replaceTagWithElement(agentWebsiteTag, new Text(agent._agentWebsite), document.MainDocumentPart);
+            replaceTagWithElement(agentBusinessTag, new Text(agent._agentBusiness), document.MainDocumentPart);
 
         }
-
-
-
 
         // finds and replaces all tags with the given business information
         private static void InsertBusinessInformation(BusinessInformation business, WordprocessingDocument document)
         {
-            ReplaceTag(businessNameTag, business._name, document);
-            ReplaceTag(businessLegalNameTag, business._legalName, document);
-            ReplaceTag(businessStartDateTag, business.getFormattedStartDate(), document);
-            ReplaceTag(businessEndDateTag, business.getFormattedEndDate().ToString(), document);
-            InsertPicture(businessPictureTag, business._image, business._imageAspectRatio, business._imageTypes, document);
+            replaceTagWithElement(businessNameTag, new Text(business._name), document.MainDocumentPart);
+            replaceTagWithElement(businessLegalNameTag, new Text(business._legalName), document.MainDocumentPart);
+            replaceTagWithElement(businessStartDateTag, new Text(business.getFormattedStartDate()), document.MainDocumentPart);
+            replaceTagWithElement(businessEndDateTag, new Text(business.getFormattedEndDate().ToString()), document.MainDocumentPart);
+
+
+            Drawing image = createImageObject(document, business._image);
+
+            if (image == null)
+            {
+                replaceTagWithElement(businessPictureTag, new Text(""), document.MainDocumentPart);
+            }
+            else
+            {
+                replaceTagWithElement(businessPictureTag, image, document.MainDocumentPart);
+
+            }
         }
 
+        private static void InsertTables(List<CoverageInformation> tableList, MainDocumentPart mainPart)
+        {
+
+            if (tableList == null || tableList.Count <= 0)
+            {
+                replaceTagWithElement(startTables, new Text(""), mainPart);
+                return;
+            }
+
+            List<Paragraph> paragraphs = findLowestParagraphsWithTag(startTables, mainPart);
+
+            foreach (Paragraph paragraph in paragraphs)
+            {
+                CreateAllTables(tableList, paragraph);
+            }
+
+        }
+
+        private static void InsertAddons(List<AppendFile> addons, MainDocumentPart mainPart)
+        {
+            // find the paragraph with the addons text
+            if (addons == null || addons.Count <= 0)
+            {
+                replaceTagWithElement(startAdds, new Text(""), mainPart);
+                return;
+            }
+
+            List<Paragraph> paragraphs = findLowestParagraphsWithTag(startAdds, mainPart);
+
+
+            foreach (Paragraph paragraph in paragraphs)
+            {
+                for (int index = 0; index < addons.Count; index++)
+                {
+
+                    AppendFile currentFile = addons[index];
+
+                    List<Paragraph> content = SetupAddonPage(currentFile.document);
+                    if (content == null)
+                    {
+                        continue;
+                    }
+
+                    for (int counter = content.Count - 1; counter >= 0; counter--)
+                    {
+                        Paragraph currentParagraph = content[counter];
+                        paragraph.InsertAfterSelf(currentParagraph);
+                    }
+                    if (index < addons.Count - 1)
+                    {
+                        Paragraph pageBreak = CreatePageBreak();
+                        paragraph.InsertAfterSelf(pageBreak);
+                    }
+
+
+                }
+            }
+
+        }
+
+
+        private static List<Paragraph> SetupAddonPage(Body document)
+        {
+
+            List<Paragraph> pageParagraphs = new List<Paragraph>();
+            foreach (Paragraph paragraph in document.Descendants<Paragraph>())
+            {
+
+                pageParagraphs.Add((Paragraph)paragraph.Clone());
+
+            }
+
+            return pageParagraphs;
+        }
+
+        private static void Export(WordprocessingDocument document)
+        {
+            document.Save();
+        }
+        /*#region may delete
 
         // finds and replaces the tables tag with bunch of pages of tables
         private static void InsertTables(List<CoverageInformation> tableList, WordprocessingDocument document)
@@ -167,143 +266,9 @@ namespace InsuranceSummaryMaker.ConvertToDoc
 
         #region table Creation
         // creates and inserts the table page informmation
-        private static void CreateAllTables(List<CoverageInformation> tableList, Paragraph para)
-        {
-
-
-            for (int index = tableList.Count - 1; index >= 0; index--)
-            {
-                CoverageInformation currentTable = tableList[index];
-
-                List<DataGridViewColumn> columns = currentTable._columns;
-                List<DataGridViewRow> rows = currentTable._rows;
-
-                if ((columns == null || rows == null) || columns.Count <= 0 || rows.Count <= 0)
-                {
-                    continue;
-                }
-                Paragraph title = CreateParagraph(currentTable._tableName);
-                Paragraph carriers = CreateTextBox(currentTable._carrierInformation);
-                Paragraph table = CreateTable(columns, rows);
-
-                //Paragraph x = new Paragraph(new Run(table));
-
-                para.InsertAfterSelf(table);
-                if (currentTable._carrierInformation != null && !currentTable._carrierInformation.Equals(""))
-                    para.InsertAfterSelf(carriers);
-                para.InsertAfterSelf(title);
-
-                if (index > 0)
-                {
-                    Paragraph pageBreak = CreatePageBreak();
-                    para.InsertAfterSelf(pageBreak);
-                }
-
-
-            }
-        }
-
-
-        // method to create a table
-        private static Paragraph CreateTable(List<DataGridViewColumn> column, List<DataGridViewRow> row)
-        {
-            TableProperties prop = new TableProperties();
-            prop.TableStyle = new TableStyle() { Val = "TableGrid" };
-            prop.TableWidth = new TableWidth() { Width = "100%", Type = TableWidthUnitValues.Pct };
-            prop.TableJustification = new TableJustification { Val = TableRowAlignmentValues.Center };
-            prop.TableLayout = new TableLayout { Type = TableLayoutValues.Fixed };
-
-
-            Table table = new Table(prop);
-
-
-            TableRow headerRow = CreateRow(column);
-            table.Append(headerRow);
-
-
-            foreach (DataGridViewRow x in row)
-            {
-                table.Append(CreateRow(x));
-            }
-
-            Paragraph paragraph = new Paragraph(new ParagraphProperties(new Justification { Val = JustificationValues.Center }));
-            Run run = new Run(table);
-            paragraph.Append(run);
-
-            return paragraph;
-
-        }
-
-        // method to create a row in word for the column headers
-        private static TableRow CreateRow(List<DataGridViewColumn> input)
-        {
-            TableRow row = new TableRow();
-            foreach (DataGridViewColumn column in input)
-            {
-                string columnName = column.Name;
-                row.Append(CreateCell(columnName));
-            }
-
-            return row;
-        }
-
-
-        // creates a word table row for a given row in the dataset
-        private static TableRow CreateRow(DataGridViewRow input)
-        {
-            TableRow row = new TableRow();
-            foreach (DataGridViewCell cell in input.Cells)
-            {
-
-                string cellValue = "";
-
-                if (cell.Value != null)
-                {
-                    cellValue = cell.Value.ToString() ?? "";
-                }
-
-
-
-
-                row.Append(CreateCell(cellValue));
-            }
-
-            return row;
-        }
-
-
-        // method to create a cell in a table
-        private static TableCell CreateCell(string text)
-        {
-            TableCell cell = new TableCell();
-            Paragraph p = new Paragraph();
-
-
-            string[] split = text.Split('\n');
-            for (int index = 0; index < split.Length; index++)
-            {
-                string current = split[index];
-                Run run = new Run(new Text(current));
-
-
-
-
-                if (index < split.Length - 1)
-                {
-                    run.AppendChild(new Break());
-                }
-
-                p.Append(run);
-            }
-
-            cell.Append(p);
-
-            return cell;
-            //return new TableCell(new Paragraph(new Run(new Text(text))));
-        }
+       
         #endregion
 
-        #region image creation
 
         public static void InsertPicture(string tag, byte[] image, float aspectRatio, imageTypes type, WordprocessingDocument document)
         {
@@ -315,23 +280,223 @@ namespace InsuranceSummaryMaker.ConvertToDoc
             ReplaceTagWithImage(tag, picture, document);
 
         }
-        private static Drawing createImageObject(WordprocessingDocument document, byte[] image, imageTypes type, float aspectRatio)
+
+
+
+        
+
+
+        
+
+        private static void InsertAddons(List<AppendFile> addons, WordprocessingDocument document)
         {
+            // find the paragraph with the addons text
+            MainDocumentPart mainPart = document.MainDocumentPart;
+
+            Paragraph paragraph = FindTag(mainPart, startAdds);
+            if (paragraph == null)
+            {
+                return;
+            }
+
+
+            for (int index = 0; index < addons.Count; index++)
+            {
+
+                AppendFile currentFile = addons[index];
+
+                List<Paragraph> content = SetupAddonPage(currentFile.document);
+                if (content == null)
+                {
+                    continue;
+                }
+
+                for (int counter = content.Count - 1; counter >= 0; counter--)
+                {
+                    Paragraph currentParagraph = content[counter];
+                    paragraph.InsertAfterSelf(currentParagraph);
+                }
+                if (index < addons.Count - 1)
+                {
+                    Paragraph pageBreak = CreatePageBreak();
+                    paragraph.InsertAfterSelf(pageBreak);
+                }
+
+
+            }
+        }
+
+        private static List<Paragraph> SetupAddonPage(Body document)
+        {
+
+            List<Paragraph> pageParagraphs = new List<Paragraph>();
+            foreach (Paragraph paragraph in document.Descendants<Paragraph>())
+            {
+
+                pageParagraphs.Add((Paragraph)paragraph.Clone());
+
+            }
+
+            return pageParagraphs;
+        }
+        #endregion*/
+
+
+        #region find Tag Method
+        private static List<Paragraph> findLowestParagraphsWithTag(string tag, MainDocumentPart mainPart)
+        {
+            string temp = "";
+            List<Paragraph> listOfFoundParagraphs = new List<Paragraph>();
+            foreach (Text p in mainPart.Document.Descendants<Text>())
+            {
+                temp += p.Text;
+                if (temp.Contains(tag))
+                {
+
+
+                    Paragraph fullParahraph = (Paragraph)(p.Parent.Parent);
+                    // may add some check to make sure this is a paragraph
+
+                    listOfFoundParagraphs.Add(fullParahraph);
+
+                    temp = "";
+
+                }
+            }
+
+            return listOfFoundParagraphs;
+        }
+
+        private static void removeAllTextElementsFromParagraph(Paragraph p)
+        {
+            foreach (Text t in p.Descendants<Text>())
+            {
+                t.Remove();
+            }
+        }
+
+        private static List<string> splitStringBasedOnTag(string innerText, string tag)
+        {
+            int start = innerText.IndexOf(tag);
+            int end = start + tag.Length;
+
+            List<string> list = new List<string>();
+            list.Add(innerText.Substring(0, start));
+            list.Add(innerText.Substring(start, tag.Length));
+            list.Add(innerText.Substring(end));
+
+            List<string> rList = new List<string>();
+            foreach (string x in list)
+            {
+                if (!x.Equals(""))
+                {
+                    rList.Add(x);
+                }
+            }
+            return rList;
+        }
+
+
+        private static void replaceTagWithElement(string tag, OpenXmlElement element, MainDocumentPart mainPart)
+        {
+            List<Paragraph> paragraphsWithTag = findLowestParagraphsWithTag(tag, mainPart);
+            foreach (Paragraph p in paragraphsWithTag)
+            {
+                //MessageBox.Show("Replacing " + tag);
+                string text = p.InnerText;
+                removeAllTextElementsFromParagraph(p);
+                List<string> splitParagraph = splitStringBasedOnTag(text, tag);
+                foreach (string s in splitParagraph)
+                {
+                    Run insertRun = new Run();
+                    RunProperties style = (RunProperties)p.Descendants<RunProperties>().FirstOrDefault();
+                    if (style != null)
+                    {
+                        insertRun.Append(style.Clone() as RunProperties);
+                    }
+                    if (s.Equals(tag))
+                    {
+                        // replace tag with our element
+
+
+                        insertRun.Append((OpenXmlElement)element.Clone());
+                    }
+                    else
+                    {
+                        Text t = new Text(s);
+                        t.Space = SpaceProcessingModeValues.Preserve;
+                        insertRun.Append(t);
+                    }
+                    p.Append(insertRun);
+                }
+
+            }
+        }
+        #endregion
+
+        #region element Creation Functions
+        private static Paragraph CreateTextBox(string text)
+        {
+
+
+            TableProperties prop = new TableProperties();
+            prop.TableStyle = new TableStyle() { Val = "TableGrid" };
+            prop.TableWidth = new TableWidth() { Width = "50%", Type = TableWidthUnitValues.Pct };
+            prop.TableJustification = new TableJustification { Val = TableRowAlignmentValues.Center };
+            prop.TableLayout = new TableLayout { Type = TableLayoutValues.Fixed };
+
+
+            Table table = new Table(prop);
+
+
+            TableRow row = new TableRow();
+            row.Append(CreateCell(text, 1, true, false));
+
+            table.Append(row);
+
+            Paragraph paragraph = new Paragraph(new ParagraphProperties(new Justification { Val = JustificationValues.Center }));
+
+            Run run = new Run(table);
+
+            paragraph.Append(run);
+
+
+
+            return paragraph;
+        }
+        private static Paragraph CreatePageBreak()
+        {
+            return new Paragraph(new Run(new Break() { Type = BreakValues.Page }));
+        }
+        private static Paragraph CreateParagraph(string text)
+        {
+
+            Paragraph paragraph = new Paragraph(new Run(new Text(text)));
+            ParagraphProperties paragraphProperties = new ParagraphProperties(new ParagraphStyleId() { Val = "Title" });
+            paragraph.ParagraphProperties = paragraphProperties;
+
+            return paragraph;
+        }
+
+        #region images
+        private static Drawing createImageObject(WordprocessingDocument document, businessImage image)
+        {
+            if (image == null || image.isImageNull())
+            {
+                return null;
+            }
+
+
             ImagePart imagePart;
             MainDocumentPart mainPart = document.MainDocumentPart;
 
-            if (type == imageTypes.PNG)
-            {
-                imagePart = mainPart.AddImagePart(ImagePartType.Png);
-            }
-            else
-            {
-                imagePart = mainPart.AddImagePart(ImagePartType.Jpeg);
-            }
+
+            imagePart = mainPart.AddImagePart(image._imageType);
 
 
 
-            using (MemoryStream stream = new MemoryStream(image))
+
+            using (MemoryStream stream = new MemoryStream(image._image))
             {
                 imagePart.FeedData(stream);
             }
@@ -344,13 +509,13 @@ namespace InsuranceSummaryMaker.ConvertToDoc
             int height;
             int width;
 
-
+            float aspectRatio = image._width / (float)image._height;
 
             // given the aspect ratio of the image calculate the size of the image that fits within the max sizes
-            if ((int)(maxWidth * (1/aspectRatio)) < maxHeight)//assume we are going to  use the width by default
+            if ((int)(maxWidth * (1 / aspectRatio)) < maxHeight)//assume we are going to  use the width by default
             {
                 width = maxWidth;
-                height = (int)(maxWidth * (1/aspectRatio));
+                height = (int)(maxWidth * (1 / aspectRatio));
             }
             else
             {
@@ -358,7 +523,7 @@ namespace InsuranceSummaryMaker.ConvertToDoc
                 width = (int)(maxHeight * aspectRatio);
             }
 
-            MessageBox.Show(width + " x " + height);
+            //MessageBox.Show(width + " x " + height);
             Drawing picture = createImageElement(mainPart.GetIdOfPart(imagePart), max + 1, max + 2, width, height);
             return picture;
         }
@@ -434,168 +599,53 @@ namespace InsuranceSummaryMaker.ConvertToDoc
             //wordDoc.MainDocumentPart.Document.Body.AppendChild(new Paragraph(new Run(element)));
             return element;
         }
-
-
-        private static uint GetMaxDocPropertyId(WordprocessingDocument doc)
-        {
-            return doc
-               .MainDocumentPart
-               .RootElement
-               .Descendants<DocProperties>()
-               .Max(x => (uint?)x.Id) ?? 0;
-        }
-
         #endregion
 
-        #region tag replacement
-        // metthod to find a tag present in a document
-        // method will return the paragraph or null if it could not find it.
-        private static Paragraph FindTag(MainDocumentPart doc, string tag)
-        {
-            foreach (Paragraph paragraphs in doc.Document.Descendants<Paragraph>())
-            {
-                foreach (Text text in paragraphs.Descendants<Text>())
-                {
-                    if (text.Text.Contains(tag))
-                    {
-                        text.Text = text.Text.Replace(tag, "");
-                        return paragraphs;
-                    }
-                }
-            }
-
-            return null;
-        }
-
-        private static void ReplaceTagWithImage(string tag, Drawing picture, WordprocessingDocument document)
-        {
-            MainDocumentPart mainPart = document.MainDocumentPart;
-
-            foreach (Paragraph paragraph in mainPart.Document.Body.Descendants<Paragraph>())
-            {
-                Run runToReplace = FindRunWithTag(tag, paragraph);
-
-
-                if (runToReplace != null)
-                {
-                    // found the run that we need
-                    ReplaceRunWithImage(tag, picture, runToReplace);
-                }
-
-            }
-        }
-
-        // finds and replaces a tag within a word document
-        private static void ReplaceTag(string tag, string item, WordprocessingDocument document)
+        #region tables
+        private static void CreateAllTables(List<CoverageInformation> tableList, Paragraph para)
         {
 
-            MainDocumentPart mainPart = document.MainDocumentPart;
 
-            foreach (Paragraph paragraph in mainPart.Document.Body.Descendants<Paragraph>())
+            for (int index = tableList.Count - 1; index >= 0; index--)
             {
-                Run runToReplace = FindRunWithTag(tag, paragraph);
+                CoverageInformation currentTable = tableList[index];
 
+                List<DataGridViewColumn> columns = currentTable._columns;
+                List<DataGridViewRow> rows = currentTable._rows;
+                List<DataGridViewRow> keyProvisions = currentTable._keyProvisions;
 
-                if (runToReplace != null)
+                if ((columns == null || rows == null) || columns.Count <= 0 || rows.Count <= 0)
                 {
-                    // found the run that we need
-                    ReplaceRunWithText(tag, item, runToReplace);
+                    continue;
                 }
+                Paragraph title = CreateParagraph(currentTable._tableName);
+                Paragraph carriers = CreateTextBox(currentTable._carrierInformation);
+                Paragraph table = CreateTable(columns, rows, keyProvisions);
+
+                //Paragraph x = new Paragraph(new Run(table));
+
+                para.InsertAfterSelf(table);
+                if (currentTable._carrierInformation != null && !currentTable._carrierInformation.Equals(""))
+                    para.InsertAfterSelf(carriers);
+                para.InsertAfterSelf(title);
+
+                if (index > 0)
+                {
+                    Paragraph pageBreak = CreatePageBreak();
+                    para.InsertAfterSelf(pageBreak);
+                }
+
 
             }
         }
 
-        // method to find a run given a specific tag within a document
-        private static Run FindRunWithTag(string tag, Paragraph paragraph)
+
+        // method to create a table
+        private static Paragraph CreateTable(List<DataGridViewColumn> column, List<DataGridViewRow> row, List<DataGridViewRow> keyProvisions)
         {
-            foreach (Run run in paragraph.Descendants<Run>())
-            {
-                if (run.InnerText.Contains(tag))
-                {
-                    return run;
-                }
-            }
-
-            return null;
-        }
-
-        
-        // create and replace a tag with a run
-        private static void ReplaceRunWithText(string tag, string replacementText, Run run)
-        {
-            foreach (Paragraph paragraph in run.Descendants<Paragraph>())
-            {
-                if (paragraph.InnerText.Contains(tag))
-                {
-
-                    string text = "";
-                    foreach (Run r in paragraph.Descendants<Run>())
-                    {
-                        foreach (Text t in r.Descendants<Text>())
-                        {
-                            text += t.Text.ToString();
-
-                        }
-                    }
-
-                    Run first = paragraph.GetFirstChild<Run>() ?? new Run();
-                    Text firstText = first.GetFirstChild<Text>() ?? new Text();
-
-                    firstText.Text = text.Replace(tag, replacementText);
-
-                    paragraph.RemoveAllChildren<Run>();
-                    paragraph.Append(first);
-
-                }
-            }
-        }
-
-        private static void ReplaceRunWithImage(string tag, Drawing image, Run run)
-        {
-            /*           foreach (Paragraph paragraph in run.Descendants<Paragraph>())
-                       {
-                           if (paragraph.InnerText.Contains(tag))
-                           {
-
-
-
-                               paragraph.RemoveAllChildren<Run>();
-                               paragraph.Append(new Run(image));
-
-                           }
-
-
-                       }*/
-
-            run.RemoveAllChildren();
-            run.Append(image);
-        }
-        // method to create a page break paragraph
-        private static Paragraph CreatePageBreak()
-        {
-            return new Paragraph(new Run(new Break() { Type = BreakValues.Page }));
-        }
-
-        // creates a paragraph
-        private static Paragraph CreateParagraph(string text)
-        {
-
-            Paragraph paragraph = new Paragraph(new Run(new Text(text)));
-            ParagraphProperties paragraphProperties = new ParagraphProperties(new ParagraphStyleId() { Val = "Title" });
-            paragraph.ParagraphProperties = paragraphProperties;
-
-            return paragraph;
-        }
-        #endregion
-
-        #region textBox creation
-        private static Paragraph CreateTextBox(string text)
-        {
-
-
             TableProperties prop = new TableProperties();
             prop.TableStyle = new TableStyle() { Val = "TableGrid" };
-            prop.TableWidth = new TableWidth() { Width = "50%", Type = TableWidthUnitValues.Pct };
+            prop.TableWidth = new TableWidth() { Width = "100%", Type = TableWidthUnitValues.Pct };
             prop.TableJustification = new TableJustification { Val = TableRowAlignmentValues.Center };
             prop.TableLayout = new TableLayout { Type = TableLayoutValues.Fixed };
 
@@ -603,78 +653,158 @@ namespace InsuranceSummaryMaker.ConvertToDoc
             Table table = new Table(prop);
 
 
-            TableRow row = new TableRow();
-            row.Append(CreateCell(text));
+            TableRow headerRow = CreateRow(column);
+            table.Append(headerRow);
 
-            table.Append(row);
+
+            foreach (DataGridViewRow x in row)
+            {
+                table.Append(CreateRow(x));
+            }
+
+            if (keyProvisions.Count > 0)
+            {
+                // add the row that acts like a header but has only Key Properties on it
+                table.Append(CreateMergeRow("Key Provisions:", keyProvisions[0].Cells.Count));
+
+                // add each of the provisions
+                foreach (DataGridViewRow x in keyProvisions)
+                {
+                    table.Append(CreateRow(x));
+                }
+            }
 
             Paragraph paragraph = new Paragraph(new ParagraphProperties(new Justification { Val = JustificationValues.Center }));
-
             Run run = new Run(table);
-
             paragraph.Append(run);
 
-
-
             return paragraph;
+
         }
 
+        // method to create a row in word for the column headers
+        private static TableRow CreateRow(List<DataGridViewColumn> input)
+        {
+            TableRow row = new TableRow();
+            foreach (DataGridViewColumn column in input)
+            {
+                string columnName = column.Name;
+                row.Append(CreateCell(columnName, 1, true, true));
+            }
+
+            return row;
+        }
+
+
+        // creates a word table row for a given row in the dataset
+        private static TableRow CreateRow(DataGridViewRow input)
+        {
+            TableRow row = new TableRow();
+            foreach (DataGridViewCell cell in input.Cells)
+            {
+
+                string cellValue = "";
+
+                if (cell.Value != null)
+                {
+                    cellValue = cell.Value.ToString() ?? "";
+                }
+
+
+
+
+                row.Append(CreateCell(cellValue, 1, false, false));
+            }
+
+            return row;
+        }
+        private static TableRow CreateMergeRow(string text, int columnWidth)
+        {
+            TableRow row = new TableRow();
+            row.Append(CreateCell(text ?? "", columnWidth, true, true));
+
+
+            return row;
+        }
+
+
+        // method to create a cell in a table
+        private static TableCell CreateCell(string text, int columnWidth, bool wantSpacing, bool bold)
+        {
+            TableCell cell = new TableCell();
+            Paragraph p = new Paragraph();
+            ParagraphProperties pProps = new ParagraphProperties();
+            if (wantSpacing)
+            {
+                pProps.Append(new Justification { Val = JustificationValues.Center });
+            }
+
+
+            p.Append(pProps);
+            cell.Append(new GridSpan { Val = columnWidth });
+
+            string[] split = text.Split('\n');
+            for (int index = 0; index < split.Length; index++)
+            {
+                string current = split[index];
+
+                Run run = new Run(new Text(current));
+                if (bold)
+                {
+                    MessageBox.Show("BOLD");
+                    RunProperties runProp = new RunProperties();
+                    runProp.Append(new Bold());
+                    run.RunProperties = runProp;
+                }
+
+
+
+
+                if (index < split.Length - 1)
+                {
+                    run.AppendChild(new Break());
+                }
+
+                p.Append(run);
+            }
+
+            cell.Append(p);
+
+            return cell;
+        }
+
+        //meant for mergcells
+/*        private static TableCell CreateCell(string text, int columnWidth)
+        {
+            TableCell cell = new TableCell();
+            Paragraph p = new Paragraph();
+
+
+            cell.Append(new GridSpan { Val = columnWidth });
+
+
+            string[] split = text.Split('\n');
+            for (int index = 0; index < split.Length; index++)
+            {
+                string current = split[index];
+                Run run = new Run(new Text(current));
+
+
+
+
+                if (index < split.Length - 1)
+                {
+                    run.AppendChild(new Break());
+                }
+
+                p.Append(run);
+            }
+
+            cell.Append(p);
+
+            return cell;
+        }*/
         #endregion
-
-        #region addons
-
-        private static void InsertAddons(List<AppendFile> addons, WordprocessingDocument document)
-        {
-            // find the paragraph with the addons text
-            MainDocumentPart mainPart = document.MainDocumentPart;
-
-            Paragraph paragraph = FindTag(mainPart, startAdds);
-            if (paragraph == null)
-            {
-                return;
-            }
-
-
-            for (int index = 0; index < addons.Count; index++)
-            {
-
-                AppendFile currentFile = addons[index];
-
-                List<Paragraph> content = SetupAddonPage(currentFile.document);
-                if (content == null)
-                {
-                    continue;
-                }
-
-                for (int counter = content.Count - 1; counter >= 0; counter--)
-                {
-                    Paragraph currentParagraph = content[counter];
-                    paragraph.InsertAfterSelf(currentParagraph);
-                }
-                if (index < addons.Count - 1)
-                {
-                    Paragraph pageBreak = CreatePageBreak();
-                    paragraph.InsertAfterSelf(pageBreak);
-                }
-
-
-            }
-        }
-
-        private static List<Paragraph> SetupAddonPage(Body document)
-        {
-
-            List<Paragraph> pageParagraphs = new List<Paragraph>();
-            foreach (Paragraph paragraph in document.Descendants<Paragraph>())
-            {
-
-                pageParagraphs.Add((Paragraph)paragraph.Clone());
-
-            }
-
-            return pageParagraphs;
-        }
-
         #endregion
 
         #region helper functions
@@ -686,6 +816,15 @@ namespace InsuranceSummaryMaker.ConvertToDoc
                 return false;
             }
             return true;
+        }
+
+        private static uint GetMaxDocPropertyId(WordprocessingDocument doc)
+        {
+            return doc
+               .MainDocumentPart
+               .RootElement
+               .Descendants<DocProperties>()
+               .Max(x => (uint?)x.Id) ?? 0;
         }
         #endregion
     }
