@@ -32,7 +32,7 @@ namespace InsuranceSummaryMaker.Serialization
             }, Formatting.Indented);
 
             writeJsonOutput(exportPath, result);
-            MessageBox.Show("Saved at path:\n\n" + exportPath);
+            //MessageBox.Show("Saved at path:\n\n" + exportPath);
 
 
         }

@@ -208,7 +208,7 @@ namespace InsuranceSummaryMaker
             }
             else
             {
-                MessageBox.Show("Please select an appendicy.");
+                //MessageBox.Show("Please select an appendicy.");
             }
         }
 
@@ -388,7 +388,7 @@ namespace InsuranceSummaryMaker
             }
             else
             {
-                MessageBox.Show("There is no table selected.");
+                //MessageBox.Show("There is no table selected.");
             }
         }
 
@@ -415,7 +415,7 @@ namespace InsuranceSummaryMaker
             else
             {
                 // display that you should select a table
-                MessageBox.Show("No table is selected.");
+                //MessageBox.Show("No table is selected.");
             }
         }
 
@@ -439,7 +439,7 @@ namespace InsuranceSummaryMaker
             }
             else
             {
-                MessageBox.Show("No column is selected.");
+                //MessageBox.Show("No column is selected.");
             }
         }
 
@@ -554,7 +554,6 @@ namespace InsuranceSummaryMaker
 
         private void startSave()
         {
-            //MessageBox.Show("Validated");
             int currentIndex = this.TableDataViewSelectorBox.SelectedIndex;
 
             if (currentIndex >= 0 && currentIndex < this.tableInformationList.Count)
@@ -605,7 +604,7 @@ namespace InsuranceSummaryMaker
 
             if (currentIndex < 0 || currentIndex >= this.tableInformationList.Count)
             {
-                MessageBox.Show("Please select a table.");
+                //MessageBox.Show("Please select a table.");
                 return;
 
             }
@@ -628,13 +627,13 @@ namespace InsuranceSummaryMaker
 
             if (tableIndex < 0 || tableIndex >= this.tableInformationList.Count)
             {
-                MessageBox.Show("Please select a table.");
+                //MessageBox.Show("Please select a table.");
                 return;
             }
 
             if (columnIndex < 0 || columnIndex >= this.tableInformationList[tableIndex]._columns.Count)
             {
-                MessageBox.Show("Please select a column");
+                //MessageBox.Show("Please select a column");
                 return;
             }
 
@@ -815,7 +814,6 @@ namespace InsuranceSummaryMaker
             int currentIndex = this.KeyProvisionsDataViewSelectorBox.SelectedIndex;
             if (currentIndex < 0 || currentIndex >= this.tableInformationList.Count)
             {
-                MessageBox.Show("No table selected");
                 return;
             }
 
@@ -829,7 +827,7 @@ namespace InsuranceSummaryMaker
             int currentIndex = this.KeyProvisionsDataViewSelectorBox.SelectedIndex;
             if (currentIndex < 0 || currentIndex >= this.tableInformationList.Count)
             {
-                MessageBox.Show("No table selected");
+                return;
             }
 
             int fromRow = this.KeyProvisionsDataView.SelectedCells[0].RowIndex;
@@ -861,7 +859,6 @@ namespace InsuranceSummaryMaker
             int currentIndex = this.TableDataViewSelectorBox.SelectedIndex;
             if (currentIndex < 0 || currentIndex >= this.tableInformationList.Count)
             {
-                MessageBox.Show("No table selected");
                 return;
             }
 
@@ -876,7 +873,7 @@ namespace InsuranceSummaryMaker
             int currentIndex = this.TableDataViewSelectorBox.SelectedIndex;
             if (currentIndex < 0 || currentIndex >= this.tableInformationList.Count)
             {
-                MessageBox.Show("No table selected");
+                return;
             }
 
             int fromRow = this.TableDataGridView.SelectedCells[0].RowIndex;

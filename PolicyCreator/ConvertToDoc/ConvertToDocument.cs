@@ -112,7 +112,7 @@ namespace InsuranceSummaryMaker.ConvertToDoc
                 }
 
             }
-            MessageBox.Show("File saved at: " + exportPath);
+            //MessageBox.Show("File saved at: " + exportPath);
             System.Diagnostics.Process.Start(exportPath);
 
 
@@ -176,9 +176,10 @@ namespace InsuranceSummaryMaker.ConvertToDoc
 
 
         }
-
+        private static uint staticAddonId = 0;
         private static void InsertAddons(List<AppendFile> addons, MainDocumentPart mainPart)
         {
+            ConvertToDocument.staticAddonId = GetMaxDocPropertyId(mainPart);
             // find the paragraph with the addons text
             if (addons == null || addons.Count <= 0)
             {
@@ -187,16 +188,16 @@ namespace InsuranceSummaryMaker.ConvertToDoc
             }
 
             List<Paragraph> paragraphs = findLowestParagraphsWithTag(startAdds, mainPart);
-            
+
 
             foreach (Paragraph paragraph in paragraphs)
             {
-                for (int index = 0; index < addons.Count; index++)
+                for (int index = addons.Count -1; index >= 0; index--)
                 {
 
                     AppendFile currentFile = addons[index];
 
-                    List<Paragraph> content = SetupAddonPage(currentFile.document);
+                    List<OpenXmlElement> content = SetupAddonPage(currentFile.document);
                     if (content == null)
                     {
                         continue;
@@ -204,10 +205,14 @@ namespace InsuranceSummaryMaker.ConvertToDoc
 
                     for (int counter = content.Count - 1; counter >= 0; counter--)
                     {
-                        Paragraph currentParagraph = content[counter];
+                        OpenXmlElement currentParagraph = content[counter];
+                        changeAllElementID(currentParagraph);
+
+                        //uint maxInt = GetMaxDocPropertyId(mainPart);
+
                         paragraph.InsertAfterSelf(currentParagraph);
                     }
-                    if (index < addons.Count - 1)
+                    if (index > 0)
                     {
                         Paragraph pageBreak = CreatePageBreak();
                         paragraph.InsertAfterSelf(pageBreak);
@@ -222,130 +227,58 @@ namespace InsuranceSummaryMaker.ConvertToDoc
 
         }
 
-
-        private static List<Paragraph> SetupAddonPage(Body document)
+        private static void changeAllElementID(OpenXmlElement paragraph)
         {
 
-            List<Paragraph> pageParagraphs = new List<Paragraph>();
-            foreach (Paragraph paragraph in document.Descendants<Paragraph>())
+            foreach (OpenXmlAttribute attribute in paragraph.GetAttributes())
             {
+                if (attribute.LocalName.ToLower().Equals("id"))
+                {
+                    if (!attribute.Value.Equals("0"))
+                    {
 
-                pageParagraphs.Add((Paragraph)paragraph.Clone());
+                        var newAttribute = new OpenXmlAttribute(attribute.LocalName, attribute.NamespaceUri, ++ConvertToDocument.staticAddonId + "");
+                        //element.RemoveAttribute(attribute.LocalName, attribute.NamespaceUri);
+                        paragraph.SetAttribute(newAttribute);
+                    }
 
+                }
             }
-
-            return pageParagraphs;
-        }
-
-        private static void Export(WordprocessingDocument document)
-        {
-            document.Save();
-        }
-        /*#region may delete
-
-        // finds and replaces the tables tag with bunch of pages of tables
-        private static void InsertTables(List<CoverageInformation> tableList, WordprocessingDocument document)
-        {
-
-            MainDocumentPart mainPart = document.MainDocumentPart;
-
-
-            Paragraph paragraph = FindTag(mainPart, startTables);
-            if (paragraph == null)
+            if (paragraph.HasChildren)
             {
-                return;
-            }
-            CreateAllTables(tableList, paragraph);
-
-        }
-
-
-
-        #region export
-        // saves the current document
-        private static void Export(WordprocessingDocument document)
-        {
-            document.Save();
-        }
-
-        #endregion
-
-        #region table Creation
-        // creates and inserts the table page informmation
-       
-        #endregion
-
-
-        public static void InsertPicture(string tag, byte[] image, float aspectRatio, imageTypes type, WordprocessingDocument document)
-        {
-
-
-            Drawing picture = createImageObject(document, image, type, aspectRatio);
-
-
-            ReplaceTagWithImage(tag, picture, document);
-
-        }
-
-
-
-        
-
-
-        
-
-        private static void InsertAddons(List<AppendFile> addons, WordprocessingDocument document)
-        {
-            // find the paragraph with the addons text
-            MainDocumentPart mainPart = document.MainDocumentPart;
-
-            Paragraph paragraph = FindTag(mainPart, startAdds);
-            if (paragraph == null)
-            {
-                return;
+                foreach (OpenXmlElement child in paragraph.Elements())
+                {
+                    changeAllElementID(child);
+                }
             }
 
 
-            for (int index = 0; index < addons.Count; index++)
+        }
+
+
+        private static List<OpenXmlElement> SetupAddonPage(Body document)
+        {
+
+            List<OpenXmlElement> pageParagraphs = new List<OpenXmlElement>();
+            foreach (OpenXmlElement paragraph in document.Elements())
             {
 
-                AppendFile currentFile = addons[index];
-
-                List<Paragraph> content = SetupAddonPage(currentFile.document);
-                if (content == null)
+                if (paragraph.LocalName.ToLower().Equals("sectpr"))
                 {
                     continue;
                 }
-
-                for (int counter = content.Count - 1; counter >= 0; counter--)
-                {
-                    Paragraph currentParagraph = content[counter];
-                    paragraph.InsertAfterSelf(currentParagraph);
-                }
-                if (index < addons.Count - 1)
-                {
-                    Paragraph pageBreak = CreatePageBreak();
-                    paragraph.InsertAfterSelf(pageBreak);
-                }
-
-
-            }
-        }
-
-        private static List<Paragraph> SetupAddonPage(Body document)
-        {
-
-            List<Paragraph> pageParagraphs = new List<Paragraph>();
-            foreach (Paragraph paragraph in document.Descendants<Paragraph>())
-            {
-
-                pageParagraphs.Add((Paragraph)paragraph.Clone());
+                pageParagraphs.Add((OpenXmlElement)paragraph.Clone());
 
             }
 
             return pageParagraphs;
         }
-        #endregion*/
+
+        private static void Export(WordprocessingDocument document)
+        {
+            document.Save();
+        }
+
 
 
         #region find Tag Method
@@ -508,7 +441,7 @@ namespace InsuranceSummaryMaker.ConvertToDoc
             }
 
 
-            uint max = GetMaxDocPropertyId(document); // gets the max id
+            uint max = GetMaxDocPropertyId(document.MainDocumentPart); // gets the max id
             int maxWidth = 300;
             int maxHeight = 150;
 
@@ -622,10 +555,10 @@ namespace InsuranceSummaryMaker.ConvertToDoc
 
                 if (columns == null || rows == null || keyProvisions == null || (columns.Count <= 0 && rows.Count <= 0 && keyProvisions.Count <= 0))
                 {
-                    if(index == 0)
+                    if (index == 0)
                     {
                         //we are at the last index
-                        if(lastPageBreak != null)
+                        if (lastPageBreak != null)
                         {
                             lastPageBreak.Remove();
                         }
@@ -759,7 +692,7 @@ namespace InsuranceSummaryMaker.ConvertToDoc
                 {
                     Val = ShadingPatternValues.Clear,
                     Color = "auto", // You can specify a color here, e.g., "auto", "FF0000" (hex color code), etc.
-                    Fill = "lightBlue", // Use the color name or a known color value
+                    Fill = "lightgrey", // Use the color name or a known color value
                 };
 
                 TableCellMargin cellMargin = new TableCellMargin()
@@ -818,37 +751,6 @@ namespace InsuranceSummaryMaker.ConvertToDoc
             return cell;
         }
 
-        //meant for mergcells
-/*        private static TableCell CreateCell(string text, int columnWidth)
-        {
-            TableCell cell = new TableCell();
-            Paragraph p = new Paragraph();
-
-
-            cell.Append(new GridSpan { Val = columnWidth });
-
-
-            string[] split = text.Split('\n');
-            for (int index = 0; index < split.Length; index++)
-            {
-                string current = split[index];
-                Run run = new Run(new Text(current));
-
-
-
-
-                if (index < split.Length - 1)
-                {
-                    run.AppendChild(new Break());
-                }
-
-                p.Append(run);
-            }
-
-            cell.Append(p);
-
-            return cell;
-        }*/
         #endregion
         #endregion
 
@@ -863,10 +765,9 @@ namespace InsuranceSummaryMaker.ConvertToDoc
             return true;
         }
 
-        private static uint GetMaxDocPropertyId(WordprocessingDocument doc)
+        private static uint GetMaxDocPropertyId(MainDocumentPart doc)
         {
             return doc
-               .MainDocumentPart
                .RootElement
                .Descendants<DocProperties>()
                .Max(x => (uint?)x.Id) ?? 0;
