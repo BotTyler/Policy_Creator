@@ -48,6 +48,7 @@ namespace InsuranceSummaryMaker.CustomControls.CustomMessageBox
             // 
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel2;
+            this.splitContainer1.IsSplitterFixed = true;
             this.splitContainer1.Location = new System.Drawing.Point(8, 6);
             this.splitContainer1.Margin = new System.Windows.Forms.Padding(4);
             this.splitContainer1.Name = "splitContainer1";
@@ -62,9 +63,10 @@ namespace InsuranceSummaryMaker.CustomControls.CustomMessageBox
             // 
             this.splitContainer1.Panel2.Controls.Add(this.flowLayoutPanel1);
             this.splitContainer1.Size = new System.Drawing.Size(379, 150);
-            this.splitContainer1.SplitterDistance = 97;
+            this.splitContainer1.SplitterDistance = 96;
             this.splitContainer1.SplitterWidth = 5;
             this.splitContainer1.TabIndex = 0;
+            this.splitContainer1.TabStop = false;
             // 
             // messageLabel
             // 
@@ -98,7 +100,7 @@ namespace InsuranceSummaryMaker.CustomControls.CustomMessageBox
             this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(2);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(379, 48);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(379, 49);
             this.flowLayoutPanel1.TabIndex = 0;
             // 
             // AddButton

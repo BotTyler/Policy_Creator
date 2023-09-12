@@ -55,12 +55,12 @@ namespace InsuranceSummaryMaker.PolicyInformation
 
         public string getFormattedStartDate()
         {
-            return _start.ToLongDateString();
+            return _start.ToString("MM/dd/yyyy");
         }
 
         public string getFormattedEndDate()
         {
-            return _end.ToLongDateString();
+            return _end.ToString("MM/dd/yyyy");
         }
 
         public override string ToString()

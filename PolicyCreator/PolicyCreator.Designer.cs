@@ -33,8 +33,8 @@ namespace InsuranceSummaryMaker
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PolicyCreator));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle15 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle16 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.BuisnessInformationTab = new System.Windows.Forms.TabPage();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
@@ -74,10 +74,8 @@ namespace InsuranceSummaryMaker
             this.flowLayoutPanel4 = new System.Windows.Forms.FlowLayoutPanel();
             this.upTableCreateButton = new System.Windows.Forms.Button();
             this.downTableCreateButton = new System.Windows.Forms.Button();
-            this.TableCreatePanelListBox = new InsuranceSummaryMaker.CustomControls.CustomPanel();
             this.splitContainer8 = new System.Windows.Forms.SplitContainer();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
-            this.ColumnsCreatePanelListView = new InsuranceSummaryMaker.CustomControls.CustomPanel();
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
             this.AddColumnButton = new System.Windows.Forms.Button();
             this.renameColumnButton = new System.Windows.Forms.Button();
@@ -110,9 +108,8 @@ namespace InsuranceSummaryMaker
             this.ExportTab = new System.Windows.Forms.TabPage();
             this.panel1 = new System.Windows.Forms.Panel();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.appendiciesLabelBox = new InsuranceSummaryMaker.CustomControls.CustomPanel();
             this.panel5 = new System.Windows.Forms.Panel();
-            this.flowLayoutPanel6 = new System.Windows.Forms.FlowLayoutPanel();
+            this.splitContainer5 = new System.Windows.Forms.SplitContainer();
             this.AppendiciesAddButton = new System.Windows.Forms.Button();
             this.AppendiciesDeleteButton = new System.Windows.Forms.Button();
             this.flowLayoutPanel5 = new System.Windows.Forms.FlowLayoutPanel();
@@ -129,6 +126,9 @@ namespace InsuranceSummaryMaker
             this.generateProposalToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveMyFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.openImageDialog = new System.Windows.Forms.OpenFileDialog();
+            this.TableCreatePanelListBox = new InsuranceSummaryMaker.CustomControls.CustomPanel();
+            this.ColumnsCreatePanelListView = new InsuranceSummaryMaker.CustomControls.CustomPanel();
+            this.appendiciesLabelBox = new InsuranceSummaryMaker.CustomControls.CustomPanel();
             this.tabControl1.SuspendLayout();
             this.BuisnessInformationTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
@@ -184,7 +184,10 @@ namespace InsuranceSummaryMaker
             this.panel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.panel5.SuspendLayout();
-            this.flowLayoutPanel6.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer5)).BeginInit();
+            this.splitContainer5.Panel1.SuspendLayout();
+            this.splitContainer5.Panel2.SuspendLayout();
+            this.splitContainer5.SuspendLayout();
             this.flowLayoutPanel5.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -202,7 +205,7 @@ namespace InsuranceSummaryMaker
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.Padding = new System.Drawing.Point(12, 9);
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(914, 433);
+            this.tabControl1.Size = new System.Drawing.Size(934, 433);
             this.tabControl1.TabIndex = 0;
             this.tabControl1.Tag = "";
             this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
@@ -214,7 +217,7 @@ namespace InsuranceSummaryMaker
             this.BuisnessInformationTab.Location = new System.Drawing.Point(4, 39);
             this.BuisnessInformationTab.Name = "BuisnessInformationTab";
             this.BuisnessInformationTab.Padding = new System.Windows.Forms.Padding(3);
-            this.BuisnessInformationTab.Size = new System.Drawing.Size(906, 390);
+            this.BuisnessInformationTab.Size = new System.Drawing.Size(926, 390);
             this.BuisnessInformationTab.TabIndex = 1;
             this.BuisnessInformationTab.Text = "Buisness Information";
             // 
@@ -257,8 +260,8 @@ namespace InsuranceSummaryMaker
             this.splitContainer2.Panel2.Controls.Add(this.BuisnessNameTextBox);
             this.splitContainer2.Panel2.Controls.Add(this.label11);
             this.splitContainer2.Panel2.Controls.Add(this.label5);
-            this.splitContainer2.Size = new System.Drawing.Size(900, 384);
-            this.splitContainer2.SplitterDistance = 424;
+            this.splitContainer2.Size = new System.Drawing.Size(920, 384);
+            this.splitContainer2.SplitterDistance = 431;
             this.splitContainer2.SplitterWidth = 3;
             this.splitContainer2.TabIndex = 1;
             this.splitContainer2.TabStop = false;
@@ -270,7 +273,7 @@ namespace InsuranceSummaryMaker
             this.AgentBusinessNameTextBox.Location = new System.Drawing.Point(105, 214);
             this.AgentBusinessNameTextBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.AgentBusinessNameTextBox.Name = "AgentBusinessNameTextBox";
-            this.AgentBusinessNameTextBox.Size = new System.Drawing.Size(303, 26);
+            this.AgentBusinessNameTextBox.Size = new System.Drawing.Size(310, 26);
             this.AgentBusinessNameTextBox.TabIndex = 12;
             // 
             // label16
@@ -293,7 +296,7 @@ namespace InsuranceSummaryMaker
             this.AgentWebsiteTextBox.Location = new System.Drawing.Point(105, 179);
             this.AgentWebsiteTextBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.AgentWebsiteTextBox.Name = "AgentWebsiteTextBox";
-            this.AgentWebsiteTextBox.Size = new System.Drawing.Size(303, 26);
+            this.AgentWebsiteTextBox.Size = new System.Drawing.Size(310, 26);
             this.AgentWebsiteTextBox.TabIndex = 10;
             // 
             // label10
@@ -316,7 +319,7 @@ namespace InsuranceSummaryMaker
             this.AgentPhoneNumberTextBox.Location = new System.Drawing.Point(105, 142);
             this.AgentPhoneNumberTextBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.AgentPhoneNumberTextBox.Name = "AgentPhoneNumberTextBox";
-            this.AgentPhoneNumberTextBox.Size = new System.Drawing.Size(303, 26);
+            this.AgentPhoneNumberTextBox.Size = new System.Drawing.Size(310, 26);
             this.AgentPhoneNumberTextBox.TabIndex = 8;
             // 
             // label9
@@ -339,7 +342,7 @@ namespace InsuranceSummaryMaker
             this.AgentEmailTextBox.Location = new System.Drawing.Point(105, 106);
             this.AgentEmailTextBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.AgentEmailTextBox.Name = "AgentEmailTextBox";
-            this.AgentEmailTextBox.Size = new System.Drawing.Size(303, 26);
+            this.AgentEmailTextBox.Size = new System.Drawing.Size(310, 26);
             this.AgentEmailTextBox.TabIndex = 6;
             // 
             // label8
@@ -362,7 +365,7 @@ namespace InsuranceSummaryMaker
             this.AgentPositionTextBox.Location = new System.Drawing.Point(105, 69);
             this.AgentPositionTextBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.AgentPositionTextBox.Name = "AgentPositionTextBox";
-            this.AgentPositionTextBox.Size = new System.Drawing.Size(303, 26);
+            this.AgentPositionTextBox.Size = new System.Drawing.Size(310, 26);
             this.AgentPositionTextBox.TabIndex = 4;
             // 
             // label7
@@ -385,7 +388,7 @@ namespace InsuranceSummaryMaker
             this.AgentNameTextBox.Location = new System.Drawing.Point(105, 35);
             this.AgentNameTextBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.AgentNameTextBox.Name = "AgentNameTextBox";
-            this.AgentNameTextBox.Size = new System.Drawing.Size(303, 26);
+            this.AgentNameTextBox.Size = new System.Drawing.Size(310, 26);
             this.AgentNameTextBox.TabIndex = 2;
             // 
             // label6
@@ -407,7 +410,7 @@ namespace InsuranceSummaryMaker
             this.label4.Font = new System.Drawing.Font("Arial", 13.8F);
             this.label4.Location = new System.Drawing.Point(0, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(424, 28);
+            this.label4.Size = new System.Drawing.Size(431, 28);
             this.label4.TabIndex = 0;
             this.label4.Text = "Agent Information";
             this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -428,8 +431,8 @@ namespace InsuranceSummaryMaker
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.BrowseImageLocation);
-            this.splitContainer1.Size = new System.Drawing.Size(466, 40);
-            this.splitContainer1.SplitterDistance = 422;
+            this.splitContainer1.Size = new System.Drawing.Size(482, 40);
+            this.splitContainer1.SplitterDistance = 435;
             this.splitContainer1.TabIndex = 13;
             // 
             // label1
@@ -437,7 +440,7 @@ namespace InsuranceSummaryMaker
             this.label1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label1.Location = new System.Drawing.Point(0, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(422, 40);
+            this.label1.Size = new System.Drawing.Size(435, 40);
             this.label1.TabIndex = 0;
             this.label1.Text = "Image:";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -452,7 +455,7 @@ namespace InsuranceSummaryMaker
             this.BrowseImageLocation.Margin = new System.Windows.Forms.Padding(2);
             this.BrowseImageLocation.Name = "BrowseImageLocation";
             this.BrowseImageLocation.Padding = new System.Windows.Forms.Padding(5);
-            this.BrowseImageLocation.Size = new System.Drawing.Size(40, 40);
+            this.BrowseImageLocation.Size = new System.Drawing.Size(43, 40);
             this.BrowseImageLocation.TabIndex = 13;
             this.BrowseImageLocation.UseVisualStyleBackColor = true;
             this.BrowseImageLocation.Click += new System.EventHandler(this.BrowseImageLocation_Click);
@@ -465,7 +468,7 @@ namespace InsuranceSummaryMaker
             this.businessPictureBox.BackColor = System.Drawing.Color.DimGray;
             this.businessPictureBox.Location = new System.Drawing.Point(3, 240);
             this.businessPictureBox.Name = "businessPictureBox";
-            this.businessPictureBox.Size = new System.Drawing.Size(479, 142);
+            this.businessPictureBox.Size = new System.Drawing.Size(480, 142);
             this.businessPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.businessPictureBox.TabIndex = 14;
             this.businessPictureBox.TabStop = false;
@@ -478,7 +481,7 @@ namespace InsuranceSummaryMaker
             this.BusinessEndDate.Location = new System.Drawing.Point(130, 143);
             this.BusinessEndDate.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.BusinessEndDate.Name = "BusinessEndDate";
-            this.BusinessEndDate.Size = new System.Drawing.Size(339, 26);
+            this.BusinessEndDate.Size = new System.Drawing.Size(355, 26);
             this.BusinessEndDate.TabIndex = 11;
             // 
             // BusinessStartDate
@@ -489,7 +492,7 @@ namespace InsuranceSummaryMaker
             this.BusinessStartDate.Location = new System.Drawing.Point(130, 106);
             this.BusinessStartDate.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.BusinessStartDate.Name = "BusinessStartDate";
-            this.BusinessStartDate.Size = new System.Drawing.Size(339, 26);
+            this.BusinessStartDate.Size = new System.Drawing.Size(355, 26);
             this.BusinessStartDate.TabIndex = 10;
             // 
             // label14
@@ -525,7 +528,7 @@ namespace InsuranceSummaryMaker
             this.BusinessLegalNameTextBox.Location = new System.Drawing.Point(130, 69);
             this.BusinessLegalNameTextBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.BusinessLegalNameTextBox.Name = "BusinessLegalNameTextBox";
-            this.BusinessLegalNameTextBox.Size = new System.Drawing.Size(339, 26);
+            this.BusinessLegalNameTextBox.Size = new System.Drawing.Size(355, 26);
             this.BusinessLegalNameTextBox.TabIndex = 6;
             // 
             // label12
@@ -548,7 +551,7 @@ namespace InsuranceSummaryMaker
             this.BuisnessNameTextBox.Location = new System.Drawing.Point(130, 35);
             this.BuisnessNameTextBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.BuisnessNameTextBox.Name = "BuisnessNameTextBox";
-            this.BuisnessNameTextBox.Size = new System.Drawing.Size(339, 26);
+            this.BuisnessNameTextBox.Size = new System.Drawing.Size(355, 26);
             this.BuisnessNameTextBox.TabIndex = 4;
             // 
             // label11
@@ -570,7 +573,7 @@ namespace InsuranceSummaryMaker
             this.label5.Font = new System.Drawing.Font("Arial", 13.8F);
             this.label5.Location = new System.Drawing.Point(0, 0);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(473, 28);
+            this.label5.Size = new System.Drawing.Size(486, 28);
             this.label5.TabIndex = 1;
             this.label5.Text = "Business Insured";
             this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -582,7 +585,7 @@ namespace InsuranceSummaryMaker
             this.Tables.Location = new System.Drawing.Point(4, 39);
             this.Tables.Name = "Tables";
             this.Tables.Padding = new System.Windows.Forms.Padding(3);
-            this.Tables.Size = new System.Drawing.Size(906, 390);
+            this.Tables.Size = new System.Drawing.Size(926, 390);
             this.Tables.TabIndex = 4;
             this.Tables.Text = "Tables";
             // 
@@ -603,8 +606,8 @@ namespace InsuranceSummaryMaker
             // 
             this.splitContainer6.Panel2.BackColor = System.Drawing.Color.DarkGray;
             this.splitContainer6.Panel2.Controls.Add(this.splitContainer8);
-            this.splitContainer6.Size = new System.Drawing.Size(900, 384);
-            this.splitContainer6.SplitterDistance = 306;
+            this.splitContainer6.Size = new System.Drawing.Size(920, 384);
+            this.splitContainer6.SplitterDistance = 311;
             this.splitContainer6.SplitterWidth = 3;
             this.splitContainer6.TabIndex = 0;
             this.splitContainer6.TabStop = false;
@@ -613,25 +616,25 @@ namespace InsuranceSummaryMaker
             // 
             this.TableCreateGroupBox.Controls.Add(this.flowLayoutPanel1);
             this.TableCreateGroupBox.Controls.Add(this.TableCreatePanelListBox);
+            this.TableCreateGroupBox.Controls.Add(this.flowLayoutPanel4);
             this.TableCreateGroupBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.TableCreateGroupBox.Location = new System.Drawing.Point(0, 0);
             this.TableCreateGroupBox.Name = "TableCreateGroupBox";
-            this.TableCreateGroupBox.Size = new System.Drawing.Size(306, 384);
+            this.TableCreateGroupBox.Size = new System.Drawing.Size(311, 384);
             this.TableCreateGroupBox.TabIndex = 0;
             this.TableCreateGroupBox.TabStop = false;
             this.TableCreateGroupBox.Text = "Table Create";
             // 
             // flowLayoutPanel1
             // 
+            this.flowLayoutPanel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.flowLayoutPanel1.AutoSize = true;
             this.flowLayoutPanel1.Controls.Add(this.AddNewTableButton);
             this.flowLayoutPanel1.Controls.Add(this.renameTableButton);
             this.flowLayoutPanel1.Controls.Add(this.DeleteTableButton);
-            this.flowLayoutPanel1.Controls.Add(this.flowLayoutPanel4);
-            this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.flowLayoutPanel1.Location = new System.Drawing.Point(3, 343);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(300, 38);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(232, 38);
             this.flowLayoutPanel1.TabIndex = 1;
             // 
             // AddNewTableButton
@@ -666,10 +669,11 @@ namespace InsuranceSummaryMaker
             // 
             // flowLayoutPanel4
             // 
+            this.flowLayoutPanel4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.flowLayoutPanel4.AutoSize = true;
             this.flowLayoutPanel4.Controls.Add(this.upTableCreateButton);
             this.flowLayoutPanel4.Controls.Add(this.downTableCreateButton);
-            this.flowLayoutPanel4.Location = new System.Drawing.Point(228, 3);
+            this.flowLayoutPanel4.Location = new System.Drawing.Point(240, 347);
             this.flowLayoutPanel4.Name = "flowLayoutPanel4";
             this.flowLayoutPanel4.Size = new System.Drawing.Size(64, 32);
             this.flowLayoutPanel4.TabIndex = 1;
@@ -698,19 +702,6 @@ namespace InsuranceSummaryMaker
             this.downTableCreateButton.UseVisualStyleBackColor = true;
             this.downTableCreateButton.Click += new System.EventHandler(this.downTableCreateButton_Click);
             // 
-            // TableCreatePanelListBox
-            // 
-            this.TableCreatePanelListBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.TableCreatePanelListBox.FormattingEnabled = true;
-            this.TableCreatePanelListBox.ItemHeight = 18;
-            this.TableCreatePanelListBox.Location = new System.Drawing.Point(3, 21);
-            this.TableCreatePanelListBox.Name = "TableCreatePanelListBox";
-            this.TableCreatePanelListBox.Size = new System.Drawing.Size(300, 310);
-            this.TableCreatePanelListBox.TabIndex = 1;
-            this.TableCreatePanelListBox.SelectedIndexChanged += new System.EventHandler(this.TableCreatePanelListBox_SelectedValueChanged);
-            // 
             // splitContainer8
             // 
             this.splitContainer8.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -725,8 +716,8 @@ namespace InsuranceSummaryMaker
             // splitContainer8.Panel2
             // 
             this.splitContainer8.Panel2.Controls.Add(this.groupBox6);
-            this.splitContainer8.Size = new System.Drawing.Size(591, 384);
-            this.splitContainer8.SplitterDistance = 306;
+            this.splitContainer8.Size = new System.Drawing.Size(606, 384);
+            this.splitContainer8.SplitterDistance = 311;
             this.splitContainer8.SplitterWidth = 3;
             this.splitContainer8.TabIndex = 0;
             // 
@@ -734,37 +725,25 @@ namespace InsuranceSummaryMaker
             // 
             this.groupBox5.Controls.Add(this.ColumnsCreatePanelListView);
             this.groupBox5.Controls.Add(this.flowLayoutPanel2);
+            this.groupBox5.Controls.Add(this.flowLayoutPanel3);
             this.groupBox5.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox5.Location = new System.Drawing.Point(0, 0);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(306, 384);
+            this.groupBox5.Size = new System.Drawing.Size(311, 384);
             this.groupBox5.TabIndex = 1;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Columns";
             // 
-            // ColumnsCreatePanelListView
-            // 
-            this.ColumnsCreatePanelListView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.ColumnsCreatePanelListView.FormattingEnabled = true;
-            this.ColumnsCreatePanelListView.ItemHeight = 18;
-            this.ColumnsCreatePanelListView.Location = new System.Drawing.Point(1, 21);
-            this.ColumnsCreatePanelListView.Name = "ColumnsCreatePanelListView";
-            this.ColumnsCreatePanelListView.Size = new System.Drawing.Size(301, 310);
-            this.ColumnsCreatePanelListView.TabIndex = 1;
-            // 
             // flowLayoutPanel2
             // 
+            this.flowLayoutPanel2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.flowLayoutPanel2.AutoSize = true;
             this.flowLayoutPanel2.Controls.Add(this.AddColumnButton);
             this.flowLayoutPanel2.Controls.Add(this.renameColumnButton);
             this.flowLayoutPanel2.Controls.Add(this.DeleteColumnButton);
-            this.flowLayoutPanel2.Controls.Add(this.flowLayoutPanel3);
-            this.flowLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.flowLayoutPanel2.Location = new System.Drawing.Point(3, 343);
             this.flowLayoutPanel2.Name = "flowLayoutPanel2";
-            this.flowLayoutPanel2.Size = new System.Drawing.Size(300, 38);
+            this.flowLayoutPanel2.Size = new System.Drawing.Size(229, 36);
             this.flowLayoutPanel2.TabIndex = 2;
             // 
             // AddColumnButton
@@ -800,10 +779,13 @@ namespace InsuranceSummaryMaker
             // 
             // flowLayoutPanel3
             // 
+            this.flowLayoutPanel3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.flowLayoutPanel3.AutoSize = true;
             this.flowLayoutPanel3.Controls.Add(this.upColumnsCreateButton);
             this.flowLayoutPanel3.Controls.Add(this.downColumnsCreateButton);
-            this.flowLayoutPanel3.Location = new System.Drawing.Point(228, 3);
+            this.flowLayoutPanel3.Font = new System.Drawing.Font("Arial", 2F);
+            this.flowLayoutPanel3.Location = new System.Drawing.Point(243, 346);
+            this.flowLayoutPanel3.Margin = new System.Windows.Forms.Padding(0);
             this.flowLayoutPanel3.Name = "flowLayoutPanel3";
             this.flowLayoutPanel3.Size = new System.Drawing.Size(64, 32);
             this.flowLayoutPanel3.TabIndex = 1;
@@ -840,7 +822,7 @@ namespace InsuranceSummaryMaker
             this.groupBox6.Controls.Add(this.CarrierRichTextBox);
             this.groupBox6.Location = new System.Drawing.Point(0, 0);
             this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(279, 381);
+            this.groupBox6.Size = new System.Drawing.Size(292, 380);
             this.groupBox6.TabIndex = 0;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "Carrier Information";
@@ -850,7 +832,7 @@ namespace InsuranceSummaryMaker
             this.CarrierRichTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.CarrierRichTextBox.Location = new System.Drawing.Point(3, 22);
             this.CarrierRichTextBox.Name = "CarrierRichTextBox";
-            this.CarrierRichTextBox.Size = new System.Drawing.Size(273, 356);
+            this.CarrierRichTextBox.Size = new System.Drawing.Size(286, 355);
             this.CarrierRichTextBox.TabIndex = 0;
             this.CarrierRichTextBox.Text = "";
             this.CarrierRichTextBox.Validated += new System.EventHandler(this.CarrierRichTextBox_Validated);
@@ -861,7 +843,7 @@ namespace InsuranceSummaryMaker
             this.TableData.Controls.Add(this.splitContainer10);
             this.TableData.Location = new System.Drawing.Point(4, 39);
             this.TableData.Name = "TableData";
-            this.TableData.Size = new System.Drawing.Size(906, 390);
+            this.TableData.Size = new System.Drawing.Size(926, 390);
             this.TableData.TabIndex = 5;
             this.TableData.Tag = "tableData";
             this.TableData.Text = "Table Data";
@@ -883,7 +865,7 @@ namespace InsuranceSummaryMaker
             // splitContainer10.Panel2
             // 
             this.splitContainer10.Panel2.Controls.Add(this.TableDataGridView);
-            this.splitContainer10.Size = new System.Drawing.Size(906, 390);
+            this.splitContainer10.Size = new System.Drawing.Size(926, 390);
             this.splitContainer10.SplitterDistance = 58;
             this.splitContainer10.SplitterWidth = 3;
             this.splitContainer10.TabIndex = 0;
@@ -894,9 +876,9 @@ namespace InsuranceSummaryMaker
             this.flowLayoutPanel7.AutoSize = true;
             this.flowLayoutPanel7.Controls.Add(this.RowMoveUpButton);
             this.flowLayoutPanel7.Controls.Add(this.RowMoveDownButton);
-            this.flowLayoutPanel7.Location = new System.Drawing.Point(789, 5);
+            this.flowLayoutPanel7.Location = new System.Drawing.Point(826, 5);
             this.flowLayoutPanel7.Name = "flowLayoutPanel7";
-            this.flowLayoutPanel7.Size = new System.Drawing.Size(109, 50);
+            this.flowLayoutPanel7.Size = new System.Drawing.Size(92, 46);
             this.flowLayoutPanel7.TabIndex = 2;
             // 
             // RowMoveUpButton
@@ -931,7 +913,7 @@ namespace InsuranceSummaryMaker
             this.panel4.Controls.Add(this.splitContainer11);
             this.panel4.Location = new System.Drawing.Point(234, 0);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(398, 57);
+            this.panel4.Size = new System.Drawing.Size(419, 57);
             this.panel4.TabIndex = 0;
             // 
             // splitContainer11
@@ -948,7 +930,7 @@ namespace InsuranceSummaryMaker
             // splitContainer11.Panel2
             // 
             this.splitContainer11.Panel2.Controls.Add(this.TableDataViewSelectorBox);
-            this.splitContainer11.Size = new System.Drawing.Size(398, 57);
+            this.splitContainer11.Size = new System.Drawing.Size(419, 57);
             this.splitContainer11.SplitterDistance = 95;
             this.splitContainer11.SplitterWidth = 3;
             this.splitContainer11.TabIndex = 0;
@@ -972,7 +954,7 @@ namespace InsuranceSummaryMaker
             this.TableDataViewSelectorBox.FormattingEnabled = true;
             this.TableDataViewSelectorBox.Location = new System.Drawing.Point(2, 11);
             this.TableDataViewSelectorBox.Name = "TableDataViewSelectorBox";
-            this.TableDataViewSelectorBox.Size = new System.Drawing.Size(297, 26);
+            this.TableDataViewSelectorBox.Size = new System.Drawing.Size(316, 26);
             this.TableDataViewSelectorBox.TabIndex = 0;
             this.TableDataViewSelectorBox.SelectedIndexChanged += new System.EventHandler(this.TableDataViewSelectorBox_SelectedIndexChanged);
             // 
@@ -982,14 +964,14 @@ namespace InsuranceSummaryMaker
             this.TableDataGridView.AllowUserToOrderColumns = true;
             this.TableDataGridView.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.TableDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Arial", 12F);
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.TableDataGridView.DefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle15.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle15.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle15.Font = new System.Drawing.Font("Arial", 12F);
+            dataGridViewCellStyle15.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle15.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle15.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle15.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.TableDataGridView.DefaultCellStyle = dataGridViewCellStyle15;
             this.TableDataGridView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.TableDataGridView.Location = new System.Drawing.Point(0, 0);
             this.TableDataGridView.MultiSelect = false;
@@ -997,7 +979,7 @@ namespace InsuranceSummaryMaker
             this.TableDataGridView.RowHeadersWidth = 51;
             this.TableDataGridView.RowTemplate.Height = 50;
             this.TableDataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.TableDataGridView.Size = new System.Drawing.Size(906, 329);
+            this.TableDataGridView.Size = new System.Drawing.Size(926, 329);
             this.TableDataGridView.TabIndex = 1;
             this.TableDataGridView.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.TableDataGridView_CellEndEdit);
             // 
@@ -1006,7 +988,7 @@ namespace InsuranceSummaryMaker
             this.keyprovisions.Controls.Add(this.splitContainer3);
             this.keyprovisions.Location = new System.Drawing.Point(4, 39);
             this.keyprovisions.Name = "keyprovisions";
-            this.keyprovisions.Size = new System.Drawing.Size(906, 390);
+            this.keyprovisions.Size = new System.Drawing.Size(926, 390);
             this.keyprovisions.TabIndex = 6;
             this.keyprovisions.Tag = "keyProvisions";
             this.keyprovisions.Text = "Key Provisions";
@@ -1029,7 +1011,7 @@ namespace InsuranceSummaryMaker
             // splitContainer3.Panel2
             // 
             this.splitContainer3.Panel2.Controls.Add(this.KeyProvisionsDataView);
-            this.splitContainer3.Size = new System.Drawing.Size(906, 390);
+            this.splitContainer3.Size = new System.Drawing.Size(926, 390);
             this.splitContainer3.SplitterDistance = 58;
             this.splitContainer3.SplitterWidth = 3;
             this.splitContainer3.TabIndex = 1;
@@ -1040,9 +1022,9 @@ namespace InsuranceSummaryMaker
             this.flowLayoutPanel8.AutoSize = true;
             this.flowLayoutPanel8.Controls.Add(this.KeyProvisionsDataViewUp);
             this.flowLayoutPanel8.Controls.Add(this.KeyProvisionsDataViewDown);
-            this.flowLayoutPanel8.Location = new System.Drawing.Point(789, 5);
+            this.flowLayoutPanel8.Location = new System.Drawing.Point(826, 5);
             this.flowLayoutPanel8.Name = "flowLayoutPanel8";
-            this.flowLayoutPanel8.Size = new System.Drawing.Size(109, 50);
+            this.flowLayoutPanel8.Size = new System.Drawing.Size(92, 46);
             this.flowLayoutPanel8.TabIndex = 2;
             // 
             // KeyProvisionsDataViewUp
@@ -1077,7 +1059,7 @@ namespace InsuranceSummaryMaker
             this.panel2.Controls.Add(this.splitContainer4);
             this.panel2.Location = new System.Drawing.Point(158, 0);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(474, 57);
+            this.panel2.Size = new System.Drawing.Size(494, 57);
             this.panel2.TabIndex = 0;
             // 
             // splitContainer4
@@ -1094,7 +1076,7 @@ namespace InsuranceSummaryMaker
             // splitContainer4.Panel2
             // 
             this.splitContainer4.Panel2.Controls.Add(this.KeyProvisionsDataViewSelectorBox);
-            this.splitContainer4.Size = new System.Drawing.Size(474, 57);
+            this.splitContainer4.Size = new System.Drawing.Size(494, 57);
             this.splitContainer4.SplitterDistance = 171;
             this.splitContainer4.SplitterWidth = 3;
             this.splitContainer4.TabIndex = 0;
@@ -1118,7 +1100,7 @@ namespace InsuranceSummaryMaker
             this.KeyProvisionsDataViewSelectorBox.FormattingEnabled = true;
             this.KeyProvisionsDataViewSelectorBox.Location = new System.Drawing.Point(2, 11);
             this.KeyProvisionsDataViewSelectorBox.Name = "KeyProvisionsDataViewSelectorBox";
-            this.KeyProvisionsDataViewSelectorBox.Size = new System.Drawing.Size(297, 26);
+            this.KeyProvisionsDataViewSelectorBox.Size = new System.Drawing.Size(315, 26);
             this.KeyProvisionsDataViewSelectorBox.TabIndex = 0;
             this.KeyProvisionsDataViewSelectorBox.SelectedIndexChanged += new System.EventHandler(this.KeyProvisionsDataViewSelectorBox_SelectedIndexChanged);
             // 
@@ -1128,14 +1110,14 @@ namespace InsuranceSummaryMaker
             this.KeyProvisionsDataView.AllowUserToOrderColumns = true;
             this.KeyProvisionsDataView.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.KeyProvisionsDataView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Arial", 12F);
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.KeyProvisionsDataView.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle16.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle16.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle16.Font = new System.Drawing.Font("Arial", 12F);
+            dataGridViewCellStyle16.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle16.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle16.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle16.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.KeyProvisionsDataView.DefaultCellStyle = dataGridViewCellStyle16;
             this.KeyProvisionsDataView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.KeyProvisionsDataView.Location = new System.Drawing.Point(0, 0);
             this.KeyProvisionsDataView.MultiSelect = false;
@@ -1143,7 +1125,7 @@ namespace InsuranceSummaryMaker
             this.KeyProvisionsDataView.RowHeadersWidth = 51;
             this.KeyProvisionsDataView.RowTemplate.Height = 50;
             this.KeyProvisionsDataView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.KeyProvisionsDataView.Size = new System.Drawing.Size(906, 329);
+            this.KeyProvisionsDataView.Size = new System.Drawing.Size(926, 329);
             this.KeyProvisionsDataView.TabIndex = 1;
             this.KeyProvisionsDataView.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.KeyProvisionsDataView_CellEndEdit);
             // 
@@ -1155,7 +1137,7 @@ namespace InsuranceSummaryMaker
             this.ExportTab.Location = new System.Drawing.Point(4, 39);
             this.ExportTab.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.ExportTab.Name = "ExportTab";
-            this.ExportTab.Size = new System.Drawing.Size(906, 390);
+            this.ExportTab.Size = new System.Drawing.Size(926, 390);
             this.ExportTab.TabIndex = 3;
             this.ExportTab.Tag = "";
             this.ExportTab.Text = "Appendicies";
@@ -1166,7 +1148,7 @@ namespace InsuranceSummaryMaker
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(902, 386);
+            this.panel1.Size = new System.Drawing.Size(922, 386);
             this.panel1.TabIndex = 0;
             // 
             // groupBox1
@@ -1178,46 +1160,48 @@ namespace InsuranceSummaryMaker
             this.groupBox1.Controls.Add(this.panel5);
             this.groupBox1.Location = new System.Drawing.Point(257, 3);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(395, 378);
+            this.groupBox1.Size = new System.Drawing.Size(414, 378);
             this.groupBox1.TabIndex = 15;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Appendicies";
             // 
-            // appendiciesLabelBox
-            // 
-            this.appendiciesLabelBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.appendiciesLabelBox.FormattingEnabled = true;
-            this.appendiciesLabelBox.ItemHeight = 18;
-            this.appendiciesLabelBox.Location = new System.Drawing.Point(3, 22);
-            this.appendiciesLabelBox.Name = "appendiciesLabelBox";
-            this.appendiciesLabelBox.Size = new System.Drawing.Size(389, 305);
-            this.appendiciesLabelBox.TabIndex = 1;
-            // 
             // panel5
             // 
-            this.panel5.Controls.Add(this.flowLayoutPanel6);
+            this.panel5.Controls.Add(this.splitContainer5);
+            this.panel5.Controls.Add(this.flowLayoutPanel5);
             this.panel5.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panel5.Location = new System.Drawing.Point(3, 327);
             this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(389, 48);
+            this.panel5.Size = new System.Drawing.Size(408, 48);
             this.panel5.TabIndex = 0;
             // 
-            // flowLayoutPanel6
+            // splitContainer5
             // 
-            this.flowLayoutPanel6.Controls.Add(this.AppendiciesAddButton);
-            this.flowLayoutPanel6.Controls.Add(this.AppendiciesDeleteButton);
-            this.flowLayoutPanel6.Controls.Add(this.flowLayoutPanel5);
-            this.flowLayoutPanel6.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.flowLayoutPanel6.Location = new System.Drawing.Point(0, 0);
-            this.flowLayoutPanel6.Name = "flowLayoutPanel6";
-            this.flowLayoutPanel6.Size = new System.Drawing.Size(389, 48);
-            this.flowLayoutPanel6.TabIndex = 0;
+            this.splitContainer5.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.splitContainer5.IsSplitterFixed = true;
+            this.splitContainer5.Location = new System.Drawing.Point(0, 4);
+            this.splitContainer5.Name = "splitContainer5";
+            // 
+            // splitContainer5.Panel1
+            // 
+            this.splitContainer5.Panel1.Controls.Add(this.AppendiciesAddButton);
+            // 
+            // splitContainer5.Panel2
+            // 
+            this.splitContainer5.Panel2.Controls.Add(this.AppendiciesDeleteButton);
+            this.splitContainer5.Size = new System.Drawing.Size(317, 41);
+            this.splitContainer5.SplitterDistance = 164;
+            this.splitContainer5.TabIndex = 17;
+            this.splitContainer5.TabStop = false;
             // 
             // AppendiciesAddButton
             // 
-            this.AppendiciesAddButton.Location = new System.Drawing.Point(3, 3);
+            this.AppendiciesAddButton.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.AppendiciesAddButton.Location = new System.Drawing.Point(0, 0);
             this.AppendiciesAddButton.Name = "AppendiciesAddButton";
-            this.AppendiciesAddButton.Size = new System.Drawing.Size(140, 40);
+            this.AppendiciesAddButton.Size = new System.Drawing.Size(164, 41);
             this.AppendiciesAddButton.TabIndex = 0;
             this.AppendiciesAddButton.Text = "Add";
             this.AppendiciesAddButton.UseVisualStyleBackColor = true;
@@ -1225,9 +1209,10 @@ namespace InsuranceSummaryMaker
             // 
             // AppendiciesDeleteButton
             // 
-            this.AppendiciesDeleteButton.Location = new System.Drawing.Point(149, 3);
+            this.AppendiciesDeleteButton.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.AppendiciesDeleteButton.Location = new System.Drawing.Point(0, 0);
             this.AppendiciesDeleteButton.Name = "AppendiciesDeleteButton";
-            this.AppendiciesDeleteButton.Size = new System.Drawing.Size(140, 40);
+            this.AppendiciesDeleteButton.Size = new System.Drawing.Size(149, 41);
             this.AppendiciesDeleteButton.TabIndex = 0;
             this.AppendiciesDeleteButton.Text = "Delete";
             this.AppendiciesDeleteButton.UseVisualStyleBackColor = true;
@@ -1235,10 +1220,12 @@ namespace InsuranceSummaryMaker
             // 
             // flowLayoutPanel5
             // 
+            this.flowLayoutPanel5.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.flowLayoutPanel5.AutoSize = true;
             this.flowLayoutPanel5.Controls.Add(this.AppendiciesUpButton);
             this.flowLayoutPanel5.Controls.Add(this.AppendiciesDownButton);
-            this.flowLayoutPanel5.Location = new System.Drawing.Point(295, 3);
+            this.flowLayoutPanel5.Location = new System.Drawing.Point(323, 4);
             this.flowLayoutPanel5.Name = "flowLayoutPanel5";
             this.flowLayoutPanel5.Size = new System.Drawing.Size(82, 41);
             this.flowLayoutPanel5.TabIndex = 16;
@@ -1279,7 +1266,7 @@ namespace InsuranceSummaryMaker
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(5, 2, 0, 2);
-            this.menuStrip1.Size = new System.Drawing.Size(914, 28);
+            this.menuStrip1.Size = new System.Drawing.Size(934, 28);
             this.menuStrip1.TabIndex = 1;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -1334,18 +1321,53 @@ namespace InsuranceSummaryMaker
             // 
             this.openImageDialog.Filter = "Image Files(*.jpg; *.jpeg; *.png)|*.jpg; *.jpeg; *.png;";
             // 
+            // TableCreatePanelListBox
+            // 
+            this.TableCreatePanelListBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.TableCreatePanelListBox.FormattingEnabled = true;
+            this.TableCreatePanelListBox.ItemHeight = 18;
+            this.TableCreatePanelListBox.Location = new System.Drawing.Point(2, 16);
+            this.TableCreatePanelListBox.Name = "TableCreatePanelListBox";
+            this.TableCreatePanelListBox.Size = new System.Drawing.Size(306, 328);
+            this.TableCreatePanelListBox.TabIndex = 1;
+            this.TableCreatePanelListBox.SelectedIndexChanged += new System.EventHandler(this.TableCreatePanelListBox_SelectedValueChanged);
+            // 
+            // ColumnsCreatePanelListView
+            // 
+            this.ColumnsCreatePanelListView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.ColumnsCreatePanelListView.FormattingEnabled = true;
+            this.ColumnsCreatePanelListView.ItemHeight = 18;
+            this.ColumnsCreatePanelListView.Location = new System.Drawing.Point(3, 16);
+            this.ColumnsCreatePanelListView.Name = "ColumnsCreatePanelListView";
+            this.ColumnsCreatePanelListView.Size = new System.Drawing.Size(306, 328);
+            this.ColumnsCreatePanelListView.TabIndex = 1;
+            // 
+            // appendiciesLabelBox
+            // 
+            this.appendiciesLabelBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.appendiciesLabelBox.FormattingEnabled = true;
+            this.appendiciesLabelBox.ItemHeight = 18;
+            this.appendiciesLabelBox.Location = new System.Drawing.Point(3, 22);
+            this.appendiciesLabelBox.Name = "appendiciesLabelBox";
+            this.appendiciesLabelBox.Size = new System.Drawing.Size(408, 305);
+            this.appendiciesLabelBox.TabIndex = 1;
+            // 
             // PolicyCreator
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
-            this.ClientSize = new System.Drawing.Size(914, 461);
+            this.ClientSize = new System.Drawing.Size(934, 461);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.menuStrip1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
             this.MainMenuStrip = this.menuStrip1;
-            this.MinimumSize = new System.Drawing.Size(930, 500);
+            this.MinimumSize = new System.Drawing.Size(950, 500);
             this.Name = "PolicyCreator";
             this.Text = "Proposal Creator";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.PolicyCreator_FormClosing);
@@ -1372,7 +1394,6 @@ namespace InsuranceSummaryMaker
             this.TableCreateGroupBox.ResumeLayout(false);
             this.TableCreateGroupBox.PerformLayout();
             this.flowLayoutPanel1.ResumeLayout(false);
-            this.flowLayoutPanel1.PerformLayout();
             this.flowLayoutPanel4.ResumeLayout(false);
             this.flowLayoutPanel4.PerformLayout();
             this.splitContainer8.Panel1.ResumeLayout(false);
@@ -1418,8 +1439,11 @@ namespace InsuranceSummaryMaker
             this.panel1.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
             this.panel5.ResumeLayout(false);
-            this.flowLayoutPanel6.ResumeLayout(false);
-            this.flowLayoutPanel6.PerformLayout();
+            this.panel5.PerformLayout();
+            this.splitContainer5.Panel1.ResumeLayout(false);
+            this.splitContainer5.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer5)).EndInit();
+            this.splitContainer5.ResumeLayout(false);
             this.flowLayoutPanel5.ResumeLayout(false);
             this.flowLayoutPanel5.PerformLayout();
             this.menuStrip1.ResumeLayout(false);
@@ -1503,7 +1527,6 @@ namespace InsuranceSummaryMaker
         private FlowLayoutPanel flowLayoutPanel3;
         private FlowLayoutPanel flowLayoutPanel4;
         private ToolStripMenuItem generateProposalToolStripMenuItem;
-        private FlowLayoutPanel flowLayoutPanel6;
         private FlowLayoutPanel flowLayoutPanel5;
         private Button AppendiciesUpButton;
         private Button AppendiciesDownButton;
@@ -1525,5 +1548,6 @@ namespace InsuranceSummaryMaker
         private Label label3;
         private ComboBox KeyProvisionsDataViewSelectorBox;
         private DataGridView KeyProvisionsDataView;
+        private SplitContainer splitContainer5;
     }
 }

@@ -308,7 +308,7 @@ namespace InsuranceSummaryMaker.PolicyInformation
                 foreach (DataGridViewCell cell in row.Cells)
                 {
                     string val = "";
-                    if (cell.Value != null)
+                    if (cell != null &&  cell.Value != null)
                     {
                         val = cell.Value.ToString() ?? "";
                     }
