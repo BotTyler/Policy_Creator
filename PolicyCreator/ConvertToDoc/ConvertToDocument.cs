@@ -391,7 +391,7 @@ namespace InsuranceSummaryMaker.ConvertToDoc
 
 
             TableRow row = new TableRow();
-            row.Append(CreateCell(text, 1, true, false, false, stylePart));
+            row.Append(CreateCell(text, 1, true, false, true, stylePart));
 
             table.Append(row);
 
@@ -551,9 +551,9 @@ namespace InsuranceSummaryMaker.ConvertToDoc
             {
                 CoverageInformation currentTable = tableList[index];
 
-                List<DataGridViewColumn> columns = currentTable._columns;
-                List<DataGridViewRow> rows = currentTable._rows;
-                List<DataGridViewRow> keyProvisions = currentTable._keyProvisions;
+                List<string> columns = currentTable._columns;
+                List<List<string>> rows = currentTable._rows;
+                List<List<string>> keyProvisions = currentTable._keyProvisions;
 
                 if (columns == null || rows == null || keyProvisions == null || (columns.Count <= 0 && rows.Count <= 0 && keyProvisions.Count <= 0))
                 {
@@ -591,7 +591,7 @@ namespace InsuranceSummaryMaker.ConvertToDoc
 
 
         // method to create a table
-        private static Paragraph CreateTable(List<DataGridViewColumn> column, List<DataGridViewRow> row, List<DataGridViewRow> keyProvisions, StyleDefinitionsPart stylePart)
+        private static Paragraph CreateTable(List<string> column, List<List<string>> row, List<List<string>> keyProvisions, StyleDefinitionsPart stylePart)
         {
             TableProperties prop = new TableProperties();
             prop.TableStyle = new TableStyle() { Val = "TableGrid" };
@@ -603,11 +603,11 @@ namespace InsuranceSummaryMaker.ConvertToDoc
             Table table = new Table(prop);
 
 
-            TableRow headerRow = CreateRow(column, stylePart);
+            TableRow headerRow = CreateColumnRow(column, stylePart);
             table.Append(headerRow);
 
 
-            foreach (DataGridViewRow x in row)
+            foreach (List<string> x in row)
             {
                 table.Append(CreateRow(x, stylePart));
             }
@@ -615,10 +615,10 @@ namespace InsuranceSummaryMaker.ConvertToDoc
             if (keyProvisions.Count > 0)
             {
                 // add the row that acts like a header but has only Key Properties on it
-                table.Append(CreateMergeRow("Key Provisions:", keyProvisions[0].Cells.Count, stylePart));
+                table.Append(CreateMergeRow("Key Provisions:", keyProvisions[0].Count, stylePart));
 
                 // add each of the provisions
-                foreach (DataGridViewRow x in keyProvisions)
+                foreach (List<string> x in keyProvisions)
                 {
                     table.Append(CreateRow(x, stylePart));
                 }
@@ -633,13 +633,12 @@ namespace InsuranceSummaryMaker.ConvertToDoc
         }
 
         // method to create a row in word for the column headers
-        private static TableRow CreateRow(List<DataGridViewColumn> input, StyleDefinitionsPart stylePart)
+        private static TableRow CreateColumnRow(List<string> input, StyleDefinitionsPart stylePart)
         {
             TableRow row = new TableRow();
-            foreach (DataGridViewColumn column in input)
+            foreach (string column in input)
             {
-                string columnName = column.Name;
-                row.Append(CreateCell(columnName, 1, true, true, false, stylePart));
+                row.Append(CreateCell(column, 1, true, true, false, stylePart));
             }
 
             return row;
@@ -647,23 +646,12 @@ namespace InsuranceSummaryMaker.ConvertToDoc
 
 
         // creates a word table row for a given row in the dataset
-        private static TableRow CreateRow(DataGridViewRow input, StyleDefinitionsPart stylePart)
+        private static TableRow CreateRow(List<string> input, StyleDefinitionsPart stylePart)
         {
             TableRow row = new TableRow();
-            foreach (DataGridViewCell cell in input.Cells)
+            foreach (string cell in input)
             {
-
-                string cellValue = "";
-
-                if (cell.Value != null)
-                {
-                    cellValue = cell.Value.ToString() ?? "";
-                }
-
-
-
-
-                row.Append(CreateCell(cellValue, 1, false, false, false, stylePart));
+                row.Append(CreateCell(cell, 1, false, false, false, stylePart));
             }
 
             return row;
@@ -671,13 +659,13 @@ namespace InsuranceSummaryMaker.ConvertToDoc
         private static TableRow CreateMergeRow(string text, int columnWidth, StyleDefinitionsPart stylePart)
         {
             TableRow row = new TableRow();
-            row.Append(CreateCell(text ?? "", columnWidth, true, true, true, stylePart));
+            row.Append(CreateCell(text ?? "", columnWidth, false, true, true, stylePart));
 
 
             return row;
         }
 
-        private static Shading getTableFirstRowShading(string styleID, StyleDefinitionsPart stylePart)
+        private static Shading getTableFirstRowShading(string styleID, StyleDefinitionsPart stylePart, string opacity)
         {
 
 
@@ -690,7 +678,11 @@ namespace InsuranceSummaryMaker.ConvertToDoc
                     {
                         TableStyleConditionalFormattingTableCellProperties cellProp = prop.Elements<TableStyleConditionalFormattingTableCellProperties>().FirstOrDefault();
                         Shading cellShading = (Shading)cellProp.Shading.Clone();
-                        cellShading.Fill = ConvertColorToLighterColor(cellShading.Fill, 0.5f);
+
+                        //cellShading.Fill = ConvertColorToLighterColor(cellShading.Fill, 0.2f);
+                        
+                        //cellShading.ThemeFillShade = "80";
+                        cellShading.ThemeFillTint = opacity;
                         return cellShading;
                         
                     }
@@ -718,15 +710,16 @@ namespace InsuranceSummaryMaker.ConvertToDoc
         }
         private static string ConvertColorToLighterColor(string hex, float lightenFactor)
         {
-            Color color = ColorTranslator.FromHtml("#" + hex);
+            Color color = ColorTranslator.FromHtml("#"+hex);
+            
             // Adjust the color by the lightenFactor (e.g., 0.2 for 20% lighter).
             int r = (int)Math.Min(255, color.R + (255 - color.R) * lightenFactor);
             int g = (int)Math.Min(255, color.G + (255 - color.G) * lightenFactor);
             int b = (int)Math.Min(255, color.B + (255 - color.B) * lightenFactor);
 
             Color lightenedColor = Color.FromArgb(r, g, b);
-
-            return ColorTranslator.ToHtml(lightenedColor);
+            string lightenColor = ColorTranslator.ToHtml(lightenedColor);
+            return lightenColor.Substring(1);
         }
 
         // method to create a cell in a table
@@ -740,7 +733,7 @@ namespace InsuranceSummaryMaker.ConvertToDoc
             if (isKeyProvision)
             {
                 //TableCellProperties tcprop = new TableCellProperties();
-                Shading shade = getTableFirstRowShading("TableGrid", stylePart);
+                Shading shade = getTableFirstRowShading("TableGrid", stylePart, "40");
 
 
                 TableCellMargin cellMargin = new TableCellMargin()
@@ -748,7 +741,6 @@ namespace InsuranceSummaryMaker.ConvertToDoc
                     TopMargin = new TopMargin() { Width = "100", Type = TableWidthUnitValues.Dxa },
                     BottomMargin = new BottomMargin() { Width = "100", Type = TableWidthUnitValues.Dxa },
                 };
-
                 tcprop.Shading = shade;
                 tcprop.TableCellMargin = cellMargin;
 

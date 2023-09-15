@@ -77,6 +77,7 @@ namespace InsuranceSummaryMaker.CustomControls.CustomMessageBox
             this.splitContainer1.Size = new System.Drawing.Size(445, 211);
             this.splitContainer1.SplitterDistance = 157;
             this.splitContainer1.TabIndex = 0;
+            this.splitContainer1.TabStop = false;
             // 
             // BrowseSaveLocation
             // 

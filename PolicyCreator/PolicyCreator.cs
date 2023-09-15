@@ -90,25 +90,28 @@ namespace InsuranceSummaryMaker
         #region tab menu Events
         private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
         {
+
             if (this.tabControl1.SelectedTab != null && this.tabControl1.SelectedTab.Tag != null)
             {
                 if (this.tabControl1.SelectedTab.Tag.Equals("tableData"))
                 {
 
                     refreshTable();
-
+                    return;
                 }
-                else if (this.tabControl1.SelectedTab.Tag.Equals("keyProvisions"))
+
+
+                if (this.tabControl1.SelectedTab.Tag.Equals("keyProvisions"))
                 {
                     refreshKeyProvisions();
+                    return;
                 }
 
+
             }
-            else
-            {
-                this.TableDataGridView.Rows.Clear();
-                this.TableDataGridView.Columns.Clear();
-            }
+
+
+
         }
 
 
@@ -450,7 +453,7 @@ namespace InsuranceSummaryMaker
             int changeIndex = this.TableCreatePanelListBox.SelectedIndex;
             if (changeIndex >= 0 && changeIndex < this.tableInformationList.Count)
             {
-                populateColumnsListBox(this.tableInformationList[changeIndex]._columns);
+                populateColumnsListBox(this.tableInformationList[changeIndex].getDataGridColumns());
                 refreshCarrierInformation(this.tableInformationList[changeIndex]._carrierInformation);
             }
         }
@@ -464,16 +467,10 @@ namespace InsuranceSummaryMaker
             }
         }
 
+        // test
         private void TableDataViewSelectorBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            // add all the columns and rowws to the data view
-            int currentIndex = this.TableDataViewSelectorBox.SelectedIndex;
-            if (currentIndex >= 0 && currentIndex < this.tableInformationList.Count)
-            {
-                CoverageInformation currentTable = this.tableInformationList[currentIndex];
-                setDataGridColumns(currentTable._columns);
-                setDataGridRows(currentTable._rows);
-            }
+            refreshTable();
         }
 
         private void swapColumns(int tableIndex, int swapSelected, int swapTo)
@@ -558,6 +555,7 @@ namespace InsuranceSummaryMaker
 
             if (currentIndex >= 0 && currentIndex < this.tableInformationList.Count)
             {
+
                 this.tableInformationList[currentIndex].setNewTable(this.TableDataGridView);
             }
         }
@@ -588,13 +586,68 @@ namespace InsuranceSummaryMaker
             }
         }
 
+
+        private bool checkRowEmpty(DataGridViewRow row)
+        {
+            bool isRowEmpty = true;
+
+            foreach (DataGridViewCell cell in row.Cells)
+            {
+                if (cell == null || cell.Value == null)
+                {
+                    continue;
+                }
+
+                if (!string.IsNullOrWhiteSpace(cell.Value.ToString()))
+                {
+                    isRowEmpty = false;
+                    break;
+                }
+            }
+
+            return isRowEmpty;
+        }
         private void TableDataGridView_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
-            startSave();
+            int rowIndex = e.RowIndex;
+            if (rowIndex < 0 || rowIndex >= this.TableDataGridView.Rows.Count - 1) return;
+            bool isEmpty = checkRowEmpty(this.TableDataGridView.Rows[rowIndex]);
+            if (isEmpty)
+            {
+                this.BeginInvoke(new Action(() =>
+                {
+                    this.TableDataGridView.Rows.RemoveAt(rowIndex);
+                    startSave();
+
+                }));
+
+            }
+            else
+            {
+                startSave();
+            }
         }
         private void KeyProvisionsDataView_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
             startProvisionSave();
+
+            int rowIndex = e.RowIndex;
+            if (rowIndex < 0 || rowIndex >= this.KeyProvisionsDataView.Rows.Count - 1) return;
+            bool isEmpty = checkRowEmpty(this.KeyProvisionsDataView.Rows[rowIndex]);
+            if (isEmpty)
+            {
+                this.BeginInvoke(new Action(() =>
+                {
+                    this.KeyProvisionsDataView.Rows.RemoveAt(rowIndex);
+                    startProvisionSave();
+
+                }));
+
+            }
+            else
+            {
+                startProvisionSave();
+            }
         }
 
         private void renameTableButton_Click(object sender, EventArgs e)
@@ -615,7 +668,9 @@ namespace InsuranceSummaryMaker
                 {
                     this.tableInformationList[currentIndex]._tableName = message.renameValue;
                     this.TableCreatePanelListBox.Items[currentIndex] = message.renameValue;
+
                     this.TableDataViewSelectorBox.Items[currentIndex] = message.renameValue;
+                    this.KeyProvisionsDataViewSelectorBox.Items[currentIndex] = message.renameValue;
                 }
             }
         }
@@ -653,7 +708,6 @@ namespace InsuranceSummaryMaker
         #region helper functions
         private void setDataGridColumns(List<DataGridViewColumn> columns)
         {
-            this.TableDataGridView.Columns.Clear();
             foreach (DataGridViewColumn column in columns)
             {
                 this.TableDataGridView.Columns.Add(column);
@@ -662,7 +716,6 @@ namespace InsuranceSummaryMaker
 
         private void setDataGridRows(List<DataGridViewRow> rows)
         {
-            this.TableDataGridView.Rows.Clear();
             foreach (DataGridViewRow row in rows)
             {
                 this.TableDataGridView.Rows.Add(row);
@@ -672,7 +725,6 @@ namespace InsuranceSummaryMaker
 
         private void setKeyProvisionsColumns(List<DataGridViewColumn> columns)
         {
-            this.KeyProvisionsDataView.Columns.Clear();
             foreach (DataGridViewColumn column in columns)
             {
                 this.KeyProvisionsDataView.Columns.Add(column);
@@ -681,7 +733,6 @@ namespace InsuranceSummaryMaker
 
         private void setKeyProvisionRows(List<DataGridViewRow> rows)
         {
-            this.KeyProvisionsDataView.Rows.Clear();
             foreach (DataGridViewRow row in rows)
             {
                 this.KeyProvisionsDataView.Rows.Add(row);
@@ -693,32 +744,33 @@ namespace InsuranceSummaryMaker
 
         private void refreshTable()
         {
+            this.TableDataGridView.Rows.Clear();
+            this.TableDataGridView.Columns.Clear();
+
             int currentIndex = this.TableDataViewSelectorBox.SelectedIndex;
             if (currentIndex >= 0 && currentIndex < this.tableInformationList.Count)
             {
-                setDataGridColumns(this.tableInformationList[currentIndex]._columns);
-                setDataGridRows(this.tableInformationList[currentIndex]._rows);
+                setDataGridColumns(this.tableInformationList[currentIndex].getDataGridColumns());
+                setDataGridRows(this.tableInformationList[currentIndex].getDataGridRows());
             }
-            else
-            {
-                this.TableDataGridView.Rows.Clear();
-                this.TableDataGridView.Columns.Clear();
-            }
+
         }
 
         private void refreshKeyProvisions()
         {
+            this.KeyProvisionsDataView.Rows.Clear();
+            this.KeyProvisionsDataView.Columns.Clear();
+
             int currentIndex = this.KeyProvisionsDataViewSelectorBox.SelectedIndex;
             if (currentIndex >= 0 && currentIndex < this.tableInformationList.Count)
             {
-                setKeyProvisionsColumns(this.tableInformationList[currentIndex]._keyProvisionColumns);
-                setKeyProvisionRows(this.tableInformationList[currentIndex]._keyProvisions);
+
+                setKeyProvisionsColumns(this.tableInformationList[currentIndex].getDataGridColumns());
+                setKeyProvisionRows(this.tableInformationList[currentIndex].getDataGridViewKeyProvisions());
             }
-            else
-            {
-                this.KeyProvisionsDataView.Rows.Clear();
-                this.KeyProvisionsDataView.Columns.Clear();
-            }
+
+
+            
         }
 
         private void addTable(string tableName)
@@ -772,6 +824,19 @@ namespace InsuranceSummaryMaker
                 this.tableInformationList[tableIndex].swapKeyProvisionRow(fromRow, toRow);
 
                 int column = this.KeyProvisionsDataView.CurrentCell.ColumnIndex;
+                for(int index = 0; index < this.KeyProvisionsDataView.Rows[fromRow].Cells.Count; index++)
+                {
+                    string value = "";
+                    if(this.KeyProvisionsDataView.Rows[fromRow].Cells[index].Value != null)
+                    {
+                        value = this.KeyProvisionsDataView.Rows[fromRow].Cells[index].Value.ToString();
+                    }
+
+                    this.KeyProvisionsDataView.Rows[fromRow].Cells[index].Value = this.KeyProvisionsDataView.Rows[toRow].Cells[index].Value;
+                    this.KeyProvisionsDataView.Rows[toRow].Cells[index].Value = value;
+
+
+                }
                 this.KeyProvisionsDataView.CurrentCell = this.KeyProvisionsDataView[column, toRow];
             }
             else
@@ -779,18 +844,22 @@ namespace InsuranceSummaryMaker
                 this.tableInformationList[tableIndex].swapRow(fromRow, toRow);
 
                 int column = this.TableDataGridView.CurrentCell.ColumnIndex;
+
+                for (int index = 0; index < this.TableDataGridView.Rows[fromRow].Cells.Count; index++)
+                {
+                    string value = "";
+                    if (this.TableDataGridView.Rows[fromRow].Cells[index].Value != null)
+                    {
+                        value = this.TableDataGridView.Rows[fromRow].Cells[index].Value.ToString();
+                    }
+
+                    this.TableDataGridView.Rows[fromRow].Cells[index].Value = this.TableDataGridView.Rows[toRow].Cells[index].Value;
+                    this.TableDataGridView.Rows[toRow].Cells[index].Value = value;
+
+
+                }
                 this.TableDataGridView.CurrentCell = this.TableDataGridView[column, toRow];
             }
-
-
-            // swap the columns in the object
-            /* this.tableInformationList[tableIndex].swapColumn(swapSelected, swapTo);
-
-
-             // swap in the panel list view
-             var item = this.ColumnsCreatePanelListView.Items[swapTo];
-             this.ColumnsCreatePanelListView.Items.RemoveAt(swapTo);
-             this.ColumnsCreatePanelListView.Items.Insert(swapSelected, item);*/
 
 
         }
@@ -799,14 +868,7 @@ namespace InsuranceSummaryMaker
         #region keyProvisions
         private void KeyProvisionsDataViewSelectorBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            // add all the columns and rowws to the data view
-            int currentIndex = this.KeyProvisionsDataViewSelectorBox.SelectedIndex;
-            if (currentIndex >= 0 && currentIndex < this.tableInformationList.Count)
-            {
-                CoverageInformation currentTable = this.tableInformationList[currentIndex];
-                setKeyProvisionsColumns(currentTable._keyProvisionColumns);
-                setKeyProvisionRows(currentTable._keyProvisions);
-            }
+            refreshKeyProvisions();
         }
 
         private void KeyProvisionsDataViewUp_Click(object sender, EventArgs e)
@@ -816,6 +878,7 @@ namespace InsuranceSummaryMaker
             {
                 return;
             }
+            if (this.KeyProvisionsDataView.SelectedCells.Count <= 0) { return; }
 
             int fromRow = this.KeyProvisionsDataView.SelectedCells[0].RowIndex;
             int toRow = fromRow - 1;
@@ -829,7 +892,7 @@ namespace InsuranceSummaryMaker
             {
                 return;
             }
-
+            if(this.KeyProvisionsDataView.SelectedCells.Count <= 0) { return; }
             int fromRow = this.KeyProvisionsDataView.SelectedCells[0].RowIndex;
             int toRow = fromRow + 1;
             swapRows(currentIndex, fromRow, toRow, true);
@@ -861,6 +924,7 @@ namespace InsuranceSummaryMaker
             {
                 return;
             }
+            if (this.TableDataGridView.SelectedCells.Count <= 0) { return; }
 
             int fromRow = this.TableDataGridView.SelectedCells[0].RowIndex;
             int toRow = fromRow - 1;
@@ -875,6 +939,7 @@ namespace InsuranceSummaryMaker
             {
                 return;
             }
+            if (this.TableDataGridView.SelectedCells.Count <= 0) { return; }
 
             int fromRow = this.TableDataGridView.SelectedCells[0].RowIndex;
             int toRow = fromRow + 1;
@@ -979,7 +1044,8 @@ namespace InsuranceSummaryMaker
                     // We can't find a file to save to run the saveAs();
                     saveAsToolStripMenuItem_Click(sender, e);
                 }
-            }else if(mb == DialogResult.Cancel)
+            }
+            else if (mb == DialogResult.Cancel)
             {
                 e.Cancel = true;
             }
@@ -1020,13 +1086,13 @@ namespace InsuranceSummaryMaker
             }
         }
 
-        
+        private void BusinessStartDate_ValueChanged(object sender, EventArgs e)
+        {
+            DateTime start = this.BusinessStartDate.Value;
+            start = start.AddYears(1);
 
-        
-
-
-
-
+            this.BusinessEndDate.Value = start;
+        }
     }
 
 
