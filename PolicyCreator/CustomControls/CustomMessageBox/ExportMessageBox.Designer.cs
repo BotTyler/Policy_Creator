@@ -74,17 +74,18 @@ namespace InsuranceSummaryMaker.CustomControls.CustomMessageBox
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.flowLayoutPanel1);
-            this.splitContainer1.Size = new System.Drawing.Size(445, 211);
+            this.splitContainer1.Size = new System.Drawing.Size(458, 211);
             this.splitContainer1.SplitterDistance = 157;
             this.splitContainer1.TabIndex = 0;
             this.splitContainer1.TabStop = false;
             // 
             // BrowseSaveLocation
             // 
+            this.BrowseSaveLocation.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.BrowseSaveLocation.AutoSize = true;
             this.BrowseSaveLocation.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("BrowseSaveLocation.BackgroundImage")));
             this.BrowseSaveLocation.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.BrowseSaveLocation.Location = new System.Drawing.Point(400, 105);
+            this.BrowseSaveLocation.Location = new System.Drawing.Point(420, 105);
             this.BrowseSaveLocation.Margin = new System.Windows.Forms.Padding(2);
             this.BrowseSaveLocation.Name = "BrowseSaveLocation";
             this.BrowseSaveLocation.Padding = new System.Windows.Forms.Padding(5);
@@ -100,7 +101,7 @@ namespace InsuranceSummaryMaker.CustomControls.CustomMessageBox
             this.label2.Location = new System.Drawing.Point(5, 82);
             this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(437, 24);
+            this.label2.Size = new System.Drawing.Size(450, 24);
             this.label2.TabIndex = 4;
             this.label2.Text = "Save Proposal To:";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -110,19 +111,20 @@ namespace InsuranceSummaryMaker.CustomControls.CustomMessageBox
             this.saveProposalToTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.saveProposalToTextBox.Location = new System.Drawing.Point(5, 110);
+            this.saveProposalToTextBox.Location = new System.Drawing.Point(8, 110);
             this.saveProposalToTextBox.Margin = new System.Windows.Forms.Padding(4);
             this.saveProposalToTextBox.Name = "saveProposalToTextBox";
             this.saveProposalToTextBox.ReadOnly = true;
-            this.saveProposalToTextBox.Size = new System.Drawing.Size(390, 26);
+            this.saveProposalToTextBox.Size = new System.Drawing.Size(407, 26);
             this.saveProposalToTextBox.TabIndex = 3;
             // 
             // BroseFileTemplateButton
             // 
+            this.BroseFileTemplateButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.BroseFileTemplateButton.AutoSize = true;
             this.BroseFileTemplateButton.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("BroseFileTemplateButton.BackgroundImage")));
             this.BroseFileTemplateButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.BroseFileTemplateButton.Location = new System.Drawing.Point(400, 23);
+            this.BroseFileTemplateButton.Location = new System.Drawing.Point(420, 23);
             this.BroseFileTemplateButton.Margin = new System.Windows.Forms.Padding(2);
             this.BroseFileTemplateButton.Name = "BroseFileTemplateButton";
             this.BroseFileTemplateButton.Padding = new System.Windows.Forms.Padding(5);
@@ -138,7 +140,7 @@ namespace InsuranceSummaryMaker.CustomControls.CustomMessageBox
             this.messageLabel.Location = new System.Drawing.Point(4, 0);
             this.messageLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.messageLabel.Name = "messageLabel";
-            this.messageLabel.Size = new System.Drawing.Size(437, 24);
+            this.messageLabel.Size = new System.Drawing.Size(450, 24);
             this.messageLabel.TabIndex = 1;
             this.messageLabel.Text = "Choose Template:";
             this.messageLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -148,11 +150,11 @@ namespace InsuranceSummaryMaker.CustomControls.CustomMessageBox
             this.textTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textTextBox.Location = new System.Drawing.Point(4, 28);
+            this.textTextBox.Location = new System.Drawing.Point(7, 28);
             this.textTextBox.Margin = new System.Windows.Forms.Padding(4);
             this.textTextBox.Name = "textTextBox";
             this.textTextBox.ReadOnly = true;
-            this.textTextBox.Size = new System.Drawing.Size(390, 26);
+            this.textTextBox.Size = new System.Drawing.Size(409, 26);
             this.textTextBox.TabIndex = 0;
             // 
             // flowLayoutPanel1
@@ -163,7 +165,7 @@ namespace InsuranceSummaryMaker.CustomControls.CustomMessageBox
             this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(2);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(445, 50);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(458, 50);
             this.flowLayoutPanel1.TabIndex = 0;
             // 
             // ExportButton
@@ -204,11 +206,13 @@ namespace InsuranceSummaryMaker.CustomControls.CustomMessageBox
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(461, 223);
+            this.ClientSize = new System.Drawing.Size(474, 223);
             this.Controls.Add(this.splitContainer1);
             this.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Margin = new System.Windows.Forms.Padding(4);
+            this.MaximumSize = new System.Drawing.Size(490, 262);
+            this.MinimumSize = new System.Drawing.Size(490, 262);
             this.Name = "ExportMessageBox";
             this.Padding = new System.Windows.Forms.Padding(8, 6, 8, 6);
             this.Text = "Export";

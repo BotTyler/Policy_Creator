@@ -63,7 +63,7 @@ namespace InsuranceSummaryMaker.CustomControls.CustomMessageBox
             // 
             this.splitContainer1.Panel2.Controls.Add(this.flowLayoutPanel1);
             this.splitContainer1.Size = new System.Drawing.Size(379, 150);
-            this.splitContainer1.SplitterDistance = 95;
+            this.splitContainer1.SplitterDistance = 92;
             this.splitContainer1.SplitterWidth = 5;
             this.splitContainer1.TabIndex = 0;
             this.splitContainer1.TabStop = false;
@@ -85,10 +85,10 @@ namespace InsuranceSummaryMaker.CustomControls.CustomMessageBox
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.textTextBox.Font = new System.Drawing.Font("Segoe UI", 15F);
-            this.textTextBox.Location = new System.Drawing.Point(4, 49);
+            this.textTextBox.Location = new System.Drawing.Point(7, 49);
             this.textTextBox.Margin = new System.Windows.Forms.Padding(4);
             this.textTextBox.Name = "textTextBox";
-            this.textTextBox.Size = new System.Drawing.Size(372, 34);
+            this.textTextBox.Size = new System.Drawing.Size(364, 34);
             this.textTextBox.TabIndex = 0;
             this.textTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textTextBox_KeyPress);
             // 
@@ -100,7 +100,7 @@ namespace InsuranceSummaryMaker.CustomControls.CustomMessageBox
             this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(2);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(379, 50);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(379, 53);
             this.flowLayoutPanel1.TabIndex = 0;
             // 
             // AddButton
@@ -138,6 +138,8 @@ namespace InsuranceSummaryMaker.CustomControls.CustomMessageBox
             this.Font = new System.Drawing.Font("Arial", 12F);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Margin = new System.Windows.Forms.Padding(4);
+            this.MaximumSize = new System.Drawing.Size(411, 201);
+            this.MinimumSize = new System.Drawing.Size(411, 201);
             this.Name = "AddCancelMessageBox";
             this.Padding = new System.Windows.Forms.Padding(8, 6, 8, 6);
             this.Text = "Add";

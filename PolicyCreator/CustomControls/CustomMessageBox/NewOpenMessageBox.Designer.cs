@@ -123,6 +123,8 @@ namespace InsuranceSummaryMaker.CustomControls.CustomMessageBox
             this.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Margin = new System.Windows.Forms.Padding(4);
+            this.MaximumSize = new System.Drawing.Size(390, 183);
+            this.MinimumSize = new System.Drawing.Size(390, 183);
             this.Name = "NewOpenMessageBox";
             this.Padding = new System.Windows.Forms.Padding(8, 6, 8, 6);
             this.Text = "New or Open?";

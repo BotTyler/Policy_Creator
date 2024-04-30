@@ -73,6 +73,8 @@ namespace InsuranceSummaryMaker.CustomControls.CustomMessageBox
             | System.Windows.Forms.AnchorStyles.Right)));
             this.messageLabel.Location = new System.Drawing.Point(4, 6);
             this.messageLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.messageLabel.MaximumSize = new System.Drawing.Size(362, 24);
+            this.messageLabel.MinimumSize = new System.Drawing.Size(362, 24);
             this.messageLabel.Name = "messageLabel";
             this.messageLabel.Size = new System.Drawing.Size(362, 24);
             this.messageLabel.TabIndex = 1;
@@ -84,10 +86,10 @@ namespace InsuranceSummaryMaker.CustomControls.CustomMessageBox
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.textTextBox.Font = new System.Drawing.Font("Segoe UI", 15F);
-            this.textTextBox.Location = new System.Drawing.Point(4, 35);
+            this.textTextBox.Location = new System.Drawing.Point(8, 35);
             this.textTextBox.Margin = new System.Windows.Forms.Padding(4);
             this.textTextBox.Name = "textTextBox";
-            this.textTextBox.Size = new System.Drawing.Size(362, 34);
+            this.textTextBox.Size = new System.Drawing.Size(354, 34);
             this.textTextBox.TabIndex = 0;
             this.textTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textTextBox_KeyPress);
             // 
@@ -137,6 +139,8 @@ namespace InsuranceSummaryMaker.CustomControls.CustomMessageBox
             this.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Margin = new System.Windows.Forms.Padding(4);
+            this.MaximumSize = new System.Drawing.Size(402, 190);
+            this.MinimumSize = new System.Drawing.Size(402, 190);
             this.Name = "RenameMessageBox";
             this.Padding = new System.Windows.Forms.Padding(8, 6, 8, 6);
             this.Text = "Rename";

@@ -458,14 +458,7 @@ namespace InsuranceSummaryMaker
             }
         }
 
-        private void CarrierRichTextBox_Validated(object sender, EventArgs e)
-        {
-            int tableIndex = this.TableCreatePanelListBox.SelectedIndex;
-            if (tableIndex >= 0 && tableIndex < this.tableInformationList.Count)
-            {
-                this.tableInformationList[tableIndex]._carrierInformation = this.CarrierRichTextBox.Text;
-            }
-        }
+
 
         // test
         private void TableDataViewSelectorBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -584,7 +577,11 @@ namespace InsuranceSummaryMaker
             {
                 this.KeyProvisionsDataView.EndEdit();
             }
+
+            
         }
+
+
 
 
         private bool checkRowEmpty(DataGridViewRow row)
@@ -1092,6 +1089,17 @@ namespace InsuranceSummaryMaker
             start = start.AddYears(1);
 
             this.BusinessEndDate.Value = start;
+        }
+
+
+
+        private void CarrierRichTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            int tableIndex = this.TableCreatePanelListBox.SelectedIndex;
+            if (tableIndex >= 0 && tableIndex < this.tableInformationList.Count)
+            {
+                this.tableInformationList[tableIndex]._carrierInformation = this.CarrierRichTextBox.Text + e.KeyChar;
+            }
         }
     }
 
