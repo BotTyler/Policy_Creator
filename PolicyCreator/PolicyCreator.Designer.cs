@@ -433,8 +433,8 @@ namespace InsuranceSummaryMaker
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.BrowseImageLocation);
-            this.splitContainer1.Size = new System.Drawing.Size(480, 40);
-            this.splitContainer1.SplitterDistance = 431;
+            this.splitContainer1.Size = new System.Drawing.Size(482, 40);
+            this.splitContainer1.SplitterDistance = 433;
             this.splitContainer1.TabIndex = 13;
             // 
             // label1
@@ -442,7 +442,7 @@ namespace InsuranceSummaryMaker
             this.label1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label1.Location = new System.Drawing.Point(0, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(431, 40);
+            this.label1.Size = new System.Drawing.Size(433, 40);
             this.label1.TabIndex = 0;
             this.label1.Text = "Image:";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -470,7 +470,7 @@ namespace InsuranceSummaryMaker
             this.businessPictureBox.BackColor = System.Drawing.Color.DimGray;
             this.businessPictureBox.Location = new System.Drawing.Point(3, 240);
             this.businessPictureBox.Name = "businessPictureBox";
-            this.businessPictureBox.Size = new System.Drawing.Size(500, 142);
+            this.businessPictureBox.Size = new System.Drawing.Size(502, 142);
             this.businessPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.businessPictureBox.TabIndex = 14;
             this.businessPictureBox.TabStop = false;
@@ -483,7 +483,7 @@ namespace InsuranceSummaryMaker
             this.BusinessEndDate.Location = new System.Drawing.Point(130, 143);
             this.BusinessEndDate.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.BusinessEndDate.Name = "BusinessEndDate";
-            this.BusinessEndDate.Size = new System.Drawing.Size(354, 26);
+            this.BusinessEndDate.Size = new System.Drawing.Size(356, 26);
             this.BusinessEndDate.TabIndex = 11;
             // 
             // BusinessStartDate
@@ -494,7 +494,7 @@ namespace InsuranceSummaryMaker
             this.BusinessStartDate.Location = new System.Drawing.Point(130, 106);
             this.BusinessStartDate.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.BusinessStartDate.Name = "BusinessStartDate";
-            this.BusinessStartDate.Size = new System.Drawing.Size(354, 26);
+            this.BusinessStartDate.Size = new System.Drawing.Size(356, 26);
             this.BusinessStartDate.TabIndex = 10;
             this.BusinessStartDate.ValueChanged += new System.EventHandler(this.BusinessStartDate_ValueChanged);
             // 
@@ -531,7 +531,7 @@ namespace InsuranceSummaryMaker
             this.BusinessLegalNameTextBox.Location = new System.Drawing.Point(130, 69);
             this.BusinessLegalNameTextBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.BusinessLegalNameTextBox.Name = "BusinessLegalNameTextBox";
-            this.BusinessLegalNameTextBox.Size = new System.Drawing.Size(354, 26);
+            this.BusinessLegalNameTextBox.Size = new System.Drawing.Size(356, 26);
             this.BusinessLegalNameTextBox.TabIndex = 6;
             // 
             // label12
@@ -554,7 +554,7 @@ namespace InsuranceSummaryMaker
             this.BuisnessNameTextBox.Location = new System.Drawing.Point(130, 35);
             this.BuisnessNameTextBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.BuisnessNameTextBox.Name = "BuisnessNameTextBox";
-            this.BuisnessNameTextBox.Size = new System.Drawing.Size(354, 26);
+            this.BuisnessNameTextBox.Size = new System.Drawing.Size(356, 26);
             this.BuisnessNameTextBox.TabIndex = 4;
             // 
             // label11
@@ -850,7 +850,7 @@ namespace InsuranceSummaryMaker
             this.groupBox6.Controls.Add(this.CarrierRichTextBox);
             this.groupBox6.Location = new System.Drawing.Point(0, 0);
             this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(292, 380);
+            this.groupBox6.Size = new System.Drawing.Size(294, 380);
             this.groupBox6.TabIndex = 0;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "Carrier Information";
@@ -858,9 +858,10 @@ namespace InsuranceSummaryMaker
             // CarrierRichTextBox
             // 
             this.CarrierRichTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.CarrierRichTextBox.ImeMode = System.Windows.Forms.ImeMode.On;
             this.CarrierRichTextBox.Location = new System.Drawing.Point(3, 22);
             this.CarrierRichTextBox.Name = "CarrierRichTextBox";
-            this.CarrierRichTextBox.Size = new System.Drawing.Size(286, 355);
+            this.CarrierRichTextBox.Size = new System.Drawing.Size(288, 355);
             this.CarrierRichTextBox.TabIndex = 0;
             this.CarrierRichTextBox.Text = "";
             this.CarrierRichTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.CarrierRichTextBox_KeyPress);
@@ -986,7 +987,7 @@ namespace InsuranceSummaryMaker
             this.TableDataViewSelectorBox.FormattingEnabled = true;
             this.TableDataViewSelectorBox.Location = new System.Drawing.Point(2, 11);
             this.TableDataViewSelectorBox.Name = "TableDataViewSelectorBox";
-            this.TableDataViewSelectorBox.Size = new System.Drawing.Size(316, 26);
+            this.TableDataViewSelectorBox.Size = new System.Drawing.Size(318, 26);
             this.TableDataViewSelectorBox.TabIndex = 0;
             this.TableDataViewSelectorBox.SelectedIndexChanged += new System.EventHandler(this.TableDataViewSelectorBox_SelectedIndexChanged);
             // 
@@ -1135,7 +1136,7 @@ namespace InsuranceSummaryMaker
             this.KeyProvisionsDataViewSelectorBox.FormattingEnabled = true;
             this.KeyProvisionsDataViewSelectorBox.Location = new System.Drawing.Point(2, 11);
             this.KeyProvisionsDataViewSelectorBox.Name = "KeyProvisionsDataViewSelectorBox";
-            this.KeyProvisionsDataViewSelectorBox.Size = new System.Drawing.Size(316, 26);
+            this.KeyProvisionsDataViewSelectorBox.Size = new System.Drawing.Size(318, 26);
             this.KeyProvisionsDataViewSelectorBox.TabIndex = 0;
             this.KeyProvisionsDataViewSelectorBox.SelectedIndexChanged += new System.EventHandler(this.KeyProvisionsDataViewSelectorBox_SelectedIndexChanged);
             // 

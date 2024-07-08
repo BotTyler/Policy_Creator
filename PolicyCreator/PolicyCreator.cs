@@ -1098,7 +1098,10 @@ namespace InsuranceSummaryMaker
             int tableIndex = this.TableCreatePanelListBox.SelectedIndex;
             if (tableIndex >= 0 && tableIndex < this.tableInformationList.Count)
             {
-                this.tableInformationList[tableIndex]._carrierInformation = this.CarrierRichTextBox.Text + e.KeyChar;
+                int inputInt = (int)e.KeyChar;
+                string input = inputInt >= 32 && inputInt <= 126?e.KeyChar.ToString():""; // check to make sure that all of the char are valid
+
+                this.tableInformationList[tableIndex]._carrierInformation = this.CarrierRichTextBox.Text + input;
             }
         }
     }
