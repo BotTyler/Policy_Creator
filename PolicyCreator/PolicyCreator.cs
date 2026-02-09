@@ -1091,17 +1091,12 @@ namespace InsuranceSummaryMaker
             this.BusinessEndDate.Value = start;
         }
 
-
-
-        private void CarrierRichTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        private void CarrierRichTextBox_TextChanged(object sender, EventArgs e)
         {
             int tableIndex = this.TableCreatePanelListBox.SelectedIndex;
             if (tableIndex >= 0 && tableIndex < this.tableInformationList.Count)
             {
-                int inputInt = (int)e.KeyChar;
-                string input = inputInt >= 32 && inputInt <= 126?e.KeyChar.ToString():""; // check to make sure that all of the char are valid
-
-                this.tableInformationList[tableIndex]._carrierInformation = this.CarrierRichTextBox.Text + input;
+                this.tableInformationList[tableIndex]._carrierInformation = this.CarrierRichTextBox.Text;
             }
         }
     }
